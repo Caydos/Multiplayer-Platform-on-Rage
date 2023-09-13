@@ -1,0 +1,189 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Client">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Client\Natives">
+      <UniqueIdentifier>{c2f79b29-7f2b-4766-a4a7-876cf7debc6a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Client\Scripting">
+      <UniqueIdentifier>{d8541ca1-d0ff-4a17-bac4-d5c60a5d11af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Client\Scripting\Data">
+      <UniqueIdentifier>{d4e19f1e-b9f0-42c3-a434-eb10fcda9e93}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Server">
+      <UniqueIdentifier>{f2cafec0-fe9f-4401-a5a4-6a5bf1a6003f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common">
+      <UniqueIdentifier>{780e2294-c315-4805-981a-d2ceabcbfcab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\Fiber">
+      <UniqueIdentifier>{fc6bbf6d-b511-4d1b-a300-5d7d5d66c359}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\Process">
+      <UniqueIdentifier>{ea937e95-8b2f-4565-82c5-f01d83ffd7af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Client\Hook">
+      <UniqueIdentifier>{fd49d4a1-b21d-4b06-9e3c-9403874b857a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\Logger">
+      <UniqueIdentifier>{3e7e2d86-e904-4017-b900-374dc2b592e3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\Threads">
+      <UniqueIdentifier>{3cbfa472-386a-46bb-9a25-cb4c74af386b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Client\Scripting\Scripts">
+      <UniqueIdentifier>{ab996847-654c-4299-80bc-f9f691093404}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="A_Default">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Server\Events">
+      <UniqueIdentifier>{b3e5a35e-d810-4d22-a519-499584cf2adb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Client\Scripting\SyncTree">
+      <UniqueIdentifier>{6935e32b-30ba-491f-bd8d-b6f811c65ecb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Client\Scripting\Data\Pedestrians">
+      <UniqueIdentifier>{b496a326-d9dd-472a-a2ae-247ed1636eb0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Client\Scripting\SyncTree\Pools">
+      <UniqueIdentifier>{ee1105c6-3c22-445c-950b-b3772ace9320}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Client\Scripting\SyncTree\Entities">
+      <UniqueIdentifier>{9f55cba3-e423-44ca-843f-b14e74ce11a8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Client\Scripting\SyncTree\Entities\Peds">
+      <UniqueIdentifier>{80cbb3eb-76fb-4b9a-a0b2-efdb769ec3e1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Client\Scripting\SyncTree\Entities\Peds\Creation">
+      <UniqueIdentifier>{862d1570-490a-4ae4-bde3-a1ad796bf577}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="pch.h">
+      <Filter>A_Default</Filter>
+    </ClInclude>
+    <ClInclude Include="CrossMap.h">
+      <Filter>Client\Natives</Filter>
+    </ClInclude>
+    <ClInclude Include="Natives.h">
+      <Filter>Client\Natives</Filter>
+    </ClInclude>
+    <ClInclude Include="Types.h">
+      <Filter>Client\Natives</Filter>
+    </ClInclude>
+    <ClInclude Include="Hook.h">
+      <Filter>Client\Hook</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripting.h">
+      <Filter>Client\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="Fiber.h">
+      <Filter>Common\Fiber</Filter>
+    </ClInclude>
+    <ClInclude Include="Process.h">
+      <Filter>Common\Process</Filter>
+    </ClInclude>
+    <ClInclude Include="tasks.h">
+      <Filter>Client\Scripting\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="Vectors.h">
+      <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="Logger.h">
+      <Filter>Common\Logger</Filter>
+    </ClInclude>
+    <ClInclude Include="Threads.h">
+      <Filter>Common\Threads</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptNames.h">
+      <Filter>Client\Scripting\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="Scripts.h">
+      <Filter>Client\Scripting\Scripts</Filter>
+    </ClInclude>
+    <ClInclude Include="Invoker.h">
+      <Filter>Client\Natives</Filter>
+    </ClInclude>
+    <ClInclude Include="Controls.h">
+      <Filter>Client\Scripting\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="Events.h">
+      <Filter>Server\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="EventsListing.h">
+      <Filter>Server</Filter>
+    </ClInclude>
+    <ClInclude Include="PedData.h">
+      <Filter>Client\Scripting\Data\Pedestrians</Filter>
+    </ClInclude>
+    <ClInclude Include="PSync.h">
+      <Filter>Client\Scripting\SyncTree\Entities\Peds</Filter>
+    </ClInclude>
+    <ClInclude Include="PCreation.h">
+      <Filter>Client\Scripting\SyncTree\Entities\Peds\Creation</Filter>
+    </ClInclude>
+    <ClInclude Include="Pools.h">
+      <Filter>Client\Scripting\SyncTree\Pools</Filter>
+    </ClInclude>
+    <ClInclude Include="Sync.h">
+      <Filter>Client\Scripting\SyncTree</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="pch.cpp">
+      <Filter>Client</Filter>
+    </ClCompile>
+    <ClCompile Include="Scripting.cpp">
+      <Filter>Client\Scripting</Filter>
+    </ClCompile>
+    <ClCompile Include="Hook.cpp">
+      <Filter>Client\Hook</Filter>
+    </ClCompile>
+    <ClCompile Include="Fiber.cpp">
+      <Filter>Common\Fiber</Filter>
+    </ClCompile>
+    <ClCompile Include="Process.cpp">
+      <Filter>Common\Process</Filter>
+    </ClCompile>
+    <ClCompile Include="Server.cpp">
+      <Filter>Server</Filter>
+    </ClCompile>
+    <ClCompile Include="Logger.cpp">
+      <Filter>Common\Logger</Filter>
+    </ClCompile>
+    <ClCompile Include="dllmain.cpp" />
+    <ClCompile Include="Commands.cpp">
+      <Filter>Common\Threads</Filter>
+    </ClCompile>
+    <ClCompile Include="ServerData.cpp">
+      <Filter>Common\Threads</Filter>
+    </ClCompile>
+    <ClCompile Include="DefaultFunctions.cpp">
+      <Filter>Client\Scripting\Scripts</Filter>
+    </ClCompile>
+    <ClCompile Include="Invoker.cpp">
+      <Filter>Client\Natives</Filter>
+    </ClCompile>
+    <ClCompile Include="Events.cpp">
+      <Filter>Server\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="PSync.cpp">
+      <Filter>Client\Scripting\SyncTree\Entities\Peds</Filter>
+    </ClCompile>
+    <ClCompile Include="PCreation.cpp">
+      <Filter>Client\Scripting\SyncTree\Entities\Peds\Creation</Filter>
+    </ClCompile>
+    <ClCompile Include="PedPools.cpp">
+      <Filter>Client\Scripting\SyncTree\Pools</Filter>
+    </ClCompile>
+    <ClCompile Include="Sync.cpp">
+      <Filter>Client\Scripting\SyncTree</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

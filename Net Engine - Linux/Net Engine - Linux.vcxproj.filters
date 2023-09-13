@@ -1,0 +1,60 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="FIles">
+      <UniqueIdentifier>{41d2f63f-c453-4599-acfa-983daa316554}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FIles\Events">
+      <UniqueIdentifier>{c67c8f79-ff38-4cfd-b4ee-00f9c07708be}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="FIles\Connections">
+      <UniqueIdentifier>{ac495aa4-5f0b-4ecf-929c-14618d2a337e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripting">
+      <UniqueIdentifier>{bbb83a6e-ceb2-46d2-9b86-b7dc1fccb6fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scripting\Sync">
+      <UniqueIdentifier>{b1ca5ca0-6eac-4c65-81ab-17a83e78df54}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils">
+      <UniqueIdentifier>{c4e12165-364d-41c8-897f-1179e9a5168e}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source.cpp">
+      <Filter>FIles</Filter>
+    </ClCompile>
+    <ClCompile Include="Connections.cpp">
+      <Filter>FIles\Connections</Filter>
+    </ClCompile>
+    <ClCompile Include="Events.cpp">
+      <Filter>FIles\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="Sync.cpp">
+      <Filter>Scripting\Sync</Filter>
+    </ClCompile>
+    <ClCompile Include="List.cpp">
+      <Filter>FIles\Events</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Header.h">
+      <Filter>FIles</Filter>
+    </ClInclude>
+    <ClInclude Include="Connections.h">
+      <Filter>FIles\Connections</Filter>
+    </ClInclude>
+    <ClInclude Include="Events.h">
+      <Filter>FIles\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="Sync.h">
+      <Filter>Scripting\Sync</Filter>
+    </ClInclude>
+    <ClInclude Include="List.h">
+      <Filter>FIles\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="DataHolder.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

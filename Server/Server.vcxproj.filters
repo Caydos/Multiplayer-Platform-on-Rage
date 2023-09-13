@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Files">
+      <UniqueIdentifier>{ca2d40dc-b161-4a89-9645-318230d98bbc}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Files\Events">
+      <UniqueIdentifier>{b3fe9b2a-fb2a-422f-bc0e-ff1680d2e718}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Files\Events\SyncTree">
+      <UniqueIdentifier>{8cf94343-4857-4d81-8b24-020e61fe22f7}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source.cpp">
+      <Filter>Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Players.cpp">
+      <Filter>Files</Filter>
+    </ClCompile>
+    <ClCompile Include="SyncTree.cpp">
+      <Filter>Files\Events\SyncTree</Filter>
+    </ClCompile>
+    <ClCompile Include="Events.cpp">
+      <Filter>Files\Events</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Header.h" />
+    <ClInclude Include="SyncTree.h">
+      <Filter>Files\Events\SyncTree</Filter>
+    </ClInclude>
+    <ClInclude Include="Events.h">
+      <Filter>Files\Events</Filter>
+    </ClInclude>
+    <ClInclude Include="Listing.h">
+      <Filter>Files\Events</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

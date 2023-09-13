@@ -1,0 +1,40 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="Source.cpp" />
+    <ClCompile Include="File Explorer.cpp">
+      <Filter>Utils\File Explorer</Filter>
+    </ClCompile>
+    <ClCompile Include="Logger.cpp">
+      <Filter>Utils\Logger</Filter>
+    </ClCompile>
+    <ClCompile Include="Injector.cpp">
+      <Filter>Utils\Injector</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Utils">
+      <UniqueIdentifier>{300ce4e3-3aae-44a5-aa2c-d4dcbd14dd14}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils\Logger">
+      <UniqueIdentifier>{9703b3e8-1d37-474c-894a-6b0a8645e94e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils\File Explorer">
+      <UniqueIdentifier>{cd710372-67d1-44eb-bcc6-1e85ffe993e9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils\Injector">
+      <UniqueIdentifier>{b63db5b0-0b1d-4382-aae3-8c324b2aa4d3}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="File Explorer.h">
+      <Filter>Utils\File Explorer</Filter>
+    </ClInclude>
+    <ClInclude Include="Logger.h">
+      <Filter>Utils\Logger</Filter>
+    </ClInclude>
+    <ClInclude Include="Injector.h">
+      <Filter>Utils\Injector</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
