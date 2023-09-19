@@ -13,6 +13,7 @@ namespace Connections
 
 	void Remove(int connectionId);
 	void Lost(int socketfd);
+	void Kick(int socketfd, const char* _reason);
 
 	void SendData(int connectionId, char* _buffer);
 }

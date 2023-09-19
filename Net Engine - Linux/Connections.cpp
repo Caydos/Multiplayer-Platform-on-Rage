@@ -15,6 +15,7 @@ typedef struct
 
 Client List[MAX_CONNECTIONS];
 int ConnectionsCount = 0;
+int historyCount = 0;
 
 void Connections::Detect(int socketfd)
 {
@@ -39,7 +40,7 @@ void Connections::Detect(int socketfd)
 
 void Connections::Accept(int socketfd)
 {
-	List[ConnectionsCount].id = ConnectionsCount;
+	List[ConnectionsCount].id = historyCount;
 	List[ConnectionsCount].alive = true;
 	List[ConnectionsCount].socket = socketfd;
 
@@ -48,6 +49,7 @@ void Connections::Accept(int socketfd)
 
 	printf("New connection with id : %d\n", ConnectionsCount);
 	ConnectionsCount++;
+	historyCount++;
 
 }
 
@@ -70,21 +72,35 @@ void Connections::Lost(int socketfd)
 	bool foundSocket = false;
 	for (int i = 0; i < ConnectionsCount; i++)
 	{
-		if (foundSocket)
-		{
-			std::memcpy(&List[i - 1], &List[i], sizeof(Client));
-		}
 		if (List[i].socket == socketfd)
 		{
-			printf("Connection lost with connection %d\n", i);
+			std::cout << "Connection lost with : " << i << std::endl;
 			foundSocket = true;
+		}
+		if (foundSocket)
+		{
+			std::memcpy(&List[i], &List[i + 1], sizeof(Client));
 		}
 	}
 	ConnectionsCount--;
-	if (ConnectionsCount > 0)
+}
+
+void Connections::Kick(int socketfd, const char* _reason)
+{
+	bool foundSocket = false;
+	for (int i = 0; i < ConnectionsCount; i++)
 	{
-		List[ConnectionsCount - 1] = {};
+		if (List[i].socket == socketfd)
+		{
+			std::cout << "Kick : " << i << " , reason :" << _reason << std::endl;
+			foundSocket = true;
+		}
+		if (foundSocket)
+		{
+			std::memcpy(&List[i], &List[i + 1], sizeof(Client));
+		}
 	}
+	ConnectionsCount--;
 }
 
 void Connections::SendData(int connectionId, char* _buffer)
@@ -93,7 +109,7 @@ void Connections::SendData(int connectionId, char* _buffer)
 	{
 		if (connectionId == -1 || List[i].id == connectionId)
 		{
-			printf("Triggering to %d : %s\n", List[i].id, _buffer);
+			//printf("Triggering to %d : %s\n", List[i].id, _buffer);
 			write(List[i].socket, _buffer, strlen(_buffer));
 		}
 	}

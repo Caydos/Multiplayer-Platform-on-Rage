@@ -5,7 +5,6 @@ class Thread
 {
 public:
 	static void ConsoleCommands();
-	static void ServerPackages();
 };
 
 

@@ -14,7 +14,7 @@ void Way_01(void)
 		TriggerServerEvent("Way_01", name, pCoords.x, pCoords.y, pCoords.z);
 
 		
-		Fibers::Suspend(500);
+		Fibers::Suspend(3000);
 	}
 }
 

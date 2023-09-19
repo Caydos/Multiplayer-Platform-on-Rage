@@ -1,12 +1,24 @@
-#ifndef EVENTS_H
+ï»¿#ifndef EVENTS_H
 #define EVENTS_H
 #include <typeinfo>
 #include <string.h>
 #include <sstream>
+const char END_CHARACTER = 'Â§';
+const char SEPARATOR_CHARACTER = 'Âµ';
+namespace Events
+{
+	void Listener(int socketfd);
+	void Unserialize(char* buffer);
+	void Register(const char* _name, void (*function)(char** _args));
+
+	void* AddWaiting(const char* array);
+	void RemoveWaiting(unsigned int index);
+	void Fiber(void);
+}
 
 void CreateEvents(void);
-void UnserializeEvent(char* _buffer);
 
+#pragma region Triggers
 
 class EventSv
 {
@@ -35,13 +47,13 @@ public:
 
 		buffer = newBuffer;
 		//std::cout << argStr << ' ' << oldBufferSize << std::endl;
-	
+
 		for (int i = 0; i < argLength; i++)
 		{
 			buffer[oldBufferSize + i] = argStr[i];
 		}
-		buffer[bufferSize - 2] = 'µ'; // Null-terminate the string
-		buffer[bufferSize-1] = '\0'; // Null-terminate the string
+		buffer[bufferSize - 2] = SEPARATOR_CHARACTER; // Null-terminate the string
+		buffer[bufferSize - 1] = '\0'; // Null-terminate the string
 		//printf("%s\n", buffer);
 	}
 };
@@ -58,24 +70,20 @@ void TriggerServerEvent(Name _name, Arg..._args)
 	evtSv.bufferSize = strlen(targetString) + 2;
 	evtSv.buffer = new char[evtSv.bufferSize];
 	strcpy(evtSv.buffer, targetString);
-	evtSv.buffer[evtSv.bufferSize - 2] = 'µ';
+	evtSv.buffer[evtSv.bufferSize - 2] = SEPARATOR_CHARACTER;
 
 	((evtSv.SerializeArg(_args)), ...);
-	evtSv.buffer[evtSv.bufferSize-2] = '§';
+	evtSv.buffer[evtSv.bufferSize - 2] = END_CHARACTER;
+	evtSv.buffer[evtSv.bufferSize - 1] = '\0';
 
-	send(clientSocket, evtSv.buffer, evtSv.bufferSize, 0);
+	std::cout << evtSv.buffer << std::endl;
+	send(clientSocket, evtSv.buffer, strlen(evtSv.buffer) + 1, 0);
 	delete[] targetString;
 	delete[] evtSv.buffer;
 	evtSv.buffer = nullptr;
 	evtSv.bufferSize = 0;
 };
+#pragma endregion
 
-
-
-void RegisterClientEvent(const char* _name, void (*function)(void** _args));
-
-
-void* AddWaitingEvent(const char* array);
-void EventFiber();
 #endif // !EVENTS_H
 

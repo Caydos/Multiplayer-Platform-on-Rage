@@ -19,7 +19,8 @@
 
 #define SERVER_PORT 55000
 #define SERVER_IP "162.19.67.68"
-
+const char END_CHARACTER = '§';
+const char SEPARATOR_CHARACTER = 'µ';
 SOCKET clientSocket;
 
 bool InitSocket(void)
@@ -85,7 +86,7 @@ public:
 		{
 			buffer[oldBufferSize + i] = argStr[i];
 		}
-		buffer[bufferSize - 2] = 'µ'; // Null-terminate the string
+		buffer[bufferSize - 2] = SEPARATOR_CHARACTER; // Null-terminate the string
 		buffer[bufferSize - 1] = '\0'; // Null-terminate the string
 		//printf("%s\n", buffer);
 	}
@@ -102,12 +103,13 @@ void TriggerServerEvent(Name _name, Arg..._args)
 	evtSv.bufferSize = strlen(targetString) + 2;
 	evtSv.buffer = new char[evtSv.bufferSize];
 	strcpy(evtSv.buffer, targetString);
-	evtSv.buffer[evtSv.bufferSize - 2] = 'µ';
+	evtSv.buffer[evtSv.bufferSize - 2] = SEPARATOR_CHARACTER;
 
 	((evtSv.SerializeArg(_args)), ...);
-	evtSv.buffer[evtSv.bufferSize - 2] = '§';
+	evtSv.buffer[evtSv.bufferSize - 2] = END_CHARACTER;
+	evtSv.buffer[evtSv.bufferSize - 1] = '\0';
 	printf("%s\n", evtSv.buffer);
-	send(clientSocket, evtSv.buffer, strlen(evtSv.buffer), 0);
+	send(clientSocket, evtSv.buffer, strlen(evtSv.buffer) + 1, 0);
 	delete[] targetString;
 	delete[] evtSv.buffer;
 	evtSv.buffer = nullptr;
@@ -120,7 +122,8 @@ int main()
 	Connect();
 	while (true)
 	{
-		TriggerServerEvent("Damn", "dong", 147.5f, true, "On the hello fluxys", "Baguette", 30360, "Zoinks");
+		//TriggerServerEvent("Damn", "dong", 149.56f, true, "Ta soeur la coquillete", "Zebi", 52, "Cordialement");
+		TriggerServerEvent("PlayerConnection", 1885233650, -424.21f, 1204.52f, 325.75f);
 		Sleep(1000);
 	}
 

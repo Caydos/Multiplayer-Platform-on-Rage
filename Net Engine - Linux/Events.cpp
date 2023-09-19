@@ -32,13 +32,6 @@ public:
 	}
 	void Call(void)
 	{
-		// Lock
-		while (processing == true)
-		{
-			//std::cout << "Waitin room" << std::endl;
-			std::this_thread::sleep_for(std::chrono::milliseconds(10));
-		}
-		processing = true;
 		function(argStack);
 		// Reset
 		if (argStack != nullptr)
@@ -64,9 +57,8 @@ public:
 Event* events = nullptr;
 unsigned int count = 0;
 
-const unsigned int ARRAY_SIZE = 13;
-const char END_CHARACTER = '§';
-const char SEPARATOR_CHARACTER = 'µ';
+const unsigned int ARRAY_SIZE = 1024;
+const unsigned int BUFFER_OVERSIZE = 30000;
 
 void Events::Listener(int socketfd)
 {
@@ -83,7 +75,7 @@ void Events::Listener(int socketfd)
 			Connections::Lost(socketfd);
 			break;
 		}
-		//std::cout << "recv : " << msgBuffer << std::endl;
+		std::cout << "recv : " << msgBuffer << std::endl;
 		void* result = std::memchr(msgBuffer, END_CHARACTER, ARRAY_SIZE);
 		if (result != nullptr)
 		{//Found
@@ -101,18 +93,20 @@ void Events::Listener(int socketfd)
 			std::memcpy(temp + length, msgBuffer, index);
 			eventBuffer = temp;
 			// Trigger;
-			//std::cout << "Event is : " << eventBuffer << std::endl;
+			std::cout << "Event is : " << eventBuffer << std::endl;
 			Events::Unserialize(eventBuffer);
 			delete[] eventBuffer;
 			eventBuffer = nullptr;
 			size = 0;
 			// Copy for the next event
-			if (index < ARRAY_SIZE)
+			if (index < ARRAY_SIZE && msgBuffer[index + 1] != '\0')
 			{
 				char* nextEvt = msgBuffer + index + 1;
 				int nextSize = strlen(nextEvt);
+				std::cout << "Thing is :" << nextEvt << std::endl;
 				if (nextSize > 1)
 				{
+					std::cout << "We got there" << std::endl;
 					eventBuffer = new char[nextSize + 1];
 					std::memcpy(eventBuffer, nextEvt, nextSize);
 					eventBuffer[nextSize] = '\0';
@@ -138,6 +132,12 @@ void Events::Listener(int socketfd)
 				temp[size + ARRAY_SIZE] = '\0';
 				eventBuffer = temp;
 				size += ARRAY_SIZE;
+				if (strlen(eventBuffer) > BUFFER_OVERSIZE)
+				{
+					delete[] eventBuffer;
+					Connections::Kick(socketfd, "Buffer Oversize happened");
+					return;
+				}
 			}
 		}
 		bzero(msgBuffer, sizeof(msgBuffer));
@@ -157,8 +157,8 @@ void Events::Unserialize(char* _buffer)
 		name[index] = '\0';
 
 		//printf("Event name : %s\n", name);
-		unsigned int eventId = -1;
-		for (unsigned int i = 0; i < count; i++)
+		int eventId = -1;
+		for (int i = 0; i < count; i++)
 		{
 			if (strcmp(events[i].name, name) == 0)
 			{
@@ -172,6 +172,14 @@ void Events::Unserialize(char* _buffer)
 			std::cout << "Event not found : " << name << std::endl;
 			return;
 		}
+
+		// Lock
+		while (events[eventId].processing == true)
+		{
+			//std::cout << "Waitin room" << std::endl;
+			std::this_thread::sleep_for(std::chrono::milliseconds(10));
+		}
+		events[eventId].processing = true;
 
 		int lastIndex = index + 1;
 		while (true)
@@ -192,6 +200,7 @@ void Events::Unserialize(char* _buffer)
 			}
 			else
 			{
+				events[eventId].AddArg(nBuffer);
 				break;
 			}
 		}

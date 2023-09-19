@@ -156,6 +156,7 @@
     <ClInclude Include="Pools.h" />
     <ClInclude Include="PSync.h" />
     <ClInclude Include="Process.h" />
+    <ClInclude Include="Reading.h" />
     <ClInclude Include="Scripting.h" />
     <ClInclude Include="ScriptNames.h" />
     <ClInclude Include="Scripts.h" />
@@ -184,8 +185,8 @@
     <ClCompile Include="PedPools.cpp" />
     <ClCompile Include="PSync.cpp" />
     <ClCompile Include="Process.cpp" />
+    <ClCompile Include="Reading.cpp" />
     <ClCompile Include="Scripting.cpp" />
-    <ClCompile Include="ServerData.cpp" />
     <ClCompile Include="Server.cpp" />
     <ClCompile Include="Sync.cpp" />
   </ItemGroup>

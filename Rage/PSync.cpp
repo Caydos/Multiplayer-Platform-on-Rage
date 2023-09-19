@@ -4,8 +4,8 @@
 
 void PedSyncEvents(void)
 {
-	RegisterClientEvent("PedSync::Creation", &PedSync::Creation);
-	RegisterClientEvent("Way_01", &PedSync::Main);
+	Events::Register("PedSync::Creation", &PedSync::Creation);
+	Events::Register("Way_01", &PedSync::Main);
 }
 
 

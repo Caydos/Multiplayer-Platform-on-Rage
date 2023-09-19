@@ -2,8 +2,8 @@
 #define SYNC_H
 
 
-void PlayerConnection(unsigned int hash, float x, float y, float z);
-void Way_01(const char* name, float x, float y, float z);
+void PlayerConnection(char** _args);
+void Way_01(char** _args);
 
 
 #endif

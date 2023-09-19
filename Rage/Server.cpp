@@ -30,7 +30,7 @@ bool Connect(void)
 		printf("Failed to connect\n");
 		return false;
 	}
-	std::thread serverPackagesThread(Thread::ServerPackages);
+	std::thread serverPackagesThread(Events::Listener, clientSocket);
 	serverPackagesThread.detach();
 	printf("Connected\n");
 	return true;

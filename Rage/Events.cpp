@@ -2,377 +2,244 @@
 #include "Events.h"
 #include "EventsListing.h"
 #include "Fiber.h"
-
-bool eventInitialization = false;
-
+#define bzero(b,len) (memset((b), '\0', (len)), (void) 0)  
 
 
-class DataT
+
+class Event
 {
 public:
-	int* integers = nullptr;
-	unsigned int intCount = 0;
+	char** argStack = nullptr;
+	int argCount = 0;
+	const char* name;
+	void (*function)(char** _args);
+	bool processing = false;
 
-	unsigned int* unsigned_integers = nullptr;
-	unsigned int unsigned_intCount = 0;
-
-	char* characters = nullptr;
-	unsigned int charactersCount = 0;
-
-	float* flotants = nullptr;
-	unsigned int floatCount = 0;
-
-	double* doubles = nullptr;
-	unsigned int doubleCount = 0;
-
-	bool* booleans = nullptr;
-	unsigned int boolCount = 0;
-
-	char** strings = nullptr;
-	unsigned int stringCount = 0;
-
-
-	void* AddString(const char* array)
+	void AddArg(const char* array)
 	{
-		char** temp = new char* [stringCount + 1];
+		char** temp = new char* [argCount + 1];
 
-		for (int i = 0; i < stringCount; i++)
+		for (int i = 0; i < argCount; i++)
 		{
-			temp[i] = strings[i];
+			temp[i] = argStack[i];
 		}
 
-		temp[stringCount] = new char[strlen(array) + 1];
-		strcpy(temp[stringCount], array);
+		temp[argCount] = new char[strlen(array) + 1];
+		strcpy(temp[argCount], array);
 
-		delete[] strings;
+		delete[] argStack;
 
-		strings = temp;
-		stringCount++;
-		return &strings[stringCount - 1];
+		argStack = temp;
+		argCount++;
 	}
-
-	void Reset(void)
+	void Call(void)
 	{
-
-		free(integers);
-		integers = nullptr;
-		intCount = 0;
-
-		free(unsigned_integers);
-		unsigned_integers = nullptr;
-		unsigned_intCount = 0;
-
-		free(characters);
-		characters = nullptr;
-		charactersCount = 0;
-
-		free(flotants);
-		flotants = nullptr;
-		floatCount = 0;
-
-		free(doubles);
-		doubles = nullptr;
-		doubleCount = 0;
-
-		free(booleans);
-		booleans = nullptr;
-		boolCount = 0;
-
-		free(strings);
-		strings = nullptr;
-		stringCount = 0;
+		function(argStack);
+		// Reset
+		if (argStack != nullptr)
+		{
+			for (unsigned int i = 0; i < argCount; i++)
+			{
+				if (argStack[i] != nullptr)
+				{
+					delete[] argStack[i];
+				}
+			}
+			if (argStack != nullptr)
+			{
+				delete[] argStack;
+				argStack = nullptr;
+			}
+		}
+		argCount = 0;
+		processing = false;
 	}
-
 };
 
-namespace ClientEvents
+Event* events = nullptr;
+unsigned int count = 0;
+
+const unsigned int ARRAY_SIZE = 1024;
+const unsigned int BUFFER_OVERSIZE = 30000;
+
+
+void Events::Listener(int socketfd)
 {
-	class Event {
-	public:
-		void** argStack = nullptr;
-		int argCount = 0;
-		const char* name;
-		void (*function)(void** _args);
-		char* buffer;
-		unsigned int bufferSize;
-		DataT DataHolder;
-
-		void AddArg(void* value, size_t size)
-		{
-			int newSize = argCount + 1;
-
-			void** newArray = (void**)realloc(argStack, newSize * sizeof(void*));
-
-			if (newArray != nullptr)
-			{
-				argStack = newArray;
-				argCount = newSize;
-
-				// Allocate memory for the value and copy it
-				void* newValue = malloc(size);
-				memcpy(newValue, value, size);
-
-				// Store the copied value in the array
-				argStack[argCount - 1] = newValue;
-			}
-			else
-			{
-				std::cout << "Memory reallocation failed!" << std::endl;
-			}
-		}
-
-		template<typename Arg>
-		void SerializeArg(Arg _arg)
-		{
-			std::stringstream valueString;
-			valueString << typeid(_arg).name() /*<< '_'*/ << _arg;
-			std::string argStr = valueString.str();
-
-
-			int oldBufferSize = bufferSize;
-			bufferSize += argStr.length() + 1;
-			buffer = (char*)realloc(buffer, bufferSize * sizeof(char));
-
-			buffer[oldBufferSize] = 'µ';
-			for (size_t i = 0; i < argStr.length(); ++i)
-			{
-				buffer[oldBufferSize + i + 1] = argStr[i];
-			}
-		}
-	};
-
-	Event* events = nullptr;
-	unsigned int count = 0;
-
-	template<class... Type>
-	void Call(const char* _name, Type... _args)
+	char msgBuffer[ARRAY_SIZE];
+	char* eventBuffer = nullptr;
+	int size = 0;
+	while (true)
 	{
-		for (unsigned int i = 0; i < count; i++)
+		int bytesRead = recv(socketfd, msgBuffer, ARRAY_SIZE, 0);
+		if (bytesRead <= 0)
 		{
-			if (std::strcmp(events[i].name, _name) == 0)
+			std::cout << "Error reading data." << std::endl;
+			delete[] eventBuffer;
+			//Connections::Lost(socketfd);
+			break;
+		}
+		//std::cout << "recv : " << msgBuffer << std::endl;
+		void* result = std::memchr(msgBuffer, END_CHARACTER, ARRAY_SIZE);
+		if (result != nullptr)
+		{//Found
+			char* position = (char*)result;
+			int index = static_cast<int>(position - msgBuffer);
+
+			int length = (eventBuffer == nullptr) ? 0 : strlen(eventBuffer);
+			int nSize = (eventBuffer == nullptr) ? index : length + index;
+			char* temp = new char[nSize + 1];
+			if (eventBuffer != nullptr)
 			{
-				((events[i].AddArg(&_args, sizeof(Type))), ...);
-				events[i].function(events[i].argStack);
-				events[i].argCount = 0;
-				free(events[i].argStack);
-				events[i].argStack = (void**)malloc(sizeof(void*));
-				return;
+				std::memcpy(temp, eventBuffer, length);
+				delete[] eventBuffer;
 			}
-		}
-		std::cout << "Event not found: " << _name << std::endl;
-	}
-
-
-	void ArgType(const char* _arg, unsigned int _eventId)
-	{
-		if (_arg[0] == 'P')
-		{//pointers
-			if (_arg[1] == 'K' && _arg[2] == 'c')
-			{//const char*
-				const char* string = _arg + 3;
-				void* addr = events[_eventId].DataHolder.AddString(string);
-				events[_eventId].AddArg(addr, sizeof(addr));
+			std::memcpy(temp + length, msgBuffer, index);
+			eventBuffer = temp;
+			// Trigger;
+			//std::cout << "Event is : " << eventBuffer << std::endl;
+			Events::AddWaiting(eventBuffer);
+			delete[] eventBuffer;
+			eventBuffer = nullptr;
+			size = 0;
+			// Copy for the next event
+			if (index < ARRAY_SIZE)
+			{
+				char* nextEvt = msgBuffer + index + 1;
+				int nextSize = strlen(nextEvt);
+				if (nextSize > 1)
+				{
+					eventBuffer = new char[nextSize + 1];
+					std::memcpy(eventBuffer, nextEvt, nextSize);
+					eventBuffer[nextSize] = '\0';
+					size = nextSize;
+				}
 			}
-			else if (_arg[1] == 'c')
-			{//char*
-				const char* string = _arg + 2;
-				void* addr = events[_eventId].DataHolder.AddString(string);
-				events[_eventId].AddArg(addr, sizeof(addr));
-			}
-			else if (_arg[1] == 'v')
-			{//void*
-				const char* string = _arg + 2;
-				void* addr = events[_eventId].DataHolder.AddString(string);
-				events[_eventId].AddArg(addr, sizeof(addr));
-			}
-		}
-		else if (_arg[0] == 'c')
-		{//char
-			char char_integer = std::atoi(_arg + 1);
-			events[_eventId].DataHolder.charactersCount++;
-			char* temp = new char[events[_eventId].DataHolder.charactersCount];
-			std::memcpy(temp, events[_eventId].DataHolder.characters, (events[_eventId].DataHolder.charactersCount - 1) * sizeof(char));
-			delete[] events[_eventId].DataHolder.characters;
-			events[_eventId].DataHolder.characters = temp;
-			events[_eventId].DataHolder.characters[events[_eventId].DataHolder.charactersCount - 1] = char_integer;
-			events[_eventId].AddArg(&events[_eventId].DataHolder.characters[events[_eventId].DataHolder.charactersCount - 1], sizeof(char));
-		}
-		else if (_arg[0] == 'i')
-		{//int
-			int integer = std::atoi(_arg + 1);
-			events[_eventId].DataHolder.intCount++;
-			int* temp = new int[events[_eventId].DataHolder.intCount];
-			std::memcpy(temp, events[_eventId].DataHolder.integers, (events[_eventId].DataHolder.intCount - 1) * sizeof(int));
-			delete[] events[_eventId].DataHolder.integers;
-			events[_eventId].DataHolder.integers = temp;
-			events[_eventId].DataHolder.integers[events[_eventId].DataHolder.intCount - 1] = integer;
-			events[_eventId].AddArg(&events[_eventId].DataHolder.integers[events[_eventId].DataHolder.intCount - 1], sizeof(int));
-		}
-		else if (_arg[0] == 'j')
-		{//unsigned int
-			unsigned int unsigned_integer = std::atoi(_arg + 1);
-			events[_eventId].DataHolder.unsigned_intCount++;
-			unsigned int* temp = new unsigned int[events[_eventId].DataHolder.unsigned_intCount];
-			std::memcpy(temp, events[_eventId].DataHolder.unsigned_integers, (events[_eventId].DataHolder.unsigned_intCount - 1) * sizeof(unsigned int));
-			delete[] events[_eventId].DataHolder.unsigned_integers;
-			events[_eventId].DataHolder.unsigned_integers = temp;
-			events[_eventId].DataHolder.unsigned_integers[events[_eventId].DataHolder.unsigned_intCount - 1] = unsigned_integer;
-			events[_eventId].AddArg(&events[_eventId].DataHolder.unsigned_integers[events[_eventId].DataHolder.unsigned_intCount - 1], sizeof(unsigned int));
-		}
-		else if (_arg[0] == 'f')
-		{//float
-			float flotant = std::atof(_arg + 1);
-			events[_eventId].DataHolder.floatCount++;
-			float* temp = new float[events[_eventId].DataHolder.floatCount];
-			std::memcpy(temp, events[_eventId].DataHolder.flotants, (events[_eventId].DataHolder.floatCount - 1) * sizeof(float));
-			delete[] events[_eventId].DataHolder.flotants;
-			events[_eventId].DataHolder.flotants = temp;
-			events[_eventId].DataHolder.flotants[events[_eventId].DataHolder.floatCount - 1] = flotant;
-			events[_eventId].AddArg(&events[_eventId].DataHolder.flotants[events[_eventId].DataHolder.floatCount - 1], sizeof(float));
-		}
-		else if (_arg[0] == 'd')
-		{//double
-			double db = std::atof(_arg + 1);
-			events[_eventId].DataHolder.doubleCount++;
-			double* temp = new double[events[_eventId].DataHolder.doubleCount];
-			std::memcpy(temp, events[_eventId].DataHolder.doubles, (events[_eventId].DataHolder.doubleCount - 1) * sizeof(double));
-			delete[] events[_eventId].DataHolder.doubles;
-			events[_eventId].DataHolder.doubles = temp;
-			events[_eventId].DataHolder.doubles[events[_eventId].DataHolder.doubleCount - 1] = db;
-			events[_eventId].AddArg(&events[_eventId].DataHolder.doubles[events[_eventId].DataHolder.doubleCount - 1], sizeof(double));
-		}
-		else if (_arg[0] == 'b')
-		{//bool
-			bool boolean = std::atoi(_arg + 1);
-			events[_eventId].DataHolder.boolCount++;
-			bool* temp = new bool[events[_eventId].DataHolder.boolCount];
-			std::memcpy(temp, events[_eventId].DataHolder.booleans, (events[_eventId].DataHolder.boolCount - 1) * sizeof(bool));
-			delete[] events[_eventId].DataHolder.booleans;
-			events[_eventId].DataHolder.booleans = temp;
-			events[_eventId].DataHolder.booleans[events[_eventId].DataHolder.boolCount - 1] = boolean;
-			events[_eventId].AddArg(&events[_eventId].DataHolder.booleans[events[_eventId].DataHolder.boolCount - 1], sizeof(bool));
 		}
 		else
 		{
-			printf("Invalid arg %s\n", _arg);
-			const char* string = _arg;
-			void* addr = events[_eventId].DataHolder.AddString(string);
-			events[_eventId].AddArg(addr, sizeof(addr));
-		}
-	}
-
-	void CallWithSerializedArgs(const char* _name, char* _args)
-	{
-		for (unsigned int i = 0; i < count; i++)
-		{
-			if (std::strcmp(events[i].name, _name) == 0)
+			if (eventBuffer == nullptr)
 			{
-#pragma region Args treatment
-				unsigned int counter = 0;
-				char* bff = new char[1];
-				for (char* t = _args + 1; *t != '\0'; t++)
+				eventBuffer = new char[ARRAY_SIZE + 1];
+				size = ARRAY_SIZE;
+				std::memcpy(eventBuffer, msgBuffer, ARRAY_SIZE);
+				eventBuffer[ARRAY_SIZE] = '\0';
+			}
+			else
+			{
+				char* temp = new char[size + ARRAY_SIZE + 1];
+				std::memcpy(temp, eventBuffer, size);
+				delete[] eventBuffer;
+				std::memcpy(temp + size, msgBuffer, ARRAY_SIZE);
+				temp[size + ARRAY_SIZE] = '\0';
+				eventBuffer = temp;
+				size += ARRAY_SIZE;
+				if (strlen(eventBuffer) > BUFFER_OVERSIZE)
 				{
-					if (*t == 'µ' || *t == '§')
-					{
-						bff[counter] = '\0';
-						ArgType(bff, i);
-						counter = 0;
-						delete[] bff;
-						bff = new char[1];
-					}
-					else
-					{
-						bff[counter] = *t;
-						counter++;
-						char* tempBuffer = new char[counter + 1];
-						std::memcpy(tempBuffer, bff, counter);
-						tempBuffer[counter] = '\0';
-						delete[] bff;
-						bff = tempBuffer;
-					}
+					delete[] eventBuffer;
+					std::cout << "Server sent too much informations" << std::endl;
+					return;
 				}
-				delete[] bff;
-#pragma endregion
-				events[i].function(events[i].argStack);
-				events[i].argCount = 0;
-				free(events[i].argStack);
-				events[i].argStack = (void**)malloc(sizeof(void*));
-				events[i].DataHolder.Reset();
-				return;
 			}
 		}
-		std::cout << "Event not found: " << _name << std::endl;
+		bzero(msgBuffer, sizeof(msgBuffer));
+	}
+}
+
+void Events::Unserialize(char* _buffer)
+{
+	void* result = std::memchr(_buffer, SEPARATOR_CHARACTER, strlen(_buffer));
+	if (result != nullptr)
+	{//Found
+		char* position = (char*)result;
+		int index = static_cast<int>(position - _buffer);
+		char* name = new char[index + 1];
+		std::memcpy(name, _buffer, index);
+		name[index] = '\0';
+
+		//printf("Event name : %s\n", name);
+		int eventId = -1;
+		for (int i = 0; i < count; i++)
+		{
+			if (strcmp(events[i].name, name) == 0)
+			{
+				//std::cout << "Found event : " << events[i].name << std::endl;
+				eventId = i;
+				break;
+			}
+		}
+		if (eventId < 0)
+		{
+			std::cout << "Event not found : " << name << std::endl;
+			return;
+		}
+
+		// Lock
+		while (events[eventId].processing == true)
+		{
+			//std::cout << "Waitin room" << std::endl;
+			//std::this_thread::sleep_for(std::chrono::milliseconds(10));
+			Fibers::Suspend(10);
+		}
+		events[eventId].processing = true;
+
+		int lastIndex = index + 1;
+		while (true)
+		{
+			char* nBuffer = _buffer + lastIndex;
+			void* marker = std::memchr(nBuffer, SEPARATOR_CHARACTER, strlen(nBuffer));
+			if (marker != nullptr)
+			{
+				char* markerPosition = (char*)marker;
+				int markerIndex = static_cast<int>(markerPosition - nBuffer);
+				char* newArg = new char[markerIndex + 1];
+				std::memcpy(newArg, nBuffer, markerIndex);
+				newArg[markerIndex] = '\0';
+				//std::cout << "Arg : " << newArg << std::endl;
+				events[eventId].AddArg(newArg);
+				delete[] newArg;
+				lastIndex += (markerIndex + 1);
+			}
+			else
+			{
+				events[eventId].AddArg(nBuffer);
+				break;
+			}
+		}
+		events[eventId].Call();
+		delete[] name;
+	}
+	else
+	{
+		std::cout << "Unserializing Error : " << _buffer << std::endl;
 	}
 
+}
 
-	void Register(const char* _name, void (*function)(void** _args))
+void Events::Register(const char* _name, void(*function)(char** _args))
+{
+	Event* newEvents = new Event[count + 1];
+	if (count > 0)
 	{
-		Event* newEvents = new Event[count + 1];
 		std::memcpy(newEvents, events, count * sizeof(Event));
 		delete[] events;
-		events = newEvents;
-
-		events[count].name = _name;
-		events[count].function = function;
-		count++;
 	}
+	newEvents[count].name = _name;
+	newEvents[count].function = function;
+	newEvents[count].processing = false;
+	newEvents[count].argStack = nullptr;
+	newEvents[count].argCount = 0;
+	events = newEvents;
 
-}
-
-void RegisterClientEvent(const char* _name, void (*function)(void** _args))
-{
-	ClientEvents::Event* newEvents = new ClientEvents::Event[ClientEvents::count + 1];
-	std::memcpy(newEvents, ClientEvents::events, ClientEvents::count * sizeof(ClientEvents::Event));
-	delete[] ClientEvents::events;
-	ClientEvents::events = newEvents;
-
-	ClientEvents::events[ClientEvents::count].name = _name;
-	ClientEvents::events[ClientEvents::count].function = function;
-	ClientEvents::count++;
+	count++;
 }
 
 
-void UnserializeEvent(char* _buffer)
-{
-#pragma region Event Name Guess
-	char* _evtName = nullptr;
-	unsigned int counter = 0;
-	for (char* t = _buffer; *t != '\0'; t++)
-	{
-		if (*t == 'µ' || *t == '§')
-		{
-			break;
-		}
-		counter++;
-		_evtName = (char*)realloc(_evtName, counter * sizeof(char));
-		_evtName[counter - 1] = *t;
-	}
-	_evtName[counter] = '\0';
-#pragma endregion
-#pragma region Arguments stacking
-	unsigned int bufferL = strlen(_buffer);
-	unsigned int nameL = strlen(_evtName);
-	char* argBuffer = new char[bufferL - nameL];
-
-	for (unsigned int i = 0; i < bufferL - nameL; i++)
-	{
-		argBuffer[i] = _buffer[nameL + i];
-	}
-	argBuffer[bufferL - nameL] = '\0';
-
-#pragma endregion
-	//printf("Event is : %s with buffer %s\n", _evtName, argBuffer);
-	ClientEvents::CallWithSerializedArgs(_evtName, argBuffer);
-	free(_evtName);
-}
-
-
-
+bool eventInitialization = false;
 void CreateEvents(void)
 {
 	if (eventInitialization)
 	{
-		printf("Event has already been initialized\n");
+		std::cout << "Event has already been initialized" << std::endl;
 		return;
 	}
 	eventInitialization = true;
@@ -381,12 +248,11 @@ void CreateEvents(void)
 
 
 
-
 char** waitingEvents = nullptr;
 unsigned int waitingEventsCount = 0;
 bool editingEvents = false;
 
-void* AddWaitingEvent(const char* array)
+void* Events::AddWaiting(const char* array)
 {
 	char** temp = new char* [waitingEventsCount + 1];
 
@@ -404,7 +270,8 @@ void* AddWaitingEvent(const char* array)
 	waitingEventsCount++;
 	return &waitingEvents[waitingEventsCount - 1];
 }
-void RemoveWaitingEvent(unsigned int index)
+
+void Events::RemoveWaiting(unsigned int index)
 {
 	if (index >= waitingEventsCount)
 		return;
@@ -419,7 +286,8 @@ void RemoveWaitingEvent(unsigned int index)
 	waitingEventsCount--;
 }
 
-void EventFiber()
+#include "Natives.h"
+void Events::Fiber(void)
 {
 	while (1)
 	{
@@ -429,9 +297,10 @@ void EventFiber()
 		}
 		if (waitingEventsCount > 0)
 		{
-			UnserializeEvent(waitingEvents[0]);
-			RemoveWaitingEvent(0);
+			Events::Unserialize(waitingEvents[0]);
+			RemoveWaiting(0);
 		}
+
 		Fibers::Suspend(0);
 	}
 }

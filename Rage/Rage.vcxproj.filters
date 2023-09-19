@@ -63,6 +63,9 @@
     <Filter Include="Client\Scripting\SyncTree\Entities\Peds\Creation">
       <UniqueIdentifier>{862d1570-490a-4ae4-bde3-a1ad796bf577}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Server\Reading">
+      <UniqueIdentifier>{530c495d-0abc-449b-abb4-59976b496daf}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -134,6 +137,9 @@
     <ClInclude Include="Sync.h">
       <Filter>Client\Scripting\SyncTree</Filter>
     </ClInclude>
+    <ClInclude Include="Reading.h">
+      <Filter>Server\Reading</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -161,9 +167,6 @@
     <ClCompile Include="Commands.cpp">
       <Filter>Common\Threads</Filter>
     </ClCompile>
-    <ClCompile Include="ServerData.cpp">
-      <Filter>Common\Threads</Filter>
-    </ClCompile>
     <ClCompile Include="DefaultFunctions.cpp">
       <Filter>Client\Scripting\Scripts</Filter>
     </ClCompile>
@@ -184,6 +187,9 @@
     </ClCompile>
     <ClCompile Include="Sync.cpp">
       <Filter>Client\Scripting\SyncTree</Filter>
+    </ClCompile>
+    <ClCompile Include="Reading.cpp">
+      <Filter>Server\Reading</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

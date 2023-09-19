@@ -3,7 +3,8 @@
 #include <cstring>
 #include <sstream>
 #include "typeinfo"
-
+const char END_CHARACTER = '§';
+const char SEPARATOR_CHARACTER = 'µ';
 namespace Events
 {
 	void Listener(int socketfd);
@@ -49,7 +50,7 @@ public:
 		{
 			buffer[oldBufferSize + i] = argStr[i];
 		}
-		buffer[bufferSize - 2] = 'µ';
+		buffer[bufferSize - 2] = SEPARATOR_CHARACTER;
 		buffer[bufferSize - 1] = '\0';
 	}
 };
@@ -68,11 +69,11 @@ void TriggerClientEvent(int _target, const char* _name, Arg ..._args)
 	evtcl.bufferSize = strlen(targetString) + 2;
 	evtcl.buffer = new char[evtcl.bufferSize];
 	strcpy(evtcl.buffer, targetString);
-	evtcl.buffer[evtcl.bufferSize - 2] = 'µ';
+	evtcl.buffer[evtcl.bufferSize - 2] = SEPARATOR_CHARACTER;
 
 	((evtcl.SerializeArg(_args)), ...);
-	evtcl.buffer[evtcl.bufferSize - 2] = '§';
-	printf("%s\n", evtcl.buffer);
+	evtcl.buffer[evtcl.bufferSize - 2] = END_CHARACTER;
+	//printf("%s\n", evtcl.buffer);
 	delete[] targetString;
 	Connections::SendData(_target, evtcl.buffer);
 	return;

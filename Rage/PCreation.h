@@ -6,8 +6,8 @@
 
 namespace PedSync
 {
-	void Creation(void** _args);
-	void Main(void** _args);
+	void Creation(char** _args);
+	void Main(char** _args);
 }
 
 

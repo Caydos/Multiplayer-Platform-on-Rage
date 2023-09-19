@@ -19,6 +19,9 @@
     <Filter Include="Utils">
       <UniqueIdentifier>{c4e12165-364d-41c8-897f-1179e9a5168e}</UniqueIdentifier>
     </Filter>
+    <Filter Include="FIles\Reading">
+      <UniqueIdentifier>{b8de2f58-75fc-461f-99c2-da1c43e15eb0}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp">
@@ -35,6 +38,9 @@
     </ClCompile>
     <ClCompile Include="List.cpp">
       <Filter>FIles\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="Reading.cpp">
+      <Filter>FIles\Reading</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -55,6 +61,9 @@
     </ClInclude>
     <ClInclude Include="DataHolder.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="Reading.h">
+      <Filter>FIles\Reading</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
