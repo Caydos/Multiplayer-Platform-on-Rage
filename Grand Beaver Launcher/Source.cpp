@@ -115,6 +115,8 @@ void RunGame(void)
 	InjectDll();
 }
 
+unsigned int dllCount = 2;
+const char* dllNames[] = { "discord_game_sdk","Rage"};
 
 void InjectDll(void)
 {
@@ -134,40 +136,57 @@ void InjectDll(void)
 
 			if (GamePID == ForePID && IsWindowVisible(GameWindow))
 			{
-				char DllPath[MAX_PATH];
-				sprintf_s(DllPath, "%s\\" "Rage.dll", Folder);
-				printf("%s\n", DllPath);
-				int iReturn = Injector::InjectLibraryIntoProcess(GamePID, DllPath);
-				switch (iReturn)
+				for (int i = 0; i < dllCount; i++)
 				{
-				case 0:
-				{
-					printf("Succeffuly injected\n");
-					Started = true;
-					break;
+					const char* extension = ".dll";
+					int folderLength = strlen(Folder);
+					int dllNameLength = strlen(dllNames[i]);
+					int extensionLength = strlen(extension);
+
+					char* dllPath = new char[folderLength + dllNameLength + extensionLength + 2];
+
+					std::memcpy(dllPath, Folder, folderLength);
+					dllPath[folderLength] = '\\';
+					std::memcpy(dllPath + folderLength + 1, dllNames[i], dllNameLength);
+
+					std::memcpy(dllPath + folderLength + dllNameLength + 1, extension, extensionLength);
+					dllPath[folderLength + dllNameLength + extensionLength + 1] = '\0';
+					//char DllPath[MAX_PATH];
+					//sprintf_s(DllPath, "%s\\" "Rage.dll", Folder);
+					std::cout << "Name is :" << dllPath << std::endl;
+					int iReturn = Injector::InjectLibraryIntoProcess(GamePID, dllPath);
+					//switch (iReturn)
+					//{
+					//case 0:
+					//{
+					//	std::cout << dllPath << std::endl;
+					//	Started = true;
+					//}
+					//case 1:
+					//{
+					//	Logger::Fatal("Failed to write library path into remote process.", "Injection");
+					//	break;
+					//}
+					//case 2:
+					//{
+					//	Logger::Fatal("Failed to create remote thread in remote process.", "Injection");
+					//	break;
+					//}
+					//case 3:
+					//{
+					//	Logger::Fatal("Failed to open the remote process.", "Injection");
+					//	break;
+					//}
+					//default:
+					//{
+					//	printf("Succeffuly injected\n");
+					//	Started = true;
+					//}
+					//}
+					std::cout << iReturn << std::endl;
+					delete[] dllPath;
 				}
-				case 1:
-				{
-					Logger::Fatal("Failed to write library path into remote process.", "Injection");
-					break;
-				}
-				case 2:
-				{
-					Logger::Fatal("Failed to create remote thread in remote process.", "Injection");
-					break;
-				}
-				case 3:
-				{
-					Logger::Fatal("Failed to open the remote process.", "Injection");
-					break;
-				}
-				default:
-				{
-					printf("Succeffuly injected\n");
-					Started = true;
-					break;
-				}
-				}
+				break;
 			}
 		}
 		Sleep(500);

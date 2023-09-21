@@ -70,6 +70,14 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <IncludePath>C:\vcpkg\packages\curl_x86-windows\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\vcpkg\packages\curl_x86-windows\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <IncludePath>C:\vcpkg\packages\curl_x86-windows\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\vcpkg\packages\curl_x86-windows\lib;$(LibraryPath)</LibraryPath>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -105,10 +113,12 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -120,16 +130,51 @@
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\Discord\include\achievement_manager.cpp" />
+    <ClCompile Include="..\Discord\include\activity_manager.cpp" />
+    <ClCompile Include="..\Discord\include\application_manager.cpp" />
+    <ClCompile Include="..\Discord\include\core.cpp" />
+    <ClCompile Include="..\Discord\include\image_manager.cpp" />
+    <ClCompile Include="..\Discord\include\lobby_manager.cpp" />
+    <ClCompile Include="..\Discord\include\network_manager.cpp" />
+    <ClCompile Include="..\Discord\include\overlay_manager.cpp" />
+    <ClCompile Include="..\Discord\include\relationship_manager.cpp" />
+    <ClCompile Include="..\Discord\include\storage_manager.cpp" />
+    <ClCompile Include="..\Discord\include\store_manager.cpp" />
+    <ClCompile Include="..\Discord\include\types.cpp" />
+    <ClCompile Include="..\Discord\include\user_manager.cpp" />
+    <ClCompile Include="..\Discord\include\voice_manager.cpp" />
     <ClCompile Include="Source.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\Discord\include\achievement_manager.h" />
+    <ClInclude Include="..\Discord\include\activity_manager.h" />
+    <ClInclude Include="..\Discord\include\application_manager.h" />
+    <ClInclude Include="..\Discord\include\core.h" />
+    <ClInclude Include="..\Discord\include\discord.h" />
+    <ClInclude Include="..\Discord\include\event.h" />
+    <ClInclude Include="..\Discord\include\ffi.h" />
+    <ClInclude Include="..\Discord\include\image_manager.h" />
+    <ClInclude Include="..\Discord\include\lobby_manager.h" />
+    <ClInclude Include="..\Discord\include\network_manager.h" />
+    <ClInclude Include="..\Discord\include\overlay_manager.h" />
+    <ClInclude Include="..\Discord\include\relationship_manager.h" />
+    <ClInclude Include="..\Discord\include\storage_manager.h" />
+    <ClInclude Include="..\Discord\include\store_manager.h" />
+    <ClInclude Include="..\Discord\include\types.h" />
+    <ClInclude Include="..\Discord\include\user_manager.h" />
+    <ClInclude Include="..\Discord\include\voice_manager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

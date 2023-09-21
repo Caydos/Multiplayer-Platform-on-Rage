@@ -9,18 +9,38 @@
 
 fiber g_main_fiber;
 bool IsConnected = false;
+bool loading = true;
 
 void MainScript()
 {
 	while (1)
 	{
-		if (IsConnected)
+		if (!loading)
 		{
 			DefaultFunctions();
 		}
-		if (GetAsyncKeyState(VK_F5) & 0x8000)
+		else
 		{
-			printf("%d\n", ENTITY::GET_ENTITY_HEALTH(PLAYER::PLAYER_PED_ID()));
+			loading = DLC::GET_IS_LOADING_SCREEN_ACTIVE();
+			if (loading)
+			{
+				MISC::SET_INSTANCE_PRIORITY_MODE(1);
+				DLC::ON_ENTER_SP();
+				//Disable Stunt Jumps
+				for (int i = 0; i < 50; i++)
+				{
+					MISC::DISABLE_STUNT_JUMP_SET(i);
+					MISC::DELETE_STUNT_JUMP(i);
+				}
+				//Disable Hospitals
+				//for (int i = 0; i <= 5; i++)
+				//{
+				//	MISC::DISABLE_HOSPITAL_RESTART(i, true);
+				//}
+				// Disable save option
+				MISC::SET_MISSION_FLAG(true);
+
+			}
 		}
 		if (GetAsyncKeyState(VK_F8) & 0x8000)
 		{

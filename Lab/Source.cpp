@@ -118,6 +118,7 @@ void TriggerServerEvent(Name _name, Arg..._args)
 
 int main()
 {
+
 	InitSocket();
 	Connect();
 	while (true)
@@ -129,5 +130,4 @@ int main()
 
 	return 0;
 }
-
 
