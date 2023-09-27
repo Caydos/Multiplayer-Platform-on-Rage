@@ -116,7 +116,7 @@ void RunGame(void)
 }
 
 unsigned int dllCount = 2;
-const char* dllNames[] = { "discord_game_sdk","Rage"};
+const char* dllNames[] = {"discord_game_sdk","Rage"};
 
 void InjectDll(void)
 {

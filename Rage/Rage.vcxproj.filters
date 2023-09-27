@@ -66,6 +66,9 @@
     <Filter Include="Server\Reading">
       <UniqueIdentifier>{530c495d-0abc-449b-abb4-59976b496daf}</UniqueIdentifier>
     </Filter>
+    <Filter Include="API">
+      <UniqueIdentifier>{054cd554-691d-46ce-9dd7-d4e41b667c83}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -140,6 +143,9 @@
     <ClInclude Include="Reading.h">
       <Filter>Server\Reading</Filter>
     </ClInclude>
+    <ClInclude Include="API_Discord.h">
+      <Filter>API</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -190,6 +196,9 @@
     </ClCompile>
     <ClCompile Include="Reading.cpp">
       <Filter>Server\Reading</Filter>
+    </ClCompile>
+    <ClCompile Include="API_Discord.cpp">
+      <Filter>API</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

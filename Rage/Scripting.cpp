@@ -5,7 +5,7 @@
 #include "Scripts.h"
 #include "Events.h"
 #include "Sync.h"
-
+#include "API_Discord.h"
 
 fiber g_main_fiber;
 bool IsConnected = false;
@@ -63,7 +63,7 @@ void MainScript()
 					PED::SET_PED_DEFAULT_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID());
 					PED::RESET_PED_MOVEMENT_CLIPSET(PLAYER::PLAYER_PED_ID(), 0);
 
-					TriggerServerEvent("PlayerConnection", hash, vec.x, vec.y, vec.z);
+					TriggerServerEvent("PlayerConnection", API_Discord::GetUser()._id, hash, vec.x, vec.y, vec.z);
 					SyncFunctions();
 				}
 			}

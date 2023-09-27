@@ -23,7 +23,7 @@ public:
 	void SerializeArg(Arg _arg)
 	{
 		std::stringstream valueString;
-		valueString << typeid(_arg).name() /*<< '_'*/ << _arg;
+		valueString /*<< typeid(_arg).name()*/ /*<< '_'*/ << _arg;
 		std::string argStr = valueString.str();
 
 

@@ -151,6 +151,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="API_Discord.h" />
     <ClInclude Include="Controls.h" />
     <ClInclude Include="CrossMap.h" />
     <ClInclude Include="Events.h" />
@@ -177,6 +178,7 @@
     <ClInclude Include="Vectors.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="API_Discord.cpp" />
     <ClCompile Include="Commands.cpp" />
     <ClCompile Include="DefaultFunctions.cpp" />
     <ClCompile Include="dllmain.cpp" />
