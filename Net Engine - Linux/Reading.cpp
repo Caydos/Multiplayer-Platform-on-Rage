@@ -7,6 +7,12 @@ int ToInt(const char* _array)
 	return std::atoi(_array/* + 2*/);
 }
 
+std::int64_t ToInt64(const char* _array)
+{
+	std::int64_t result = *(int64_t*)_array;
+	return result;
+}
+
 int ToUInt(const char* _array)
 {
 	return std::atoi(_array/* + 2*/);

@@ -8,6 +8,9 @@ typedef struct
 	int socket;
 
 	std::thread eventListener;
+	std::thread::id threadId;
+
+	std::int64_t discordId;
 
 	bool alive;
 	std::thread verifications;
@@ -45,6 +48,7 @@ void Connections::Accept(int socketfd)
 	List[ConnectionsCount].socket = socketfd;
 
 	List[ConnectionsCount].eventListener = std::thread(Events::Listener, socketfd);
+	List[ConnectionsCount].threadId = List[ConnectionsCount].eventListener.get_id();
 	List[ConnectionsCount].eventListener.detach();
 
 	printf("New connection with id : %d\n", ConnectionsCount);
@@ -105,12 +109,68 @@ void Connections::Kick(int socketfd, const char* _reason)
 
 void Connections::SendData(int connectionId, char* _buffer)
 {
+	if (connectionId != -2)
+	{
+		for (unsigned int i = 0; i < ConnectionsCount; i++)
+		{
+			if (connectionId == -1 || List[i].id == connectionId)
+			{
+				//printf("Triggering to %d : %s\n", List[i].id, _buffer);
+				write(List[i].socket, _buffer, strlen(_buffer));
+			}
+		}
+	}
+	else
+	{
+		std::thread::id currentThreadId = std::this_thread::get_id();
+		bool found = false;
+		for (unsigned int i = 0; i < ConnectionsCount; i++)
+		{
+			std::cout << i << " " << ConnectionsCount << std::endl;
+			if (!found)
+			{
+				if (List[i].threadId == currentThreadId)
+				{
+					found = true;
+					std::cout << "found him " << i << std::endl;
+				}
+				else
+				{
+					std::cout << "Trigger to " << i << " " << List[i].threadId << " " << currentThreadId << std::endl;
+					write(List[i].socket, _buffer, strlen(_buffer));
+				}
+			}
+			else
+			{
+				std::cout << "Trigger to " << i << " " << List[i].threadId << " " << currentThreadId << std::endl;
+				write(List[i].socket, _buffer, strlen(_buffer));
+			}
+		}
+	}
+}
+
+std::int64_t Connections::GetDiscordId(void)
+{
+	std::thread::id currentThreadId = std::this_thread::get_id();
+
 	for (unsigned int i = 0; i < ConnectionsCount; i++)
 	{
-		if (connectionId == -1 || List[i].id == connectionId)
+		if (List[i].threadId == currentThreadId)
 		{
-			//printf("Triggering to %d : %s\n", List[i].id, _buffer);
-			write(List[i].socket, _buffer, strlen(_buffer));
+			return List[i].discordId;
+		}
+	}
+}
+
+void Connections::SetDiscordId(std::int64_t _id)
+{
+	std::thread::id currentThreadId = std::this_thread::get_id();
+
+	for (unsigned int i = 0; i < ConnectionsCount; i++)
+	{
+		if (List[i].threadId == currentThreadId)
+		{
+			List[i].discordId = _id;
 		}
 	}
 }

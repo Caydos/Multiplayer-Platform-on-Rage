@@ -16,7 +16,7 @@ size_t scan_length;
 
 extern SOCKET clientSocket;
 
-
+User userDiscord;
 
 BOOL APIENTRY DllMain( HMODULE hModule,
                        DWORD  ul_reason_for_call,

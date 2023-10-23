@@ -10,7 +10,7 @@ namespace SyncPools
 	{
 	private:
 		unsigned int count = 0;
-		Pedestrian* peds = nullptr;
+		SyncPed* peds = nullptr;
 	public:
 		void Add(Ped);
 		void Remove(Ped);

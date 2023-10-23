@@ -64,6 +64,7 @@ void MainScript()
 					PED::RESET_PED_MOVEMENT_CLIPSET(PLAYER::PLAYER_PED_ID(), 0);
 
 					TriggerServerEvent("PlayerConnection", API_Discord::GetUser()._id, hash, vec.x, vec.y, vec.z);
+					std::cout << "connecting" << std::endl;
 					SyncFunctions();
 				}
 			}

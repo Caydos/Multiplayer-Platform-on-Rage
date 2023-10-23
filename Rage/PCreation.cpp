@@ -18,16 +18,17 @@ void PedSync::Creation(char** _args)
 	Ped ped = PED::CREATE_PED(1, hash, position, ENTITY::GET_ENTITY_HEADING(PLAYER::PLAYER_PED_ID()), true, false);
 	STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(hash);
 	TASK::TASK_SET_BLOCKING_OF_NON_TEMPORARY_EVENTS(ped, true);
-
+	std::cout << "sync ped \n";
 	SyncFunctions();
 }
 
 void PedSync::Main(char** _args)
-{
-	const char* name = ToString(_args[0]);
-	float x = ToFloat(_args[1]);
-	float y = ToFloat(_args[2]);
-	float z = ToFloat(_args[3]);
+{// peds array as arg
+
+	//const char* name = ToString(_args[0]);
+	//float x = ToFloat(_args[1]);
+	//float y = ToFloat(_args[2]);
+	//float z = ToFloat(_args[3]);
 
 	//printf("%s - New vector : %f %f %f\n", name, x, y, z);
 }

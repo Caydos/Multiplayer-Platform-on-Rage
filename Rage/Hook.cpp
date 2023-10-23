@@ -61,7 +61,7 @@ void Hook::Initialize()
 	DWORD og_protect;
 
 
-	ptr = ScanPattern(scan_base, scan_length, "\x48\x89\x03\xE8\x00\x00\x00\x00\x48\x8B\xC3\x48\x83\xC4\x20\x5B\xC3\x90\x73", "xxxx????xxxxxxxxxxx");
+	ptr = ScanPattern(scan_base, scan_length, "\x48\x89\x03\xE8\x00\x00\x00\x00\x48\x8B\xC3\x48\x83\xC4\x20\x5B\xC3\xCC\xED", "xxxx????xxxxxxxxxxx");
 
 	if (!ptr)
 	{

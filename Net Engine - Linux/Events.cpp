@@ -75,7 +75,7 @@ void Events::Listener(int socketfd)
 			Connections::Lost(socketfd);
 			break;
 		}
-		std::cout << "recv : " << msgBuffer << std::endl;
+		//std::cout << "recv : " << msgBuffer << std::endl;
 		void* result = std::memchr(msgBuffer, END_CHARACTER, ARRAY_SIZE);
 		if (result != nullptr)
 		{//Found
@@ -93,7 +93,7 @@ void Events::Listener(int socketfd)
 			std::memcpy(temp + length, msgBuffer, index);
 			eventBuffer = temp;
 			// Trigger;
-			std::cout << "Event is : " << eventBuffer << std::endl;
+			//std::cout << "Event is : " << eventBuffer << std::endl;
 			Events::Unserialize(eventBuffer);
 			delete[] eventBuffer;
 			eventBuffer = nullptr;
@@ -103,10 +103,10 @@ void Events::Listener(int socketfd)
 			{
 				char* nextEvt = msgBuffer + index + 1;
 				int nextSize = strlen(nextEvt);
-				std::cout << "Thing is :" << nextEvt << std::endl;
+				//std::cout << "Thing is :" << nextEvt << std::endl;
 				if (nextSize > 1)
 				{
-					std::cout << "We got there" << std::endl;
+					//std::cout << "We got there" << std::endl;
 					eventBuffer = new char[nextSize + 1];
 					std::memcpy(eventBuffer, nextEvt, nextSize);
 					eventBuffer[nextSize] = '\0';

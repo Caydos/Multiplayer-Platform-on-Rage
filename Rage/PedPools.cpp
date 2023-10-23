@@ -9,7 +9,7 @@
 void SyncPools::Peds::Add(Ped _id)
 {
 	count++;
-	Pedestrian* table = new Pedestrian[count];
+	SyncPed* table = new SyncPed[count];
 	delete[] peds;
 	peds = table;
 	peds[count - 1].Identifier = _id;

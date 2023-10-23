@@ -141,40 +141,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\Discord\include\achievement_manager.cpp" />
-    <ClCompile Include="..\Discord\include\activity_manager.cpp" />
-    <ClCompile Include="..\Discord\include\application_manager.cpp" />
-    <ClCompile Include="..\Discord\include\core.cpp" />
-    <ClCompile Include="..\Discord\include\image_manager.cpp" />
-    <ClCompile Include="..\Discord\include\lobby_manager.cpp" />
-    <ClCompile Include="..\Discord\include\network_manager.cpp" />
-    <ClCompile Include="..\Discord\include\overlay_manager.cpp" />
-    <ClCompile Include="..\Discord\include\relationship_manager.cpp" />
-    <ClCompile Include="..\Discord\include\storage_manager.cpp" />
-    <ClCompile Include="..\Discord\include\store_manager.cpp" />
-    <ClCompile Include="..\Discord\include\types.cpp" />
-    <ClCompile Include="..\Discord\include\user_manager.cpp" />
-    <ClCompile Include="..\Discord\include\voice_manager.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Discord\include\achievement_manager.h" />
-    <ClInclude Include="..\Discord\include\activity_manager.h" />
-    <ClInclude Include="..\Discord\include\application_manager.h" />
-    <ClInclude Include="..\Discord\include\core.h" />
-    <ClInclude Include="..\Discord\include\discord.h" />
-    <ClInclude Include="..\Discord\include\event.h" />
-    <ClInclude Include="..\Discord\include\ffi.h" />
-    <ClInclude Include="..\Discord\include\image_manager.h" />
-    <ClInclude Include="..\Discord\include\lobby_manager.h" />
-    <ClInclude Include="..\Discord\include\network_manager.h" />
-    <ClInclude Include="..\Discord\include\overlay_manager.h" />
-    <ClInclude Include="..\Discord\include\relationship_manager.h" />
-    <ClInclude Include="..\Discord\include\storage_manager.h" />
-    <ClInclude Include="..\Discord\include\store_manager.h" />
-    <ClInclude Include="..\Discord\include\types.h" />
-    <ClInclude Include="..\Discord\include\user_manager.h" />
-    <ClInclude Include="..\Discord\include\voice_manager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

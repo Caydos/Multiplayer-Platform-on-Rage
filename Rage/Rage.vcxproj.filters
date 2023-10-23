@@ -60,14 +60,14 @@
     <Filter Include="Client\Scripting\SyncTree\Entities\Peds">
       <UniqueIdentifier>{80cbb3eb-76fb-4b9a-a0b2-efdb769ec3e1}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Client\Scripting\SyncTree\Entities\Peds\Creation">
-      <UniqueIdentifier>{862d1570-490a-4ae4-bde3-a1ad796bf577}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Server\Reading">
       <UniqueIdentifier>{530c495d-0abc-449b-abb4-59976b496daf}</UniqueIdentifier>
     </Filter>
     <Filter Include="API">
       <UniqueIdentifier>{054cd554-691d-46ce-9dd7-d4e41b667c83}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Client\Scripting\SyncTree\Entities\Peds\Clones">
+      <UniqueIdentifier>{f55abd88-2bfa-4157-b493-e0dfe03a18f5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -131,9 +131,6 @@
     <ClInclude Include="PSync.h">
       <Filter>Client\Scripting\SyncTree\Entities\Peds</Filter>
     </ClInclude>
-    <ClInclude Include="PCreation.h">
-      <Filter>Client\Scripting\SyncTree\Entities\Peds\Creation</Filter>
-    </ClInclude>
     <ClInclude Include="Pools.h">
       <Filter>Client\Scripting\SyncTree\Pools</Filter>
     </ClInclude>
@@ -145,6 +142,9 @@
     </ClInclude>
     <ClInclude Include="API_Discord.h">
       <Filter>API</Filter>
+    </ClInclude>
+    <ClInclude Include="PCreation.h">
+      <Filter>Client\Scripting\SyncTree\Entities\Peds\Clones</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -185,9 +185,6 @@
     <ClCompile Include="PSync.cpp">
       <Filter>Client\Scripting\SyncTree\Entities\Peds</Filter>
     </ClCompile>
-    <ClCompile Include="PCreation.cpp">
-      <Filter>Client\Scripting\SyncTree\Entities\Peds\Creation</Filter>
-    </ClCompile>
     <ClCompile Include="PedPools.cpp">
       <Filter>Client\Scripting\SyncTree\Pools</Filter>
     </ClCompile>
@@ -199,6 +196,9 @@
     </ClCompile>
     <ClCompile Include="API_Discord.cpp">
       <Filter>API</Filter>
+    </ClCompile>
+    <ClCompile Include="PCreation.cpp">
+      <Filter>Client\Scripting\SyncTree\Entities\Peds\Clones</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

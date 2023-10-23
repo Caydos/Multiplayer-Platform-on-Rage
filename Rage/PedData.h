@@ -8,9 +8,10 @@
 
 
 
-class Pedestrian
+class SyncPed
 {
 public:
+    std::int64_t player;
     Ped Identifier;
     Vector3 Position;
     Vector3 Rotation;

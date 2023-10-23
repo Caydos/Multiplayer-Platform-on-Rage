@@ -62,8 +62,9 @@ namespace Natives
 
 	void Initialize();
 }
-//
-//
+
+
+
 //class Natives
 //{
 //

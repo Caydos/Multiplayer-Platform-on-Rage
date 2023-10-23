@@ -16,6 +16,9 @@ namespace Connections
 	void Kick(int socketfd, const char* _reason);
 
 	void SendData(int connectionId, char* _buffer);
+
+	std::int64_t GetDiscordId(void);
+	void SetDiscordId(std::int64_t _id);
 }
 
 
