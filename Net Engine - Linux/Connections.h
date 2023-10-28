@@ -1,9 +1,24 @@
 #ifndef CONNECTIONS_H
 #define CONNECTIONS_H
 
-
 #define MAX_CONNECTIONS 15
 
+#include "Sync.h"
+#include <thread>
+
+struct Client
+{
+	int id;
+	int socket;
+
+	std::thread eventListener;
+	std::thread::id threadId;
+
+	std::int64_t discordId;
+
+	bool alive;
+	std::thread verifications;
+};
 
 namespace Connections
 {

@@ -1,5 +1,6 @@
 #ifndef READING_H
 #define READING_H
+#include <cstdint>
 
 int ToInt(const char* _array);
 std::int64_t ToInt64(const char* _array);

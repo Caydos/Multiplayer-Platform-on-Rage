@@ -2,20 +2,6 @@
 #include "Connections.h"
 #include "Events.h"
 
-typedef struct
-{
-	int id;
-	int socket;
-
-	std::thread eventListener;
-	std::thread::id threadId;
-
-	std::int64_t discordId;
-
-	bool alive;
-	std::thread verifications;
-} Client;
-
 Client List[MAX_CONNECTIONS];
 int ConnectionsCount = 0;
 int historyCount = 0;
@@ -111,7 +97,7 @@ void Connections::SendData(int connectionId, char* _buffer)
 {
 	if (connectionId != -2)
 	{
-		for (unsigned int i = 0; i < ConnectionsCount; i++)
+		for (int i = 0; i < ConnectionsCount; i++)
 		{
 			if (connectionId == -1 || List[i].id == connectionId)
 			{
@@ -124,7 +110,7 @@ void Connections::SendData(int connectionId, char* _buffer)
 	{
 		std::thread::id currentThreadId = std::this_thread::get_id();
 		bool found = false;
-		for (unsigned int i = 0; i < ConnectionsCount; i++)
+		for (int i = 0; i < ConnectionsCount; i++)
 		{
 			std::cout << i << " " << ConnectionsCount << std::endl;
 			if (!found)
@@ -153,7 +139,7 @@ std::int64_t Connections::GetDiscordId(void)
 {
 	std::thread::id currentThreadId = std::this_thread::get_id();
 
-	for (unsigned int i = 0; i < ConnectionsCount; i++)
+	for (int i = 0; i < ConnectionsCount; i++)
 	{
 		if (List[i].threadId == currentThreadId)
 		{
@@ -166,7 +152,7 @@ void Connections::SetDiscordId(std::int64_t _id)
 {
 	std::thread::id currentThreadId = std::this_thread::get_id();
 
-	for (unsigned int i = 0; i < ConnectionsCount; i++)
+	for (int i = 0; i < ConnectionsCount; i++)
 	{
 		if (List[i].threadId == currentThreadId)
 		{

@@ -14,7 +14,7 @@ void SyncMe(void)
 		NativeVector3 pCoords = ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), false);
 		TriggerServerEvent("SyncMe", id, pCoords.x, pCoords.y, pCoords.z);
 		
-		Fibers::Suspend(3000);
+		Fibers::Suspend(300);
 	}
 }
 

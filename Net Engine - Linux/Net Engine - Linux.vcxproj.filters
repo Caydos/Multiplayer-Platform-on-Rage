@@ -25,6 +25,9 @@
     <Filter Include="Common">
       <UniqueIdentifier>{bfe3279b-a310-4954-af7b-0cb9909a5b81}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Scripting\Sync\Events">
+      <UniqueIdentifier>{ee1b401d-76b4-4f40-813c-88d27cd396e4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp">
@@ -36,7 +39,7 @@
     <ClCompile Include="Events.cpp">
       <Filter>FIles\Events</Filter>
     </ClCompile>
-    <ClCompile Include="Sync.cpp">
+    <ClCompile Include="Entities.cpp">
       <Filter>Scripting\Sync</Filter>
     </ClCompile>
     <ClCompile Include="List.cpp">
@@ -47,6 +50,12 @@
     </ClCompile>
     <ClCompile Include="Vector.cpp">
       <Filter>Common</Filter>
+    </ClCompile>
+    <ClCompile Include="SyncPlayerCU.cpp">
+      <Filter>Scripting\Sync\Events</Filter>
+    </ClCompile>
+    <ClCompile Include="Nodes.cpp">
+      <Filter>Scripting\Sync</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -73,6 +82,9 @@
     </ClInclude>
     <ClInclude Include="Vector.h">
       <Filter>Common</Filter>
+    </ClInclude>
+    <ClInclude Include="SyncEvents.h">
+      <Filter>Scripting\Sync\Events</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

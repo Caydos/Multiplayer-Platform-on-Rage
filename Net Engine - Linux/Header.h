@@ -10,6 +10,9 @@
 #include <unistd.h>
 #include <cstring>
 #include <thread>
+#include <shared_mutex>
 #include <chrono>
+
+#include "Vector.h"
 
 #endif //HEADER_H

@@ -3,43 +3,66 @@
 #include <cstdint>
 #include "Vector.h"
 
-void PlayerConnection(char** _args);
-void SyncMe(char** _args);
 
 #define DEFAULT_NODE_RANGE 300.0f
 namespace Synchronization
 {
-	class Entity
+	namespace Entity
 	{
-	public:
-		int type;
-		int task;
-		Vector3 position;
-		Vector3 rotations;
+		class Entity
+		{
+		public:
+			int serverId;
+			int ownerId;
+			int entId;/*owner local*/
+			bool needsCreation;
+			bool needsDeletion;
 
-		void Update();
-		Entity();
-		~Entity();
-	};
+			int type;
+			int task;
+			Vector3 position;
+			Vector3 rotations;
 
-	class Node
+			void Update();
+			Entity();
+			~Entity();
+		};
+
+		Entity* Add(Entity _entity);
+		void Remove(Entity* _entity);
+	}
+
+
+	namespace Node
 	{
-	public:
-		std::int64_t discordId;
-		float range;
-		Vector3 position;
+		class Node
+		{
+		public:
+			bool upToDate;
+			std::int64_t discordId;
+			float range;
+			Vector3 position;
+			Entity::Entity* owner;
 
-		Entity** entities;
-		unsigned int entityCount;
+			Entity::Entity* entities;/*Needs a copy of each*/
+			unsigned int entityCount;
+			Node** nodes;
+			unsigned int nodeCount;
 
-		void InsertEntity(Entity* _entity);
-		void Refresh(void);
-		Node();
-		~Node();
-	};
+			void InsertEntity(Entity::Entity* _entity);
+			void UpdateEntity(Entity::Entity* _entity, int _entId);
+			void InsertNode(Node* _node);
+			void Refresh(void);
+			Node();
+			~Node();
+		};
 
-	void AddEntity(Entity _entity);
-	void AddNode(std::int64_t _discordId, Vector3 _position);
+		Node* Add(std::int64_t _discordId, Vector3 _position, Entity::Entity* _owner);
+		void Remove(std::uint64_t _discordId);
+		void SendUpdate(std::uint64_t _discordId, Vector3 _position);
+
+		void EntityDistCheck(Entity::Entity* _entity);
+	}
 }
 
 

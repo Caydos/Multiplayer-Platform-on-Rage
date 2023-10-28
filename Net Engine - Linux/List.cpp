@@ -1,8 +1,8 @@
 #include "Header.h"
 #include "List.h"
 #include "Events.h"
-#include "Sync.h"
 #include "Reading.h"
+#include "SyncEvents.h"
 
 void fkt(char** _args)
 {

@@ -78,9 +78,11 @@
     <ClCompile Include="Connections.cpp" />
     <ClCompile Include="Events.cpp" />
     <ClCompile Include="List.cpp" />
+    <ClCompile Include="Nodes.cpp" />
     <ClCompile Include="Reading.cpp" />
     <ClCompile Include="Source.cpp" />
-    <ClCompile Include="Sync.cpp" />
+    <ClCompile Include="Entities.cpp" />
+    <ClCompile Include="SyncPlayerCU.cpp" />
     <ClCompile Include="Vector.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -91,17 +93,24 @@
     <ClInclude Include="List.h" />
     <ClInclude Include="Reading.h" />
     <ClInclude Include="Sync.h" />
+    <ClInclude Include="SyncEvents.h" />
     <ClInclude Include="Vector.h" />
   </ItemGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Link>
       <AdditionalOptions>-pthread %(AdditionalOptions)</AdditionalOptions>
     </Link>
+    <ClCompile>
+      <CppLanguageStandard>c++17</CppLanguageStandard>
+    </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <Link>
       <AdditionalOptions>-pthread %(AdditionalOptions)</AdditionalOptions>
     </Link>
+    <ClCompile>
+      <CppLanguageStandard>c++17</CppLanguageStandard>
+    </ClCompile>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />
