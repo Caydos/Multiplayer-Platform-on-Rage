@@ -32,7 +32,7 @@ void Connections::Detect(int socketfd)
 		int connectionId = accept(socketfd, (struct sockaddr*)&cli_addr, &clilen);
 		if (connectionId < 0)
 		{
-			printf("Failed to accept Connection\n");
+			std::cout << "Failed to accept Connection" << std::endl;
 		}
 		else
 		{
@@ -51,7 +51,7 @@ void Connections::Accept(int socketfd)
 	List[ConnectionsCount].threadId = List[ConnectionsCount].eventListener.get_id();
 	List[ConnectionsCount].eventListener.detach();
 
-	printf("New connection with id : %d\n", ConnectionsCount);
+	std::cout << "New connection with id : " << ConnectionsCount << std::endl;
 	ConnectionsCount++;
 	historyCount++;
 

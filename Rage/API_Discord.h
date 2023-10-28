@@ -4,9 +4,9 @@
 
 struct User
 {
-    const char* _name;
-    const char* _discriminator;
-    std::int64_t _id;
+    const char* name;
+    const char* discriminator;
+    std::int64_t id;
 };
 
 namespace API_Discord

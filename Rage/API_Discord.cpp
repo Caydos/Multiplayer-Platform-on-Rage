@@ -44,11 +44,11 @@ void API_Discord::Check(void)
 
     core->UserManager().OnCurrentUserUpdate.Connect([&state]() {
         state.core->UserManager().GetCurrentUser(&state.currentUser);
-        me._id = state.currentUser.GetId();
-        me._discriminator = state.currentUser.GetDiscriminator();
-        me._name = state.currentUser.GetUsername();
+        me.id = state.currentUser.GetId();
+        me.discriminator = state.currentUser.GetDiscriminator();
+        me.name = state.currentUser.GetUsername();
 
-        std::cout << "Id : " << state.currentUser.GetId() << " Current user updated: " << state.currentUser.GetUsername() << "#" << state.currentUser.GetDiscriminator() << "\n";
+        std::cout << "Id : " << me.id << " Current user updated: " << me.name << "#" << me.discriminator << "\n";
 
 
         });

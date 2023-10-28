@@ -22,6 +22,9 @@
     <Filter Include="FIles\Reading">
       <UniqueIdentifier>{b8de2f58-75fc-461f-99c2-da1c43e15eb0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Common">
+      <UniqueIdentifier>{bfe3279b-a310-4954-af7b-0cb9909a5b81}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp">
@@ -41,6 +44,9 @@
     </ClCompile>
     <ClCompile Include="Reading.cpp">
       <Filter>FIles\Reading</Filter>
+    </ClCompile>
+    <ClCompile Include="Vector.cpp">
+      <Filter>Common</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -64,6 +70,9 @@
     </ClInclude>
     <ClInclude Include="Reading.h">
       <Filter>FIles\Reading</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector.h">
+      <Filter>Common</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

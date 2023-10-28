@@ -81,6 +81,7 @@
     <ClCompile Include="Reading.cpp" />
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="Sync.cpp" />
+    <ClCompile Include="Vector.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Connections.h" />
@@ -90,6 +91,7 @@
     <ClInclude Include="List.h" />
     <ClInclude Include="Reading.h" />
     <ClInclude Include="Sync.h" />
+    <ClInclude Include="Vector.h" />
   </ItemGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Link>

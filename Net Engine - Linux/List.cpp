@@ -28,6 +28,6 @@ void fkt(char** _args)
 void ListEvents(void)
 {
 	Events::Register("PlayerConnection", &PlayerConnection);
-	Events::Register("Way_01", &Way_01);
+	Events::Register("SyncMe", &SyncMe);
 	Events::Register("Damn", &fkt);
 }
