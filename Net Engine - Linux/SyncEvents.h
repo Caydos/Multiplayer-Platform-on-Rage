@@ -5,7 +5,6 @@
 
 
 void PlayerConnection(char** _args);
-void SyncMe(char** _args);
 
 
 #endif // !SYNC_EVENTS_H

@@ -1,7 +1,8 @@
 #include "pch.h"
 #include "Process.h"
 #include "Fiber.h"
-#include "Logger.h"
+#include "Scripting.h"
+
 #include "Scripts.h"
 #include "Events.h"
 #include "Sync.h"
@@ -39,7 +40,6 @@ void MainScript()
 				//}
 				// Disable save option
 				MISC::SET_MISSION_FLAG(true);
-
 			}
 		}
 		if (GetAsyncKeyState(VK_F8) & 0x8000)
@@ -64,8 +64,8 @@ void MainScript()
 					PED::RESET_PED_MOVEMENT_CLIPSET(PLAYER::PLAYER_PED_ID(), 0);
 
 					TriggerServerEvent("PlayerConnection", API_Discord::GetUser().id, hash, vec.x, vec.y, vec.z);
-					std::cout << "Connected" << std::endl;
-					SyncFunctions();
+					std::cout << "Connected to server" << std::endl;
+					Synchronization::Init();
 				}
 			}
 			else
@@ -84,14 +84,16 @@ void MainScript()
 
 
 
-void init_script()
+void Scripting::Init()
 {
 	Fibers::Create("Main Fiber", &MainScript);
 	Fibers::Create("Event Fiber", &Events::Fiber);
 	Natives::Initialize();
 }
 
-void uninit_script()
+void Scripting::Stop()
 {
 	Fibers::Delete();
 }
+
+

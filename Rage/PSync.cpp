@@ -1,11 +1,18 @@
 #include "pch.h"
 #include "PSync.h"
-#include "PCreation.h"
+#include "Scripting.h"
+#include "Reading.h"
+
+void PlayerLanding(char** _args)
+{
+	int playerId = ToInt(_args[0]);
+
+	std::cout << "Player id is : " << playerId << std::endl;
+}
 
 void PedSyncEvents(void)
 {
-	Events::Register("PedSync::Creation", &PedSync::Creation);
-	Events::Register("SyncMe", &PedSync::Main);
+	Events::Register("PlayerLanding", &PlayerLanding);
 }
 
 

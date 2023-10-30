@@ -75,6 +75,8 @@
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
   <ItemGroup>
+    <ClCompile Include="..\XML\Parser.cpp" />
+    <ClCompile Include="..\XML\Serializer.cpp" />
     <ClCompile Include="Connections.cpp" />
     <ClCompile Include="Events.cpp" />
     <ClCompile Include="List.cpp" />
@@ -86,6 +88,7 @@
     <ClCompile Include="Vector.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\XML\XML.h" />
     <ClInclude Include="Connections.h" />
     <ClInclude Include="DataHolder.h" />
     <ClInclude Include="Events.h" />

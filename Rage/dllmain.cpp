@@ -47,7 +47,7 @@ BOOL APIENTRY DllMain( HMODULE hModule,
         scan_base = (char*)exe_hmod;
         scan_length = exe_nt_header->OptionalHeader.SizeOfImage;
         CreateEvents();
-        init_script();
+        Scripting::Init();
         Hook::Initialize();
         
         std::thread dsc(API_Discord::Check);
@@ -71,7 +71,7 @@ DWORD WINAPI unload_thread(LPVOID lpThreadParameter)
 {
     CloseHandle(g_uninject_thread);
 
-    uninit_script();
+    Scripting::Stop();
 
     FreeLibraryAndExitThread(g_hmod, 0);
 }

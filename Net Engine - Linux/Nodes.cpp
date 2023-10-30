@@ -14,11 +14,9 @@ int nodeCount = 0;
 #pragma region Constructors / Destructors
 Node::Node::Node()
 {
-	this->upToDate = false;
-	this->discordId = 0;
+	this->serverId = 0;
 	this->range = DEFAULT_NODE_RANGE;
 	this->position = Vector3(0, 0, 0);
-	this->owner = nullptr;
 	this->entities = nullptr;
 	this->entityCount = 0;
 	this->nodes = nullptr;
@@ -29,30 +27,27 @@ Node::Node::~Node()
 	if (this->entities != nullptr)
 	{
 		delete[] this->entities;
+		this->entities = nullptr;
 	}
 	if (this->nodes != nullptr)
 	{
 		delete[] this->nodes;
+		this->nodes = nullptr;
 	}
 }
 #pragma endregion
 
 #pragma region NodeClass
 
-Node::Node* Node::Add(std::int64_t _discordId, Vector3 _position, Entity::Entity* _owner)
+void Node::Add(int _serverId, Vector3 _position, Entity::Entity* _owner)
 {
 	std::unique_lock<std::shared_mutex> lock(shNodeMtx);
 
-	Node* node = new Node;
-	node->upToDate = true;
-	node->discordId = _discordId;
-	node->position = _position;
-	node->owner = _owner;
-	
-	nodes[nodeCount] = node;
-	nodeCount++;
+	nodes[nodeCount] = new Node;
+	nodes[nodeCount]->serverId = _serverId;
+	nodes[nodeCount]->position = _position;
 
-	return nodes[nodeCount];
+	nodeCount++;
 }
 
 void Node::Node::InsertEntity(Entity::Entity* _entity)
@@ -70,7 +65,7 @@ void Node::Node::InsertEntity(Entity::Entity* _entity)
 		entities = new Entity::Entity[1];
 	}
 	std::memcpy(&entities[entityCount], _entity, sizeof(_entity));
-	entities[entityCount].needsCreation = true;
+	std::cout << "[Insertion] - Entity position x : " << entities[entityCount].position.x << std::endl;
 	entityCount++;
 }
 
@@ -101,15 +96,20 @@ void Node::Node::InsertNode(Node* _node)
 
 void Node::Node::Refresh(void)
 {
-	entityCount = 0;
-	if (entities != nullptr)
+	std::shared_lock<std::shared_mutex> lock(shNodeMtx);
+	std::cout << this->entityCount << " entities in node" << std::endl;
+	this->entityCount = 0;
+	if (this->entities != nullptr)
 	{
-		delete[]entities;
+		delete[] this->entities;
+		this->entities = nullptr;
 	}
 	nodeCount = 0;
-	if (nodes != nullptr)
+	if (this->nodes != nullptr)
 	{
-		delete[]nodes;
+		std::cout << "Deleting something it shoudln't" << std::endl;
+		delete[] this->nodes;
+		this->nodes = nullptr;
 	}
 }
 
@@ -117,13 +117,13 @@ void Node::Node::Refresh(void)
 
 
 
-void Node::Remove(std::uint64_t _discordId)
+void Node::Remove(int _serverId)
 {
 	std::unique_lock<std::shared_mutex> lock(shNodeMtx);
 	bool foundNode = false;
 	for (size_t nodeId = 0; nodeId < nodeCount; nodeId++)
 	{
-		if (nodes[nodeId]->discordId == _discordId)
+		if (nodes[nodeId]->serverId == _serverId)
 		{
 			delete nodes[nodeId];
 			foundNode = true;
@@ -137,15 +137,16 @@ void Node::Remove(std::uint64_t _discordId)
 	nodeCount--;
 }
 
-void Node::SendUpdate(std::uint64_t _discordId, Vector3 _position)
+// Update node owner position & send it's entity to other nodes
+void Node::SendUpdate(int _serverId, Vector3 _position)
 {
 	std::shared_lock<std::shared_mutex> lock(shNodeMtx);
 	for (size_t nodeId = 0; nodeId < nodeCount; nodeId++)
 	{
-		if (nodes[nodeId]->discordId == _discordId)
+		if (nodes[nodeId]->serverId == _serverId)/*not my entity*/
 		{
 			nodes[nodeId]->position = _position;
-			//std::cout << "Position up to date" << std::endl;
+			nodes[nodeId]->Refresh();
 		}
 	}
 }
@@ -156,24 +157,24 @@ void Node::EntityDistCheck(Entity::Entity* _entity)
 	std::shared_lock<std::shared_mutex> lock(shNodeMtx);
 	for (size_t nodeId = 0; nodeId < nodeCount; nodeId++)
 	{
-		if (nodes[nodeId]->upToDate)
+		float distance = Vdist(nodes[nodeId]->position, _entity->position);
+		if (distance <= nodes[nodeId]->range)
 		{
-			float distance = Vdist(nodes[nodeId]->position, _entity->position);
-			if (distance <= nodes[nodeId]->range)
+			_entity->nodeCount++;
+			bool updated = false;
+			for (size_t entityId = 0; entityId < nodes[nodeId]->entityCount; entityId++)
 			{
-				bool updated = false;
-				for (size_t entityId = 0; entityId < nodes[nodeId]->entityCount; entityId++)
+				if (nodes[nodeId]->entities[entityId].serverId == _entity->serverId)
 				{
-					if (nodes[nodeId]->entities[entityId].serverId == _entity->serverId)
-					{
-						updated = true;
-						nodes[nodeId]->UpdateEntity(_entity, entityId);
-					}
+					updated = true;
+					std::cout << "updating into a node" << std::endl;
+					nodes[nodeId]->UpdateEntity(_entity, entityId);
 				}
-				if (!updated)
-				{
-					nodes[nodeId]->InsertEntity(_entity);
-				}
+			}
+			if (!updated)
+			{
+				std::cout << "inserting into a node" << std::endl;
+				nodes[nodeId]->InsertEntity(_entity);
 			}
 		}
 	}

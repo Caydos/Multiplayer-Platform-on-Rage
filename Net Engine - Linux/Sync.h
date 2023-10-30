@@ -1,8 +1,8 @@
 #ifndef SYNC_H
 #define SYNC_H
 #include <cstdint>
+#include <shared_mutex>
 #include "Vector.h"
-
 
 #define DEFAULT_NODE_RANGE 300.0f
 namespace Synchronization
@@ -12,24 +12,24 @@ namespace Synchronization
 		class Entity
 		{
 		public:
-			int serverId;
-			int ownerId;
-			int entId;/*owner local*/
-			bool needsCreation;
-			bool needsDeletion;
+			std::shared_mutex shEntMtx;
+			int ownerServerId;/*person who has control*/
+			int serverId;/*server local*/
+			int nodeCount;/*nb of nodes it's in*/
 
 			int type;
 			int task;
 			Vector3 position;
 			Vector3 rotations;
 
-			void Update();
+			void NodeInsertion(void);
+
 			Entity();
 			~Entity();
 		};
 
-		Entity* Add(Entity _entity);
-		void Remove(Entity* _entity);
+		void Add(Entity* _entity);
+		void Remove(int serverId);
 	}
 
 
@@ -38,11 +38,9 @@ namespace Synchronization
 		class Node
 		{
 		public:
-			bool upToDate;
-			std::int64_t discordId;
+			int serverId;
 			float range;
 			Vector3 position;
-			Entity::Entity* owner;
 
 			Entity::Entity* entities;/*Needs a copy of each*/
 			unsigned int entityCount;
@@ -57,12 +55,14 @@ namespace Synchronization
 			~Node();
 		};
 
-		Node* Add(std::int64_t _discordId, Vector3 _position, Entity::Entity* _owner);
-		void Remove(std::uint64_t _discordId);
-		void SendUpdate(std::uint64_t _discordId, Vector3 _position);
+		void Add(int _serverId, Vector3 _position, Entity::Entity* _owner);
+		void Remove(int _serverId);
+		void SendUpdate(int _serverId, Vector3 _position);
 
 		void EntityDistCheck(Entity::Entity* _entity);
+
 	}
+	void MainEvent(char** _args);
 }
 
 

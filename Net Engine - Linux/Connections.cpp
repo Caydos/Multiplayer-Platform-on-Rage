@@ -2,9 +2,9 @@
 #include "Connections.h"
 #include "Events.h"
 
-Client List[MAX_CONNECTIONS];
-int ConnectionsCount = 0;
-int historyCount = 0;
+std::shared_mutex shConnexionMtx;
+Client clients[MAX_CONNECTIONS];
+int connectionsCount = 0;
 
 void Connections::Detect(int socketfd)
 {
@@ -27,82 +27,78 @@ void Connections::Detect(int socketfd)
 	}
 }
 
-void Connections::Accept(int socketfd)
+void Connections::Accept(int _socketfd)
 {
-	List[ConnectionsCount].id = historyCount;
-	List[ConnectionsCount].alive = true;
-	List[ConnectionsCount].socket = socketfd;
+	clients[connectionsCount].id = connectionsCount;
+	clients[connectionsCount].alive = true;
+	clients[connectionsCount].socket = _socketfd;
 
-	List[ConnectionsCount].eventListener = std::thread(Events::Listener, socketfd);
-	List[ConnectionsCount].threadId = List[ConnectionsCount].eventListener.get_id();
-	List[ConnectionsCount].eventListener.detach();
+	clients[connectionsCount].eventListener = std::thread(Events::Listener, _socketfd);
+	clients[connectionsCount].threadId = clients[connectionsCount].eventListener.get_id();
+	clients[connectionsCount].eventListener.detach();
 
-	std::cout << "New connection with id : " << ConnectionsCount << std::endl;
-	ConnectionsCount++;
-	historyCount++;
+	std::cout << "New connection with id : " << connectionsCount << std::endl;
+	connectionsCount++;
+}
+
+void Connections::Reject(int _socketfd)
+{
 
 }
 
-void Connections::Reject(int socketfd)
+void Connections::Remove(int _socketfd)
 {
-
-}
-
-void Connections::Remove(int connectionId)
-{
-	// kill the event thread
-	for (unsigned int i = 0; i < ConnectionsCount; i++)
+	for (unsigned int i = 0; i < connectionsCount; i++)
 	{
 
 	}
 }
 
-void Connections::Lost(int socketfd)
+void Connections::Lost(int _socketfd)
 {
 	bool foundSocket = false;
-	for (int i = 0; i < ConnectionsCount; i++)
+	for (int i = 0; i < connectionsCount; i++)
 	{
-		if (List[i].socket == socketfd)
+		if (clients[i].socket == _socketfd)
 		{
 			std::cout << "Connection lost with : " << i << std::endl;
 			foundSocket = true;
 		}
 		if (foundSocket)
 		{
-			std::memcpy(&List[i], &List[i + 1], sizeof(Client));
+			std::memcpy(&clients[i], &clients[i + 1], sizeof(Client));
 		}
 	}
-	ConnectionsCount--;
+	connectionsCount--;
 }
 
-void Connections::Kick(int socketfd, const char* _reason)
+void Connections::Kick(int _socketfd, const char* _reason)
 {
 	bool foundSocket = false;
-	for (int i = 0; i < ConnectionsCount; i++)
+	for (int i = 0; i < connectionsCount; i++)
 	{
-		if (List[i].socket == socketfd)
+		if (clients[i].socket == _socketfd)
 		{
 			std::cout << "Kick : " << i << " , reason :" << _reason << std::endl;
 			foundSocket = true;
 		}
 		if (foundSocket)
 		{
-			std::memcpy(&List[i], &List[i + 1], sizeof(Client));
+			std::memcpy(&clients[i], &clients[i + 1], sizeof(Client));
 		}
 	}
-	ConnectionsCount--;
+	connectionsCount--;
 }
 
-void Connections::SendData(int connectionId, char* _buffer)
+void Connections::SendData(int _connectionId, char* _buffer)
 {
-	if (connectionId != -2)
+	if (_connectionId != -2)
 	{
-		for (int i = 0; i < ConnectionsCount; i++)
+		for (int i = 0; i < connectionsCount; i++)
 		{
-			if (connectionId == -1 || List[i].id == connectionId)
+			if (_connectionId == -1 || clients[i].id == _connectionId)
 			{
-				//printf("Triggering to %d : %s\n", List[i].id, _buffer);
-				write(List[i].socket, _buffer, strlen(_buffer));
+				write(clients[i].socket, _buffer, strlen(_buffer));
 			}
 		}
 	}
@@ -110,26 +106,23 @@ void Connections::SendData(int connectionId, char* _buffer)
 	{
 		std::thread::id currentThreadId = std::this_thread::get_id();
 		bool found = false;
-		for (int i = 0; i < ConnectionsCount; i++)
+		for (int i = 0; i < connectionsCount; i++)
 		{
-			std::cout << i << " " << ConnectionsCount << std::endl;
+			std::cout << i << " " << connectionsCount << std::endl;
 			if (!found)
 			{
-				if (List[i].threadId == currentThreadId)
+				if (clients[i].threadId == currentThreadId)
 				{
 					found = true;
-					std::cout << "found him " << i << std::endl;
 				}
 				else
 				{
-					std::cout << "Trigger to " << i << " " << List[i].threadId << " " << currentThreadId << std::endl;
-					write(List[i].socket, _buffer, strlen(_buffer));
+					write(clients[i].socket, _buffer, strlen(_buffer));
 				}
 			}
 			else
 			{
-				std::cout << "Trigger to " << i << " " << List[i].threadId << " " << currentThreadId << std::endl;
-				write(List[i].socket, _buffer, strlen(_buffer));
+				write(clients[i].socket, _buffer, strlen(_buffer));
 			}
 		}
 	}
@@ -139,11 +132,11 @@ std::int64_t Connections::GetDiscordId(void)
 {
 	std::thread::id currentThreadId = std::this_thread::get_id();
 
-	for (int i = 0; i < ConnectionsCount; i++)
+	for (int i = 0; i < connectionsCount; i++)
 	{
-		if (List[i].threadId == currentThreadId)
+		if (clients[i].threadId == currentThreadId)
 		{
-			return List[i].discordId;
+			return clients[i].discordId;
 		}
 	}
 }
@@ -152,11 +145,25 @@ void Connections::SetDiscordId(std::int64_t _id)
 {
 	std::thread::id currentThreadId = std::this_thread::get_id();
 
-	for (int i = 0; i < ConnectionsCount; i++)
+	for (int i = 0; i < connectionsCount; i++)
 	{
-		if (List[i].threadId == currentThreadId)
+		if (clients[i].threadId == currentThreadId)
 		{
-			List[i].discordId = _id;
+			clients[i].discordId = _id;
 		}
 	}
+}
+
+int Connections::GetLocalThreadId(void)
+{
+	std::thread::id currentThreadId = std::this_thread::get_id();
+
+	for (int i = 0; i < connectionsCount; i++)
+	{
+		if (clients[i].threadId == currentThreadId)
+		{
+			return clients[i].id;
+		}
+	}
+	return 0;
 }

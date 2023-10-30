@@ -116,17 +116,56 @@ void TriggerServerEvent(Name _name, Arg..._args)
 	evtSv.bufferSize = 0;
 };
 
+class TestClass
+{
+public:
+	
+	void funk();
+
+private:
+
+};
+void TestClass::funk()
+{
+	std::cout << "Gotcha" << std::endl;
+}
+
+
+class TestClass2
+{
+public:
+
+	void funk();
+
+private:
+
+};
+void TestClass2::funk()
+{
+	std::cout << "Fuck off" << std::endl;
+}
+
+template<class classType>
+void Test(classType _class)
+{
+	_class.funk();
+}
+
 int main()
 {
+	TestClass _test01;
+	Test(_test01);
 
-	InitSocket();
-	Connect();
-	while (true)
-	{
-		//TriggerServerEvent("Damn", "dong", 149.56f, true, "Ta soeur la coquillete", "Zebi", 52, "Cordialement");
-		TriggerServerEvent("PlayerConnection", 112, 1885233650, -424.21f, 1204.52f, 325.75f);
-		Sleep(1000);
-	}
+	TestClass2 _test02;
+	Test(_test02);
+	//InitSocket();
+	//Connect();
+	//while (true)
+	//{
+	//	//TriggerServerEvent("Damn", "dong", 149.56f, true, "Ta soeur la coquillete", "Zebi", 52, "Cordialement");
+	//	TriggerServerEvent("PlayerConnection", 112, 1885233650, -424.21f, 1204.52f, 325.75f);
+	//	Sleep(1000);
+	//}
 
 	return 0;
 }

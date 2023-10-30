@@ -1,9 +1,10 @@
 #ifndef SCRIPTING_H
 #define SCRIPTING_H
-#include "Logger.h"
 
-
-void init_script();
-void uninit_script();
+namespace Scripting
+{
+	void Init();
+	void Stop();
+}
 
 #endif // !SCRIPTING_H

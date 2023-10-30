@@ -34,6 +34,8 @@ namespace Connections
 
 	std::int64_t GetDiscordId(void);
 	void SetDiscordId(std::int64_t _id);
+
+	int GetLocalThreadId(void);
 }
 
 

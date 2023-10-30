@@ -143,9 +143,6 @@
     <ClInclude Include="API_Discord.h">
       <Filter>API</Filter>
     </ClInclude>
-    <ClInclude Include="PCreation.h">
-      <Filter>Client\Scripting\SyncTree\Entities\Peds\Clones</Filter>
-    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -196,9 +193,6 @@
     </ClCompile>
     <ClCompile Include="API_Discord.cpp">
       <Filter>API</Filter>
-    </ClCompile>
-    <ClCompile Include="PCreation.cpp">
-      <Filter>Client\Scripting\SyncTree\Entities\Peds\Clones</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

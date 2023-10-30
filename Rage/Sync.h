@@ -2,15 +2,14 @@
 #define SYNC_H
 
 
+#define SYNC_TIME 3000
 
 
-
-
-
-
-
-
-void SyncFunctions(void);
+namespace Synchronization
+{
+	void Init(void);
+	void Loop(void);
+}
 
 
 #endif

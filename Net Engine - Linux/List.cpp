@@ -3,6 +3,7 @@
 #include "Events.h"
 #include "Reading.h"
 #include "SyncEvents.h"
+#include "Sync.h"
 
 void fkt(char** _args)
 {
@@ -28,6 +29,9 @@ void fkt(char** _args)
 void ListEvents(void)
 {
 	Events::Register("PlayerConnection", &PlayerConnection);
-	Events::Register("SyncMe", &SyncMe);
+	Events::Register("Synchronization::MainEvent", &Synchronization::MainEvent);
+
+
+	/*Test one*/
 	Events::Register("Damn", &fkt);
 }
