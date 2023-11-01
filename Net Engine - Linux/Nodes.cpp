@@ -134,6 +134,8 @@ void Node::Remove(int _serverId)
 	nodeCount--;
 }
 
+#include "../Encryption.h"
+//#include "Events.h"
 // Update node owner position
 void Node::SendUpdate(int _serverId, Vector3 _position)
 {
@@ -143,6 +145,28 @@ void Node::SendUpdate(int _serverId, Vector3 _position)
 		if (nodes[nodeId]->serverId == _serverId)
 		{
 			nodes[nodeId]->position = _position;
+			// callback
+			std::string callBString;
+			const char separator = '/';
+			for (size_t entityId = 0; entityId < nodes[nodeId]->entityCount; entityId++)
+			{
+				Entity::Entity* currentEnt = &nodes[nodeId]->entities[entityId];
+				callBString += Encryption::Encode(separator, 
+					currentEnt->ownerServerId,
+					currentEnt->serverId,
+					currentEnt->nodeCount,
+					currentEnt->remove,
+					currentEnt->type,
+					currentEnt->task,
+					currentEnt->position.x,
+					currentEnt->position.y,
+					currentEnt->position.z,
+					currentEnt->rotations.x,
+					currentEnt->rotations.y,
+					currentEnt->rotations.z
+				);
+			}
+			std::cout << callBString << std::endl;
 		}
 	}
 }

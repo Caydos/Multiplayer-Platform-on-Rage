@@ -28,9 +28,6 @@
     <Filter Include="Scripting\Sync\Events">
       <UniqueIdentifier>{ee1b401d-76b4-4f40-813c-88d27cd396e4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="XML">
-      <UniqueIdentifier>{0562f2fb-6252-4424-b5df-51040719537a}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Source.cpp">
@@ -59,12 +56,6 @@
     </ClCompile>
     <ClCompile Include="Nodes.cpp">
       <Filter>Scripting\Sync</Filter>
-    </ClCompile>
-    <ClCompile Include="..\XML\Parser.cpp">
-      <Filter>XML</Filter>
-    </ClCompile>
-    <ClCompile Include="..\XML\Serializer.cpp">
-      <Filter>XML</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -95,8 +86,8 @@
     <ClInclude Include="SyncEvents.h">
       <Filter>Scripting\Sync\Events</Filter>
     </ClInclude>
-    <ClInclude Include="..\XML\XML.h">
-      <Filter>XML</Filter>
+    <ClInclude Include="..\Encryption.h">
+      <Filter>Utils</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -12,7 +12,7 @@ namespace Synchronization
 	{
 		class Entity
 		{
-		public:
+		public:/* !!! IN CASE OF MODIFICATION, MODIFY NODES.CPP TOO !!! */
 			std::shared_mutex shEntMtx;
 			int ownerServerId;/*person who has control*/
 			int serverId;/*server local*/
