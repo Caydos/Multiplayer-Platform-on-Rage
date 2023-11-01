@@ -32,14 +32,27 @@ void PlayerConnection(char** _args)
 
 void Synchronization::MainEvent(char** _args)
 {
+#pragma region Reception
+
 	int serverId = Connections::GetLocalThreadId();
 	float x = ToFloat(_args[0]);
 	float y = ToFloat(_args[1]);
 	float z = ToFloat(_args[2]);
 
 	Node::SendUpdate(serverId, Vector3(x, y, z));
-	/* for each entity in xml tag (player ped included) add them into nodes*/
 
+	/* for each entity in xml tag (player ped included) add them into nodes*/
+	/* for k ent, do ent->NodeInsertion()*/
+
+#pragma endregion
+#pragma region Callback
+
+	//send to client node content
 	//TriggerClientEvent(Connections::GetLocalThreadId(), "Way_01", x, y, z);
+
+	// Refresh node
+	Node::AskForRefresh(serverId);
+
+#pragma endregion
 }
 

@@ -71,7 +71,10 @@ void Events::Listener(int socketfd)
 		if (bytesRead <= 0)
 		{
 			std::cout << "Error reading data." << std::endl;
-			delete[] eventBuffer;
+			if (eventBuffer != nullptr)
+			{
+				delete[] eventBuffer;
+			}
 			Connections::Lost(socketfd);
 			break;
 		}
@@ -89,6 +92,7 @@ void Events::Listener(int socketfd)
 			{
 				std::memcpy(temp, eventBuffer, length);
 				delete[] eventBuffer;
+				eventBuffer = nullptr;
 			}
 			std::memcpy(temp + length, msgBuffer, index);
 			eventBuffer = temp;
@@ -135,6 +139,7 @@ void Events::Listener(int socketfd)
 				if (strlen(eventBuffer) > BUFFER_OVERSIZE)
 				{
 					delete[] eventBuffer;
+					eventBuffer = nullptr;
 					Connections::Kick(socketfd, "Buffer Oversize happened");
 					return;
 				}

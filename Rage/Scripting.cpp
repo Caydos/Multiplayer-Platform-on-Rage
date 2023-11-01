@@ -8,7 +8,6 @@
 #include "Sync.h"
 #include "API_Discord.h"
 
-fiber g_main_fiber;
 bool IsConnected = false;
 bool loading = true;
 
@@ -62,7 +61,7 @@ void MainScript()
 					PLAYER::SET_PLAYER_MODEL(PLAYER::PLAYER_ID(), hash);
 					PED::SET_PED_DEFAULT_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID());
 					PED::RESET_PED_MOVEMENT_CLIPSET(PLAYER::PLAYER_PED_ID(), 0);
-
+					std::cout << vec.x << " " << vec.y << " " << vec.z << std::endl;
 					TriggerServerEvent("PlayerConnection", API_Discord::GetUser().id, hash, vec.x, vec.y, vec.z);
 					std::cout << "Connected to server" << std::endl;
 					Synchronization::Init();

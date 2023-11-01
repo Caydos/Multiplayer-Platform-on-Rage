@@ -29,6 +29,7 @@ void Connections::Detect(int socketfd)
 
 void Connections::Accept(int _socketfd)
 {
+	std::unique_lock<std::shared_mutex> lock(shConnexionMtx);
 	clients[connectionsCount].id = connectionsCount;
 	clients[connectionsCount].alive = true;
 	clients[connectionsCount].socket = _socketfd;
@@ -43,55 +44,42 @@ void Connections::Accept(int _socketfd)
 
 void Connections::Reject(int _socketfd)
 {
-
+	// TriggerClientEvent(?, "Connection rejected", "Too many players");
 }
 
 void Connections::Remove(int _socketfd)
 {
-	for (unsigned int i = 0; i < connectionsCount; i++)
+	std::unique_lock<std::shared_mutex> lock(shConnexionMtx);
+	bool foundSocket = false;
+	for (int i = 0; i < connectionsCount; i++)
 	{
-
+		if (clients[i].socket == _socketfd)
+		{
+			std::cout << "Connection removed with : " << i << std::endl;
+			foundSocket = true;
+		}
+		if (foundSocket)
+		{
+			//std::memcpy(&clients[i], &clients[i + 1], sizeof(Client));
+		}
 	}
+	connectionsCount--;
 }
 
 void Connections::Lost(int _socketfd)
 {
-	bool foundSocket = false;
-	for (int i = 0; i < connectionsCount; i++)
-	{
-		if (clients[i].socket == _socketfd)
-		{
-			std::cout << "Connection lost with : " << i << std::endl;
-			foundSocket = true;
-		}
-		if (foundSocket)
-		{
-			std::memcpy(&clients[i], &clients[i + 1], sizeof(Client));
-		}
-	}
-	connectionsCount--;
+	Remove(_socketfd);
 }
 
 void Connections::Kick(int _socketfd, const char* _reason)
 {
-	bool foundSocket = false;
-	for (int i = 0; i < connectionsCount; i++)
-	{
-		if (clients[i].socket == _socketfd)
-		{
-			std::cout << "Kick : " << i << " , reason :" << _reason << std::endl;
-			foundSocket = true;
-		}
-		if (foundSocket)
-		{
-			std::memcpy(&clients[i], &clients[i + 1], sizeof(Client));
-		}
-	}
-	connectionsCount--;
+	Remove(_socketfd);
+	std::cout << "User kicked for : " << _reason << std::endl;
 }
 
 void Connections::SendData(int _connectionId, char* _buffer)
 {
+	std::shared_lock<std::shared_mutex> lock(shConnexionMtx);
 	if (_connectionId != -2)
 	{
 		for (int i = 0; i < connectionsCount; i++)
@@ -130,6 +118,7 @@ void Connections::SendData(int _connectionId, char* _buffer)
 
 std::int64_t Connections::GetDiscordId(void)
 {
+	std::shared_lock<std::shared_mutex> lock(shConnexionMtx);
 	std::thread::id currentThreadId = std::this_thread::get_id();
 
 	for (int i = 0; i < connectionsCount; i++)
@@ -143,6 +132,7 @@ std::int64_t Connections::GetDiscordId(void)
 
 void Connections::SetDiscordId(std::int64_t _id)
 {
+	std::shared_lock<std::shared_mutex> lock(shConnexionMtx);
 	std::thread::id currentThreadId = std::this_thread::get_id();
 
 	for (int i = 0; i < connectionsCount; i++)
@@ -156,6 +146,7 @@ void Connections::SetDiscordId(std::int64_t _id)
 
 int Connections::GetLocalThreadId(void)
 {
+	std::shared_lock<std::shared_mutex> lock(shConnexionMtx);
 	std::thread::id currentThreadId = std::this_thread::get_id();
 
 	for (int i = 0; i < connectionsCount; i++)

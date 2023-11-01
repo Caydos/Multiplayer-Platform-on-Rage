@@ -64,7 +64,7 @@ public:
 	void SerializeArg(Arg _arg)
 	{
 		std::stringstream valueString;
-		valueString << typeid(_arg).raw_name() << _arg; // Potential issue 1
+		valueString /*<< typeid(_arg).raw_name()*/ << _arg; // Potential issue 1
 		std::string argStr = valueString.str();
 
 		int argLength = argStr.length();
@@ -108,7 +108,7 @@ void TriggerServerEvent(Name _name, Arg..._args)
 	((evtSv.SerializeArg(_args)), ...);
 	evtSv.buffer[evtSv.bufferSize - 2] = END_CHARACTER;
 	evtSv.buffer[evtSv.bufferSize - 1] = '\0';
-	printf("%s\n", evtSv.buffer);
+	std::cout << evtSv.buffer << std::endl;
 	send(clientSocket, evtSv.buffer, strlen(evtSv.buffer) + 1, 0);
 	delete[] targetString;
 	delete[] evtSv.buffer;
@@ -153,20 +153,21 @@ void Test(classType _class)
 
 int main()
 {
-	TestClass _test01;
-	Test(_test01);
+	//TestClass _test01;
+	//Test(_test01);
 
-	TestClass2 _test02;
-	Test(_test02);
-	//InitSocket();
-	//Connect();
+	//TestClass2 _test02;
+	//Test(_test02);
+	InitSocket();
+	Connect();
+	Sleep(1000);
 	//while (true)
-	//{
+	{
 	//	//TriggerServerEvent("Damn", "dong", 149.56f, true, "Ta soeur la coquillete", "Zebi", 52, "Cordialement");
-	//	TriggerServerEvent("PlayerConnection", 112, 1885233650, -424.21f, 1204.52f, 325.75f);
-	//	Sleep(1000);
-	//}
-
+		TriggerServerEvent("PlayerConnection", 112, 1885233650, -424.21f, 1204.52f, 325.75f);
+		Sleep(3000);
+	}
+	closesocket(clientSocket);
 	return 0;
 }
 

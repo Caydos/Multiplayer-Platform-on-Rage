@@ -35,3 +35,8 @@ bool Connect(void)
 	printf("Connected\n");
 	return true;
 }
+
+void CloseConnection(void)
+{
+	closesocket(clientSocket);
+}

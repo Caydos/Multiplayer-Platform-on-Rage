@@ -39,5 +39,6 @@ void unload();
 
 bool InitSocket(void);
 bool Connect(void);
+void CloseConnection(void);
 
 #endif //PCH_H

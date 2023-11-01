@@ -30,7 +30,7 @@ public:
 	void SerializeArg(Arg _arg)
 	{
 		std::stringstream valueString;
-		valueString << typeid(_arg).raw_name() << _arg; // Potential issue 1
+		valueString /*<< typeid(_arg).raw_name()*/ << _arg; // Potential issue 1
 		std::string argStr = valueString.str();
 
 		int argLength = argStr.length();
@@ -75,7 +75,7 @@ void TriggerServerEvent(Name _name, Arg..._args)
 	((evtSv.SerializeArg(_args)), ...);
 	evtSv.buffer[evtSv.bufferSize - 2] = END_CHARACTER;
 	evtSv.buffer[evtSv.bufferSize - 1] = '\0';
-
+	//std::cout << evtSv.buffer << std::endl;
 	send(clientSocket, evtSv.buffer, strlen(evtSv.buffer) + 1, 0);
 	delete[] targetString;
 	delete[] evtSv.buffer;

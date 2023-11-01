@@ -51,9 +51,6 @@
     <Filter Include="Client\Scripting\Data\Pedestrians">
       <UniqueIdentifier>{b496a326-d9dd-472a-a2ae-247ed1636eb0}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Client\Scripting\SyncTree\Pools">
-      <UniqueIdentifier>{ee1105c6-3c22-445c-950b-b3772ace9320}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Client\Scripting\SyncTree\Entities">
       <UniqueIdentifier>{9f55cba3-e423-44ca-843f-b14e74ce11a8}</UniqueIdentifier>
     </Filter>
@@ -65,9 +62,6 @@
     </Filter>
     <Filter Include="API">
       <UniqueIdentifier>{054cd554-691d-46ce-9dd7-d4e41b667c83}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Client\Scripting\SyncTree\Entities\Peds\Clones">
-      <UniqueIdentifier>{f55abd88-2bfa-4157-b493-e0dfe03a18f5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -131,9 +125,6 @@
     <ClInclude Include="PSync.h">
       <Filter>Client\Scripting\SyncTree\Entities\Peds</Filter>
     </ClInclude>
-    <ClInclude Include="Pools.h">
-      <Filter>Client\Scripting\SyncTree\Pools</Filter>
-    </ClInclude>
     <ClInclude Include="Sync.h">
       <Filter>Client\Scripting\SyncTree</Filter>
     </ClInclude>
@@ -181,9 +172,6 @@
     </ClCompile>
     <ClCompile Include="PSync.cpp">
       <Filter>Client\Scripting\SyncTree\Entities\Peds</Filter>
-    </ClCompile>
-    <ClCompile Include="PedPools.cpp">
-      <Filter>Client\Scripting\SyncTree\Pools</Filter>
     </ClCompile>
     <ClCompile Include="Sync.cpp">
       <Filter>Client\Scripting\SyncTree</Filter>

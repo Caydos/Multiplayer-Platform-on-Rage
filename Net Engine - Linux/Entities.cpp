@@ -14,6 +14,7 @@ Entity::Entity::Entity()
 	this->ownerServerId = -1;
 	this->serverId = -1;
 	this->nodeCount = 0;
+	this->remove = false;
 	this->type = -1;
 	this->task = -1;
 	this->position = Vector3(0,0,0);
@@ -30,9 +31,8 @@ Entity::Entity::~Entity()
 void Synchronization::Entity::Entity::NodeInsertion(void)
 {
 	std::shared_lock<std::shared_mutex> lock(shEntMtx);
-	this->nodeCount = 0;
 	Node::EntityDistCheck(this);
-	/*check last update time to free some memory*/
+	/*check last update time to free some memory (optional)*/
 }
 
 void Entity::Add(Entity* _entity)
@@ -41,7 +41,7 @@ void Entity::Add(Entity* _entity)
 	if (entities != nullptr)
 	{
 		Entity** tempEnt = new Entity * [entityCount + 1];
-		std::memcpy(tempEnt, entities, entityCount * sizeof(Entity));
+		std::memcpy(tempEnt, entities, entityCount * sizeof(Entity*));
 		delete[] entities;
 		entities = tempEnt;
 	}
@@ -59,5 +59,3 @@ void Entity::Remove(int _serverId)
 {
 
 }
-
-

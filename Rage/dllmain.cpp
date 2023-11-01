@@ -14,9 +14,6 @@ HANDLE g_uninject_thread;
 char* scan_base;
 size_t scan_length;
 
-extern SOCKET clientSocket;
-
-User userDiscord;
 
 BOOL APIENTRY DllMain( HMODULE hModule,
                        DWORD  ul_reason_for_call,
@@ -79,8 +76,7 @@ DWORD WINAPI unload_thread(LPVOID lpThreadParameter)
 void unload()
 {
     Hook::Uninitialize();
-
-    closesocket(clientSocket);
+    CloseConnection();
     WSACleanup();
     g_uninject_thread = CreateThread(NULL, 0, &unload_thread, NULL, 0, NULL);
 }

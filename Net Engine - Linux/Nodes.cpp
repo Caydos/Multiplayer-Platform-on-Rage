@@ -64,8 +64,7 @@ void Node::Node::InsertEntity(Entity::Entity* _entity)
 	{
 		entities = new Entity::Entity[1];
 	}
-	std::memcpy(&entities[entityCount], _entity, sizeof(_entity));
-	std::cout << "[Insertion] - Entity position x : " << entities[entityCount].position.x << std::endl;
+	std::memcpy(&entities[entityCount], _entity, sizeof(Entity::Entity));
 	entityCount++;
 }
 
@@ -97,7 +96,6 @@ void Node::Node::InsertNode(Node* _node)
 void Node::Node::Refresh(void)
 {
 	std::shared_lock<std::shared_mutex> lock(shNodeMtx);
-	std::cout << this->entityCount << " entities in node" << std::endl;
 	this->entityCount = 0;
 	if (this->entities != nullptr)
 	{
@@ -107,7 +105,6 @@ void Node::Node::Refresh(void)
 	nodeCount = 0;
 	if (this->nodes != nullptr)
 	{
-		std::cout << "Deleting something it shoudln't" << std::endl;
 		delete[] this->nodes;
 		this->nodes = nullptr;
 	}
@@ -137,29 +134,50 @@ void Node::Remove(int _serverId)
 	nodeCount--;
 }
 
-// Update node owner position & send it's entity to other nodes
+// Update node owner position
 void Node::SendUpdate(int _serverId, Vector3 _position)
 {
 	std::shared_lock<std::shared_mutex> lock(shNodeMtx);
 	for (size_t nodeId = 0; nodeId < nodeCount; nodeId++)
 	{
-		if (nodes[nodeId]->serverId == _serverId)/*not my entity*/
+		if (nodes[nodeId]->serverId == _serverId)
 		{
 			nodes[nodeId]->position = _position;
-			nodes[nodeId]->Refresh();
 		}
 	}
 }
 
 
+void Node::AskForRefresh(int _serverId)
+{
+	std::shared_lock<std::shared_mutex> lock(shNodeMtx);
+	for (size_t nodeId = 0; nodeId < nodeCount; nodeId++)
+	{
+		if (nodes[nodeId]->serverId == _serverId)
+		{
+			nodes[nodeId]->Refresh();
+		}
+	}
+}
+
 void Node::EntityDistCheck(Entity::Entity* _entity)
 {
 	std::shared_lock<std::shared_mutex> lock(shNodeMtx);
+
+	// Remove for all old nodes (will be canceled is still in range)
+	for (size_t entityPtrId = 0; entityPtrId < _entity->nodeCount; entityPtrId++)
+	{
+		/*Editing the node entity copy so that it does not affects the main entity*/
+		_entity->nodesPresence[_entity->nodeCount]->remove = true;
+	}
+
+	_entity->nodeCount = 0;
 	for (size_t nodeId = 0; nodeId < nodeCount; nodeId++)
 	{
 		float distance = Vdist(nodes[nodeId]->position, _entity->position);
 		if (distance <= nodes[nodeId]->range)
 		{
+			//_entity->nodesPresence[_entity->nodeCount] = nodeId;
 			_entity->nodeCount++;
 			bool updated = false;
 			for (size_t entityId = 0; entityId < nodes[nodeId]->entityCount; entityId++)
@@ -167,13 +185,11 @@ void Node::EntityDistCheck(Entity::Entity* _entity)
 				if (nodes[nodeId]->entities[entityId].serverId == _entity->serverId)
 				{
 					updated = true;
-					std::cout << "updating into a node" << std::endl;
 					nodes[nodeId]->UpdateEntity(_entity, entityId);
 				}
 			}
 			if (!updated)
 			{
-				std::cout << "inserting into a node" << std::endl;
 				nodes[nodeId]->InsertEntity(_entity);
 			}
 		}

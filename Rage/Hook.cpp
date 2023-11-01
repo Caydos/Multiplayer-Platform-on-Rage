@@ -42,7 +42,6 @@ int hk_tick(GtaThread* that, uint32_t ops_to_execute)
 
 		original_thread = set_current_script_thread(that);
 
-		//Fibers::Tick(&g_main_fiber);
 		Fibers::TickAll();
 
 		set_current_script_thread(original_thread);

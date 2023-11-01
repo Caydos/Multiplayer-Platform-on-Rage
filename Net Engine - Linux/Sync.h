@@ -3,6 +3,7 @@
 #include <cstdint>
 #include <shared_mutex>
 #include "Vector.h"
+#include "Connections.h"
 
 #define DEFAULT_NODE_RANGE 300.0f
 namespace Synchronization
@@ -16,6 +17,8 @@ namespace Synchronization
 			int ownerServerId;/*person who has control*/
 			int serverId;/*server local*/
 			int nodeCount;/*nb of nodes it's in*/
+			Entity* nodesPresence[MAX_CONNECTIONS];
+			bool remove;
 
 			int type;
 			int task;
@@ -57,7 +60,10 @@ namespace Synchronization
 
 		void Add(int _serverId, Vector3 _position, Entity::Entity* _owner);
 		void Remove(int _serverId);
+
+
 		void SendUpdate(int _serverId, Vector3 _position);
+		void AskForRefresh(int _serverId);
 
 		void EntityDistCheck(Entity::Entity* _entity);
 
