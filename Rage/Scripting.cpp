@@ -1,7 +1,7 @@
 #include "pch.h"
-#include "Process.h"
-#include "Fiber.h"
 #include "Scripting.h"
+#include "Natives.h"
+#include "Fiber.h"
 
 #include "Scripts.h"
 #include "Events.h"
@@ -11,7 +11,7 @@
 bool IsConnected = false;
 bool loading = true;
 
-void MainScript()
+void Scripting::Main()
 {
 	while (1)
 	{
@@ -85,7 +85,7 @@ void MainScript()
 
 void Scripting::Init()
 {
-	Fibers::Create("Main Fiber", &MainScript);
+	Fibers::Create("Main Fiber", &Scripting::Main);
 	Fibers::Create("Event Fiber", &Events::Fiber);
 	Natives::Initialize();
 }
@@ -94,5 +94,3 @@ void Scripting::Stop()
 {
 	Fibers::Delete();
 }
-
-

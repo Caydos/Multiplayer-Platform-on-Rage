@@ -134,8 +134,8 @@ void Node::Remove(int _serverId)
 	nodeCount--;
 }
 
-#include "../Encryption.h"
-//#include "Events.h"
+#include "../Shared/Encryption.h"
+#include "Events.h"
 // Update node owner position
 void Node::SendUpdate(int _serverId, Vector3 _position)
 {
@@ -150,6 +150,10 @@ void Node::SendUpdate(int _serverId, Vector3 _position)
 			const char separator = '/';
 			for (size_t entityId = 0; entityId < nodes[nodeId]->entityCount; entityId++)
 			{
+				if (entityId)
+				{
+					callBString += '|';
+				}
 				Entity::Entity* currentEnt = &nodes[nodeId]->entities[entityId];
 				callBString += Encryption::Encode(separator, 
 					currentEnt->ownerServerId,
@@ -167,6 +171,7 @@ void Node::SendUpdate(int _serverId, Vector3 _position)
 				);
 			}
 			std::cout << callBString << std::endl;
+			TriggerClientEvent(nodes[nodeId]->serverId, "Sync::NodeDataEvent", callBString.c_str());
 		}
 	}
 }

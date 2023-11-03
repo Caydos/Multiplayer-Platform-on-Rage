@@ -86,7 +86,7 @@ void Connections::SendData(int _connectionId, char* _buffer)
 		{
 			if (_connectionId == -1 || clients[i].id == _connectionId)
 			{
-				write(clients[i].socket, _buffer, strlen(_buffer));
+				write(clients[i].socket, _buffer, strlen(_buffer) + 1);
 			}
 		}
 	}
@@ -105,12 +105,12 @@ void Connections::SendData(int _connectionId, char* _buffer)
 				}
 				else
 				{
-					write(clients[i].socket, _buffer, strlen(_buffer));
+					write(clients[i].socket, _buffer, strlen(_buffer) + 1);
 				}
 			}
 			else
 			{
-				write(clients[i].socket, _buffer, strlen(_buffer));
+				write(clients[i].socket, _buffer, strlen(_buffer) + 1);
 			}
 		}
 	}

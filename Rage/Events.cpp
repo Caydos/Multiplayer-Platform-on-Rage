@@ -96,7 +96,7 @@ void Events::Listener(int socketfd)
 			std::memcpy(temp + length, msgBuffer, index);
 			eventBuffer = temp;
 			// Trigger;
-			//std::cout << "Event is : " << eventBuffer << std::endl;
+			std::cout << "Event is : " << eventBuffer << std::endl;
 			Events::AddWaiting(eventBuffer);
 			delete[] eventBuffer;
 			eventBuffer = nullptr;

@@ -1,5 +1,6 @@
 #ifndef READING_H
 #define READING_H
+#include <cstdlib>
 #include <cstdint>
 
 int ToInt(const char* _array);

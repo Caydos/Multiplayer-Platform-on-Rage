@@ -1,27 +1,33 @@
 #ifndef VECTORS_H
 #define VECTORS_H
 
-typedef struct
+struct Vector2
 {
 	float x;
 	float y;
-} Vector2;
 
-typedef struct
+	Vector2();
+	Vector2(float, float);
+};
+
+struct Vector3
 {
 	float x;
 	float y;
 	float z;
-} Vector3;
+
+	Vector3();
+	Vector3(float, float,float);
+};
 
 
-typedef struct
+struct Vector4 
 {
 	float x;
 	float y;
 	float z;
 	float w;
-} Vector4;
+};
 
 typedef struct
 {
@@ -53,5 +59,7 @@ typedef struct
 	float w;
 	char pad3[4];
 } NativeVector4;
+
+float Vdist(Vector3 _origin, Vector3 _destination);
 
 #endif // !VECTORS_H

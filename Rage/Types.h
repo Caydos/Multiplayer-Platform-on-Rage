@@ -1,6 +1,8 @@
 #ifndef TYPES_H
 #define TYPES_H
 
+#include <wtypes.h>
+
 typedef DWORD Void;
 typedef DWORD Any;
 typedef DWORD uint;

@@ -19,14 +19,14 @@
     <Filter Include="Utils">
       <UniqueIdentifier>{c4e12165-364d-41c8-897f-1179e9a5168e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="FIles\Reading">
-      <UniqueIdentifier>{b8de2f58-75fc-461f-99c2-da1c43e15eb0}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Common">
       <UniqueIdentifier>{bfe3279b-a310-4954-af7b-0cb9909a5b81}</UniqueIdentifier>
     </Filter>
     <Filter Include="Scripting\Sync\Events">
       <UniqueIdentifier>{ee1b401d-76b4-4f40-813c-88d27cd396e4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Utils\Reading">
+      <UniqueIdentifier>{72c6424a-32d0-4f05-b3ad-a48044fe989e}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -45,9 +45,6 @@
     <ClCompile Include="List.cpp">
       <Filter>FIles\Events</Filter>
     </ClCompile>
-    <ClCompile Include="Reading.cpp">
-      <Filter>FIles\Reading</Filter>
-    </ClCompile>
     <ClCompile Include="Vector.cpp">
       <Filter>Common</Filter>
     </ClCompile>
@@ -56,6 +53,9 @@
     </ClCompile>
     <ClCompile Include="Nodes.cpp">
       <Filter>Scripting\Sync</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Shared\Reading.cpp">
+      <Filter>Utils\Reading</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -77,17 +77,17 @@
     <ClInclude Include="DataHolder.h">
       <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="Reading.h">
-      <Filter>FIles\Reading</Filter>
-    </ClInclude>
     <ClInclude Include="Vector.h">
       <Filter>Common</Filter>
     </ClInclude>
     <ClInclude Include="SyncEvents.h">
       <Filter>Scripting\Sync\Events</Filter>
     </ClInclude>
-    <ClInclude Include="..\Encryption.h">
+    <ClInclude Include="..\Shared\Encryption.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\Reading.h">
+      <Filter>Utils\Reading</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

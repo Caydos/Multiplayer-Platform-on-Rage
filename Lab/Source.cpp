@@ -116,89 +116,8 @@ void TriggerServerEvent(Name _name, Arg..._args)
 	evtSv.bufferSize = 0;
 };
 
-class TestClass
-{
-public:
-	
-	void funk();
-
-private:
-
-};
-void TestClass::funk()
-{
-	std::cout << "Gotcha" << std::endl;
-}
-
-
-class TestClass2
-{
-public:
-
-	void funk();
-
-private:
-
-};
-void TestClass2::funk()
-{
-	std::cout << "Fuck off" << std::endl;
-}
-
-template<class classType>
-void Test(classType _class)
-{
-	_class.funk();
-}
-
-
-//namespace Encoder
-//{
-//	class EncodedMessage
-//	{
-//	public:
-//		char* message;
-//
-//		template<typename Arg>
-//		void SerializeArg(Arg _arg, const char _separator)
-//		{
-//			std::stringstream valueString;
-//			valueString << _arg;
-//			std::string argStr = valueString.str();
-//			argStr << "test";
-//			int argLength = argStr.length();
-//
-//			size_t messageLength = strlen(message);
-//
-//			if (message != nullptr)
-//			{
-//
-//			}
-//			else
-//			{
-//				message = new char[argLength + 1];
-//			}
-//			
-//		}
-//
-//		EncodedMessage();
-//		~EncodedMessage();
-//	};
-//
-//	EncodedMessage::EncodedMessage()
-//	{
-//		bufferSize = 0;
-//		message = nullptr;
-//	}
-//
-//	EncodedMessage::~EncodedMessage()
-//	{
-//		if (message != nullptr)
-//		{
-//			delete[] message;
-//		}
-//	}
-//}
+#include "../Shared/Encryption.h"
+#include "../Shared/Reading.h"
 
 struct Vector3
 {
@@ -215,41 +134,42 @@ public:
 	Vector3 vec;
 };
 
-#include "../Encryption.h"
 
 int main()
 {
-	Encrypt data;
-	data.id = 12;
-	data.name = (char*) "ayo";
-	data.vec.x = 15;
-	data.vec.y = 49;
-	data.vec.z = 53;
-	std::string argStr = Encryption::Encode('/', data.id, data.vec, data.name);
+	//Encrypt data;
+	//data.id = 12;
+	//data.name = (char*)"ayo";
+	//data.vec.x = 15;
+	//data.vec.y = 49;
+	//data.vec.z = 53;
+	//std::string argStr = Encryption::Encode('/', data.id, data.name, data.vec.x, data.vec.y, data.vec.z);
 
-	std::cout << argStr << std::endl;
+	//std::cout << argStr << std::endl;
 
-	//Encoder::EncodedMessage message;
-	//message.SerializeArg(data.id, '¨');
-	//message.SerializeArg(data.name, '¨');
+	//char** holder = nullptr;
+	//unsigned int argCount = 0;
+	//Encryption::GetAsArguments(holder, argCount, (char*)argStr.c_str(), '/');
 
-	//std::cout << message.message << std::endl;
 
-	//TestClass _test01;
-	//Test(_test01);
+	//std::cout << ToInt(holder[0]) << std::endl;
+	//std::cout << holder[1] << std::endl;
+	//std::cout << ToFloat(holder[2]) << std::endl;
+	//std::cout << ToFloat(holder[3]) << std::endl;
+	//std::cout << ToFloat(holder[4]) << std::endl;
 
-	//TestClass2 _test02;
-	//Test(_test02);
-	//InitSocket();
-	//Connect();
-	//Sleep(1000);
-	//while (true)
-	//{
-	//	//TriggerServerEvent("Damn", "dong", 149.56f, true, "Ta soeur la coquillete", "Zebi", 52, "Cordialement");
-		//TriggerServerEvent("PlayerConnection", 112, 1885233650, -424.21f, 1204.52f, 325.75f);
-		//Sleep(3000);
-	//}
-	//closesocket(clientSocket);
+
+	InitSocket();
+	Connect();
+	Sleep(1000);
+	TriggerServerEvent("PlayerConnection", 112, 1885233650, -424.21f, 1204.52f, 325.75f);
+	while (true)
+	{
+		//TriggerServerEvent("Damn", "dong", 149.56f, true, "Ta soeur la coquillete", "Zebi", 52, "Cordialement");
+		TriggerServerEvent("Synchronization::MainEvent", 56,47,69);
+		Sleep(3000);
+	}
+	closesocket(clientSocket);
 	return 0;
 }
 

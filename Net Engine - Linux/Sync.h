@@ -2,7 +2,7 @@
 #define SYNC_H
 #include <cstdint>
 #include <shared_mutex>
-#include "Vector.h"
+#include "../Shared/Vector.h"
 #include "Connections.h"
 
 #define DEFAULT_NODE_RANGE 300.0f
@@ -69,6 +69,7 @@ namespace Synchronization
 
 	}
 	void MainEvent(char** _args);
+
 }
 
 

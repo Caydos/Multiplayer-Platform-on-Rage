@@ -48,20 +48,20 @@
     <Filter Include="Client\Scripting\SyncTree">
       <UniqueIdentifier>{6935e32b-30ba-491f-bd8d-b6f811c65ecb}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Client\Scripting\Data\Pedestrians">
-      <UniqueIdentifier>{b496a326-d9dd-472a-a2ae-247ed1636eb0}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Client\Scripting\SyncTree\Entities">
-      <UniqueIdentifier>{9f55cba3-e423-44ca-843f-b14e74ce11a8}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Client\Scripting\SyncTree\Entities\Peds">
-      <UniqueIdentifier>{80cbb3eb-76fb-4b9a-a0b2-efdb769ec3e1}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Server\Reading">
       <UniqueIdentifier>{530c495d-0abc-449b-abb4-59976b496daf}</UniqueIdentifier>
     </Filter>
     <Filter Include="API">
       <UniqueIdentifier>{054cd554-691d-46ce-9dd7-d4e41b667c83}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Client\Scripting\SyncTree\Sync">
+      <UniqueIdentifier>{f266c7ad-4797-4e30-bacf-54acbc821b40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Common\Vector">
+      <UniqueIdentifier>{a780d210-540a-47cf-95ae-4fee8270f591}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Client\Scripting\Scripts\Hud">
+      <UniqueIdentifier>{9afd4a26-e53a-40a3-8e98-9bf06d662c5c}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -92,9 +92,6 @@
     <ClInclude Include="tasks.h">
       <Filter>Client\Scripting\Data</Filter>
     </ClInclude>
-    <ClInclude Include="Vectors.h">
-      <Filter>Common</Filter>
-    </ClInclude>
     <ClInclude Include="Logger.h">
       <Filter>Common\Logger</Filter>
     </ClInclude>
@@ -119,20 +116,20 @@
     <ClInclude Include="EventsListing.h">
       <Filter>Server</Filter>
     </ClInclude>
-    <ClInclude Include="PedData.h">
-      <Filter>Client\Scripting\Data\Pedestrians</Filter>
-    </ClInclude>
-    <ClInclude Include="PSync.h">
-      <Filter>Client\Scripting\SyncTree\Entities\Peds</Filter>
-    </ClInclude>
-    <ClInclude Include="Sync.h">
-      <Filter>Client\Scripting\SyncTree</Filter>
-    </ClInclude>
     <ClInclude Include="Reading.h">
       <Filter>Server\Reading</Filter>
     </ClInclude>
     <ClInclude Include="API_Discord.h">
       <Filter>API</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\Vector.h">
+      <Filter>Common\Vector</Filter>
+    </ClInclude>
+    <ClInclude Include="Hud.h">
+      <Filter>Client\Scripting\Scripts\Hud</Filter>
+    </ClInclude>
+    <ClInclude Include="Sync.h">
+      <Filter>Client\Scripting\SyncTree\Sync</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -170,17 +167,23 @@
     <ClCompile Include="Events.cpp">
       <Filter>Server\Events</Filter>
     </ClCompile>
-    <ClCompile Include="PSync.cpp">
-      <Filter>Client\Scripting\SyncTree\Entities\Peds</Filter>
-    </ClCompile>
-    <ClCompile Include="Sync.cpp">
-      <Filter>Client\Scripting\SyncTree</Filter>
-    </ClCompile>
     <ClCompile Include="Reading.cpp">
       <Filter>Server\Reading</Filter>
     </ClCompile>
     <ClCompile Include="API_Discord.cpp">
       <Filter>API</Filter>
+    </ClCompile>
+    <ClCompile Include="Sync.cpp">
+      <Filter>Client\Scripting\SyncTree\Sync</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Shared\Vector.cpp">
+      <Filter>Common\Vector</Filter>
+    </ClCompile>
+    <ClCompile Include="Hud.cpp">
+      <Filter>Client\Scripting\Scripts\Hud</Filter>
+    </ClCompile>
+    <ClCompile Include="Entity.cpp">
+      <Filter>Client\Scripting\SyncTree\Sync</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

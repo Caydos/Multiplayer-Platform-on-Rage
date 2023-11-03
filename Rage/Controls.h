@@ -41,7 +41,7 @@ enum Control
 	MoveRightOnly = 35,
 	Duck = 36,
 	SelectWeapon = 37,
-	Pickup = 38,
+	PickupA = 38,
 	SniperZoom = 39,
 	SniperZoomInOnly = 40,
 	SniperZoomOutOnly = 41,

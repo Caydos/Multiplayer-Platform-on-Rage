@@ -3,6 +3,7 @@
 
 namespace Scripting
 {
+	void Main();
 	void Init();
 	void Stop();
 }

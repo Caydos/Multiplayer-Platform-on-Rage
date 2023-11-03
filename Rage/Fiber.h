@@ -1,6 +1,7 @@
 #pragma once
 #ifndef FIBER_H
 #define FIBER_H
+#include <stdint.h>
 
 typedef struct fiber
 {

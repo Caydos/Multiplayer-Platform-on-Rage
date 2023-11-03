@@ -1,16 +1,13 @@
-#include "Header.h"
 #include "Sync.h"
+#include <cstring>
 
-using namespace Synchronization;
-
-std::shared_mutex shEntMtx;
-Entity::Entity** entities;
+Synchronization::Entity::Entity** entities;
 int entityCount = 0;
 unsigned int entityCountHistory = 0;
 
 #pragma region Constructors / Destructors
 
-Entity::Entity::Entity()
+Synchronization::Entity::Entity::Entity()
 {
 	this->ownerServerId = -1;
 	this->serverId = -1;
@@ -18,27 +15,18 @@ Entity::Entity::Entity()
 	this->remove = false;
 	this->type = -1;
 	this->task = -1;
-	this->position = Vector3(0,0,0);
+	this->position = Vector3(0, 0, 0);
 	this->rotations = Vector3(0, 0, 0);
 }
 
-Entity::Entity::~Entity()
+Synchronization::Entity::Entity::~Entity()
 {
 
 }
 #pragma endregion
 
-
-void Synchronization::Entity::Entity::NodeInsertion(void)
+void Synchronization::Entity::Add(Entity* _entity)
 {
-	std::shared_lock<std::shared_mutex> lock(shEntMtx);
-	Node::EntityDistCheck(this);
-	/*check last update time to free some memory (optional)*/
-}
-
-void Entity::Add(Entity* _entity)
-{
-	std::unique_lock<std::shared_mutex> lock(shEntMtx);
 	if (entities != nullptr)
 	{
 		Entity** tempEnt = new Entity * [entityCount + 1];
@@ -57,7 +45,8 @@ void Entity::Add(Entity* _entity)
 }
 
 
-void Entity::Remove(int _serverId)
+void Synchronization::Entity::Remove(int _serverId)
 {
 
 }
+

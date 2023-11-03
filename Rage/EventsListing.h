@@ -1,11 +1,11 @@
 #ifndef EVENT_LISTING_H
 #define EVENT_LISTING_H
-#include "PSync.h"
+#include "Sync.h"
 
 
 void RegisterEvents(void)
 {
-	PedSyncEvents();
+	Synchronization::PedSyncEvents();
 }
 
 

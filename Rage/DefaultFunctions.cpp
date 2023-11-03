@@ -1,25 +1,41 @@
-#include "pch.h"
 #include "Scripts.h"
-#include "ScriptNames.h"
 #include "Fiber.h"
+#include "Natives.h"
+#include "Controls.h"
+#include "Types.h"
+
+#include "Hud.h"
+#include "ScriptNames.h"
+#include <iostream>
 
 bool hasStoppedScripts = false;
 
 
-
-void textDisplay()
+Vehicle CreateVehicle(const char* _model, Vector3 _coords, float _heading, bool _networked)
 {
-	HUD::SET_TEXT_COLOUR(255, 255, 255, 255);
-	HUD::SET_TEXT_SCALE(1.f, 1.f);
-	HUD::SET_TEXT_FONT(4);
-	HUD::SET_TEXT_DROP_SHADOW();
-	HUD::SET_TEXT_OUTLINE();
+	Hash modelHash = MISC::GET_HASH_KEY(_model);
+	if (!STREAMING::IS_MODEL_IN_CDIMAGE(modelHash))
+	{
+		Hud::Notify("Invalid vehicle model", 6);
+		return 0;
+	}
+	STREAMING::REQUEST_MODEL(modelHash);
+	while (!STREAMING::HAS_MODEL_LOADED(modelHash))
+	{
+		Fibers::Suspend(10);
+	}
 
-	HUD::BEGIN_TEXT_COMMAND_DISPLAY_TEXT("STRING");
-	HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME("Alpha 0.1");
-	HUD::END_TEXT_COMMAND_DISPLAY_TEXT({ 0.01f, 0.01f }, 1);
+	Vehicle vehicle = VEHICLE::CREATE_VEHICLE(modelHash, _coords, _heading, _networked, true, 0);
+	VEHICLE::SET_VEHICLE_HAS_BEEN_OWNED_BY_PLAYER(vehicle, true);
+	VEHICLE::SET_VEHICLE_NEEDS_TO_BE_HOTWIRED(vehicle, false);
+
+	/* if (_networked) */
+
+
+	AUDIO::SET_VEH_RADIO_STATION(vehicle, "OFF");
+	STREAMING::SET_MODEL_AS_NO_LONGER_NEEDED(modelHash);
+	return vehicle;
 }
-
 
 void DefaultFunctions(void)
 {
@@ -34,9 +50,24 @@ void DefaultFunctions(void)
 		}
 	}
 
-	textDisplay();
-	PAD::DISABLE_CONTROL_ACTION(2, 199, 1);
-	PAD::DISABLE_CONTROL_ACTION(2, 200, 1);
+	Hud::TextDisplay(255, 255, 255, 255, Vector2(1.f, 1.f), 4, "Alpha 0.1");
+	PAD::DISABLE_CONTROL_ACTION(0, VehicleRadioWheel, 1);/*Radio*/
+	PAD::DISABLE_CONTROL_ACTION(0, EnterCheatCode, 1);/*CheatInput*/
+
+	if (PAD::IS_DISABLED_CONTROL_JUST_PRESSED(0, EnterCheatCode))
+	{
+		std::string model = Hud::TextBox("Model : ", "", 15);
+		std::cout << model.c_str() << std::endl;
+		if (model.size() > 1)
+		{
+			NativeVector3 playerCoords = ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), true);
+			float heading = ENTITY::GET_ENTITY_HEADING(PLAYER::PLAYER_PED_ID());
+			CreateVehicle(model.c_str(), Vector3(playerCoords.x, playerCoords.y, playerCoords.z), heading, true);
+		}
+	}
+
+	PAD::DISABLE_CONTROL_ACTION(2, FrontendPause, 1);
+	PAD::DISABLE_CONTROL_ACTION(2, FrontendPauseAlternate, 1);
 
 	if (PAD::IS_DISABLED_CONTROL_JUST_PRESSED(2, 199) || PAD::IS_DISABLED_CONTROL_JUST_PRESSED(2, 200))
 	{
@@ -48,29 +79,7 @@ void DefaultFunctions(void)
 	}
 	VEHICLE::SET_VEHICLE_DENSITY_MULTIPLIER_THIS_FRAME(0.0f);
 	VEHICLE::SET_RANDOM_VEHICLE_DENSITY_MULTIPLIER_THIS_FRAME(0.0f);
-	//VEHICLE::SET_PARKED_VEHICLE_DENSITY_MULTIPLIER_THIS_FRAME(0.0f);
+	VEHICLE::SET_PARKED_VEHICLE_DENSITY_MULTIPLIER_THIS_FRAME(0.0f);
 	VEHICLE::SET_DISABLE_RANDOM_TRAINS_THIS_FRAME(0.0f);
 	VEHICLE::SET_AMBIENT_VEHICLE_RANGE_MULTIPLIER_THIS_FRAME(0.0f);
-
-}
-
-const char* TextBox(const char* _title, const char* _exampleText, unsigned int _maxLength)
-{
-	MISC::DISPLAY_ONSCREEN_KEYBOARD(false, "FMMC_KEY_TIP", "", _exampleText, "", "", "", _maxLength);
-	while (MISC::UPDATE_ONSCREEN_KEYBOARD() != 1 && MISC::UPDATE_ONSCREEN_KEYBOARD() != 2)
-	{
-		Fibers::Suspend(0);
-	}
-	if (MISC::UPDATE_ONSCREEN_KEYBOARD() != 2)
-	{
-		const char* result = MISC::GET_ONSCREEN_KEYBOARD_RESULT();
-		printf("Result is : %s\n", result);
-		Fibers::Suspend(500);
-		return result;
-	}
-	else
-	{
-		Fibers::Suspend(500);
-	}
-	return NULL;
 }

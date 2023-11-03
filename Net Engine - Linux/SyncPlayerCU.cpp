@@ -1,8 +1,9 @@
 #include "Header.h"
 #include "SyncEvents.h"
 #include "Sync.h"
-#include "Reading.h"
 #include "Connections.h"
+#include "../Shared/Reading.h"
+#include "../Shared/Encryption.h"
 
 using namespace Synchronization;
 
@@ -27,7 +28,7 @@ void PlayerConnection(char** _args)
 
 	playerEnt->NodeInsertion();
 
-	TriggerClientEvent(serverId, "PlayerLanding", serverId);
+	TriggerClientEvent(serverId, "Sync::PlayerLanding", serverId);
 }
 
 void Synchronization::MainEvent(char** _args)
@@ -38,11 +39,26 @@ void Synchronization::MainEvent(char** _args)
 	float x = ToFloat(_args[0]);
 	float y = ToFloat(_args[1]);
 	float z = ToFloat(_args[2]);
+	char* entArray = _args[3];
 
 	Node::SendUpdate(serverId, Vector3(x, y, z));
 
-	/* for each entity in xml tag (player ped included) add them into nodes*/
-	/* for k ent, do ent->NodeInsertion()*/
+	if (entArray != nullptr)
+	{
+		char** entArrays = nullptr;
+		unsigned int entCount = 0;
+		Encryption::GetAsArguments(entArrays, entCount, entArray, '|');
+
+		for (size_t i = 0; i < entCount; i++)
+		{
+			char** entArray = nullptr;
+			unsigned int attributesCount = 0;
+			Encryption::GetAsArguments(entArray, attributesCount, entArrays[i], '/');
+			std::cout << "Entity buffer : " << entArrays[i] << std::endl;
+		}
+		/* for each entity in xml tag (player ped included) add them into nodes*/
+		/* for k ent, do ent->NodeInsertion()*/
+	}
 
 #pragma endregion
 #pragma region Callback

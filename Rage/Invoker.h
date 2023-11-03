@@ -1,7 +1,7 @@
 #ifndef INVOKER_H
 #define INVOKER_H
 #include "Process.h"
-
+#include <cstdint>
 
 typedef uint64_t nativeHash;
 typedef struct scrNativeCallContext

@@ -1,7 +1,7 @@
 #include "Header.h"
 #include "List.h"
 #include "Events.h"
-#include "Reading.h"
+#include "../Shared/Reading.h"
 #include "SyncEvents.h"
 #include "Sync.h"
 
