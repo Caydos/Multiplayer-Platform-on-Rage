@@ -73,7 +73,7 @@ void TriggerClientEvent(int _target, const char* _name, Arg ..._args)
 
 	((evtcl.SerializeArg(_args)), ...);
 	evtcl.buffer[evtcl.bufferSize - 2] = END_CHARACTER;
-	std::cout <<"Event buffer : " << evtcl.buffer << std::endl;
+	//std::cout <<"Event buffer : " << evtcl.buffer << std::endl;
 	delete[] targetString;
 	Connections::SendData(_target, evtcl.buffer);
 	return;

@@ -118,6 +118,10 @@ void TriggerServerEvent(Name _name, Arg..._args)
 
 #include "../Shared/Encryption.h"
 #include "../Shared/Reading.h"
+#include <nlohmann/json.hpp>
+
+
+using json = nlohmann::json;
 
 struct Vector3
 {
@@ -134,31 +138,10 @@ public:
 	Vector3 vec;
 };
 
+const int ARRAY_SIZE = 1024;
 
 int main()
 {
-	//Encrypt data;
-	//data.id = 12;
-	//data.name = (char*)"ayo";
-	//data.vec.x = 15;
-	//data.vec.y = 49;
-	//data.vec.z = 53;
-	//std::string argStr = Encryption::Encode('/', data.id, data.name, data.vec.x, data.vec.y, data.vec.z);
-
-	//std::cout << argStr << std::endl;
-
-	//char** holder = nullptr;
-	//unsigned int argCount = 0;
-	//Encryption::GetAsArguments(holder, argCount, (char*)argStr.c_str(), '/');
-
-
-	//std::cout << ToInt(holder[0]) << std::endl;
-	//std::cout << holder[1] << std::endl;
-	//std::cout << ToFloat(holder[2]) << std::endl;
-	//std::cout << ToFloat(holder[3]) << std::endl;
-	//std::cout << ToFloat(holder[4]) << std::endl;
-
-
 	InitSocket();
 	Connect();
 	Sleep(1000);
@@ -166,7 +149,8 @@ int main()
 	while (true)
 	{
 		//TriggerServerEvent("Damn", "dong", 149.56f, true, "Ta soeur la coquillete", "Zebi", 52, "Cordialement");
-		TriggerServerEvent("Synchronization::MainEvent", 56,47,69);
+		//TriggerServerEvent("Synchronization::MainEvent", 56,47,69, 
+		//	R"([[["ownerServerId",-1],["serverId", -1]]])");
 		Sleep(3000);
 	}
 	closesocket(clientSocket);

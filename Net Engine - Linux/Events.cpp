@@ -63,87 +63,43 @@ const unsigned int BUFFER_OVERSIZE = 30000;
 void Events::Listener(int socketfd)
 {
 	char msgBuffer[ARRAY_SIZE];
-	char* eventBuffer = nullptr;
-	int size = 0;
+	std::string eventBuffer;
 	while (true)
 	{
 		int bytesRead = recv(socketfd, msgBuffer, ARRAY_SIZE, 0);
 		if (bytesRead <= 0)
 		{
 			std::cout << "Error reading data." << std::endl;
-			if (eventBuffer != nullptr)
-			{
-				delete[] eventBuffer;
-			}
+			eventBuffer.clear();
 			Connections::Lost(socketfd);
 			break;
 		}
-		//std::cout << "recv : " << msgBuffer << std::endl;
-		void* result = std::memchr(msgBuffer, END_CHARACTER, ARRAY_SIZE);
-		if (result != nullptr)
-		{//Found
-			char* position = (char*)result;
-			int index = static_cast<int>(position - msgBuffer);
+		eventBuffer += msgBuffer;
 
-			int length = (eventBuffer == nullptr) ? 0 : strlen(eventBuffer);
-			int nSize = (eventBuffer == nullptr) ? index : length + index;
-			char* temp = new char[nSize + 1];
-			if (eventBuffer != nullptr)
-			{
-				std::memcpy(temp, eventBuffer, length);
-				delete[] eventBuffer;
-				eventBuffer = nullptr;
-			}
-			std::memcpy(temp + length, msgBuffer, index);
-			eventBuffer = temp;
-			// Trigger;
-			//std::cout << "Event is : " << eventBuffer << std::endl;
-			Events::Unserialize(eventBuffer);
-			delete[] eventBuffer;
-			eventBuffer = nullptr;
-			size = 0;
-			// Copy for the next event
-			if (index < ARRAY_SIZE && msgBuffer[index + 1] != '\0')
-			{
-				char* nextEvt = msgBuffer + index + 1;
-				int nextSize = strlen(nextEvt);
-				//std::cout << "Thing is :" << nextEvt << std::endl;
-				if (nextSize > 1)
-				{
-					//std::cout << "We got there" << std::endl;
-					eventBuffer = new char[nextSize + 1];
-					std::memcpy(eventBuffer, nextEvt, nextSize);
-					eventBuffer[nextSize] = '\0';
-					size = nextSize;
-				}
-			}
-		}
-		else
+		//std::cout << "recv : " << msgBuffer << std::endl;
+		const char* result = static_cast<const char*>(std::memchr(msgBuffer, END_CHARACTER, ARRAY_SIZE));
+		if (result != nullptr)
 		{
-			if (eventBuffer == nullptr)
-			{
-				eventBuffer = new char[ARRAY_SIZE + 1];
-				size = ARRAY_SIZE;
-				std::memcpy(eventBuffer, msgBuffer, ARRAY_SIZE);
-				eventBuffer[ARRAY_SIZE] = '\0';
-			}
-			else
-			{
-				char* temp = new char[size + ARRAY_SIZE + 1];
-				std::memcpy(temp, eventBuffer, size);
-				delete[] eventBuffer;
-				std::memcpy(temp + size, msgBuffer, ARRAY_SIZE);
-				temp[size + ARRAY_SIZE] = '\0';
-				eventBuffer = temp;
-				size += ARRAY_SIZE;
-				if (strlen(eventBuffer) > BUFFER_OVERSIZE)
-				{
-					delete[] eventBuffer;
-					eventBuffer = nullptr;
-					Connections::Kick(socketfd, "Buffer Oversize happened");
-					return;
-				}
-			}
+			const char* position = result;
+			int index = position - msgBuffer;
+			eventBuffer.erase(index);
+
+			/* Do somthing with the event */
+
+			//std::cout << "Event is : " << eventBuffer << std::endl;
+			Events::Unserialize((char*) eventBuffer.c_str());
+
+
+			eventBuffer.clear();
+			char* leftData = &msgBuffer[index + 1];
+			eventBuffer += leftData;
+			std::cout << eventBuffer << std::endl;
+		}
+		if (eventBuffer.size() > BUFFER_OVERSIZE)
+		{
+			eventBuffer.clear();
+			Connections::Kick(socketfd, "Buffer Oversize happened");
+			return;
 		}
 		bzero(msgBuffer, sizeof(msgBuffer));
 	}

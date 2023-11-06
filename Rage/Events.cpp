@@ -62,84 +62,45 @@ unsigned int count = 0;
 const unsigned int ARRAY_SIZE = 1024;
 const unsigned int BUFFER_OVERSIZE = 30000;
 
-
 void Events::Listener(int socketfd)
 {
 	char msgBuffer[ARRAY_SIZE];
-	char* eventBuffer = nullptr;
-	int size = 0;
+	std::string eventBuffer;
 	while (true)
 	{
 		int bytesRead = recv(socketfd, msgBuffer, ARRAY_SIZE, 0);
 		if (bytesRead <= 0)
 		{
 			std::cout << "Error reading data." << std::endl;
-			delete[] eventBuffer;
-			//Connections::Lost(socketfd);
+			eventBuffer.clear();
 			break;
 		}
-		//std::cout << "recv : " << msgBuffer << std::endl;
-		void* result = std::memchr(msgBuffer, END_CHARACTER, ARRAY_SIZE);
-		if (result != nullptr)
-		{//Found
-			char* position = (char*)result;
-			int index = static_cast<int>(position - msgBuffer);
+		eventBuffer += msgBuffer;
 
-			int length = (eventBuffer == nullptr) ? 0 : strlen(eventBuffer);
-			int nSize = (eventBuffer == nullptr) ? index : length + index;
-			char* temp = new char[nSize + 1];
-			if (eventBuffer != nullptr)
-			{
-				std::memcpy(temp, eventBuffer, length);
-				delete[] eventBuffer;
-			}
-			std::memcpy(temp + length, msgBuffer, index);
-			eventBuffer = temp;
-			// Trigger;
-			std::cout << "Event is : " << eventBuffer << std::endl;
-			Events::AddWaiting(eventBuffer);
-			delete[] eventBuffer;
-			eventBuffer = nullptr;
-			size = 0;
-			// Copy for the next event
-			if (index < ARRAY_SIZE)
-			{
-				char* nextEvt = msgBuffer + index + 1;
-				int nextSize = strlen(nextEvt);
-				if (nextSize > 1)
-				{
-					eventBuffer = new char[nextSize + 1];
-					std::memcpy(eventBuffer, nextEvt, nextSize);
-					eventBuffer[nextSize] = '\0';
-					size = nextSize;
-				}
-			}
-		}
-		else
+		//std::cout << "recv : " << msgBuffer << std::endl;
+		const char* result = static_cast<const char*>(std::memchr(msgBuffer, END_CHARACTER, ARRAY_SIZE));
+		if (result != nullptr)
 		{
-			if (eventBuffer == nullptr)
-			{
-				eventBuffer = new char[ARRAY_SIZE + 1];
-				size = ARRAY_SIZE;
-				std::memcpy(eventBuffer, msgBuffer, ARRAY_SIZE);
-				eventBuffer[ARRAY_SIZE] = '\0';
-			}
-			else
-			{
-				char* temp = new char[size + ARRAY_SIZE + 1];
-				std::memcpy(temp, eventBuffer, size);
-				delete[] eventBuffer;
-				std::memcpy(temp + size, msgBuffer, ARRAY_SIZE);
-				temp[size + ARRAY_SIZE] = '\0';
-				eventBuffer = temp;
-				size += ARRAY_SIZE;
-				if (strlen(eventBuffer) > BUFFER_OVERSIZE)
-				{
-					delete[] eventBuffer;
-					std::cout << "Server sent too much informations" << std::endl;
-					return;
-				}
-			}
+			const char* position = result;
+			int index = position - msgBuffer;
+			eventBuffer.erase(index);
+
+			/* Do somthing with the event */
+
+			//std::cout << "Event is : " << eventBuffer << std::endl << std::endl;
+			Events::AddWaiting(eventBuffer.c_str());
+
+			/* */
+			eventBuffer.clear();
+			char* leftData = &msgBuffer[index + 1];
+			eventBuffer += leftData;
+			std::cout << eventBuffer << std::endl;
+		}
+		if (eventBuffer.size() > BUFFER_OVERSIZE)
+		{
+			eventBuffer.clear();
+			std::cout << "Server sent too much informations" << std::endl;
+			return;
 		}
 		bzero(msgBuffer, sizeof(msgBuffer));
 	}
@@ -176,8 +137,6 @@ void Events::Unserialize(char* _buffer)
 		// Lock
 		while (events[eventId].processing == true)
 		{
-			//std::cout << "Waitin room" << std::endl;
-			//std::this_thread::sleep_for(std::chrono::milliseconds(10));
 			Fibers::Suspend(10);
 		}
 		events[eventId].processing = true;
@@ -286,7 +245,6 @@ void Events::RemoveWaiting(unsigned int index)
 	waitingEventsCount--;
 }
 
-#include "Natives.h"
 void Events::Fiber(void)
 {
 	while (1)

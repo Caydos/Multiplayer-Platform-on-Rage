@@ -3,7 +3,6 @@
 #include "Sync.h"
 #include "Connections.h"
 #include "../Shared/Reading.h"
-#include "../Shared/Encryption.h"
 
 using namespace Synchronization;
 
@@ -18,6 +17,16 @@ void PlayerConnection(char** _args)
 
 	Connections::SetDiscordId(discordId);
 
+	/*              */
+	//Entity::Entity* testEnt = new Entity::Entity;
+	//testEnt->hash = 1885233650;
+	//testEnt->type = 1;
+	//testEnt->position = Vector3(-127.90, 1268.96, 307.33);
+	//testEnt->ownerServerId = 3;
+
+	//Entity::Add(testEnt);
+	/*              */
+
 	Entity::Entity* playerEnt = new Entity::Entity;
 	playerEnt->position = Vector3(x, y, z);
 	playerEnt->ownerServerId = serverId;
@@ -26,9 +35,9 @@ void PlayerConnection(char** _args)
 
 	Entity::Add(playerEnt);
 
-	playerEnt->NodeInsertion();
-
-	TriggerClientEvent(serverId, "Sync::PlayerLanding", serverId);
+	playerEnt->Update();
+	//testEnt->Update();
+	TriggerClientEvent(serverId, "Sync::PlayerLanding", serverId, playerEnt->serverId);
 }
 
 void Synchronization::MainEvent(char** _args)
@@ -39,35 +48,23 @@ void Synchronization::MainEvent(char** _args)
 	float x = ToFloat(_args[0]);
 	float y = ToFloat(_args[1]);
 	float z = ToFloat(_args[2]);
-	char* entArray = _args[3];
+	char* serializedEntities = _args[3];
 
-	Node::SendUpdate(serverId, Vector3(x, y, z));
+	Node::Update(serverId, Vector3(x, y, z));
 
-	if (entArray != nullptr)
+	if (serializedEntities != nullptr)
 	{
-		char** entArrays = nullptr;
-		unsigned int entCount = 0;
-		Encryption::GetAsArguments(entArrays, entCount, entArray, '|');
-
-		for (size_t i = 0; i < entCount; i++)
-		{
-			char** entArray = nullptr;
-			unsigned int attributesCount = 0;
-			Encryption::GetAsArguments(entArray, attributesCount, entArrays[i], '/');
-			std::cout << "Entity buffer : " << entArrays[i] << std::endl;
-		}
-		/* for each entity in xml tag (player ped included) add them into nodes*/
-		/* for k ent, do ent->NodeInsertion()*/
+		std::cout << std::endl << std::endl << "Serialized data : " << serializedEntities << std::endl;
+		Entity::EntityDataUpdate(serializedEntities);
 	}
 
 #pragma endregion
 #pragma region Callback
 
-	//send to client node content
-	//TriggerClientEvent(Connections::GetLocalThreadId(), "Way_01", x, y, z);
+	Node::TriggerCallback(serverId);
 
 	// Refresh node
-	Node::AskForRefresh(serverId);
+	//Node::AskForRefresh(serverId);
 
 #pragma endregion
 }

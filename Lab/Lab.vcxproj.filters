@@ -16,7 +16,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Shared\Encryption.h">
+    <ClInclude Include="..\Libs\nlohmann\json.hpp">
       <Filter>Fichiers sources</Filter>
     </ClInclude>
   </ItemGroup>

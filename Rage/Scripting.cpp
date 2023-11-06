@@ -8,6 +8,7 @@
 #include "Sync.h"
 #include "API_Discord.h"
 
+int playerId = -1;
 bool IsConnected = false;
 bool loading = true;
 
@@ -50,7 +51,7 @@ void Scripting::Main()
 				if (IsConnected)
 				{
 					NativeVector3 vec = ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), true);
-					unsigned int hash = MISC::GET_HASH_KEY("mp_m_freemode_01");
+					Hash hash = MISC::GET_HASH_KEY("mp_m_freemode_01");
 					STREAMING::REQUEST_MODEL(hash);
 
 					while (!STREAMING::HAS_MODEL_LOADED(hash))
@@ -61,10 +62,15 @@ void Scripting::Main()
 					PLAYER::SET_PLAYER_MODEL(PLAYER::PLAYER_ID(), hash);
 					PED::SET_PED_DEFAULT_COMPONENT_VARIATION(PLAYER::PLAYER_PED_ID());
 					PED::RESET_PED_MOVEMENT_CLIPSET(PLAYER::PLAYER_PED_ID(), 0);
-					std::cout << vec.x << " " << vec.y << " " << vec.z << std::endl;
+					
+					Synchronization::Entity::Entity* playerEnt = new Synchronization::Entity::Entity;
+					playerEnt->localId = PLAYER::PLAYER_PED_ID();
+					playerEnt->type = 1;
+					playerEnt->hash = hash;
+
+					Synchronization::Entity::Add(playerEnt);
+
 					TriggerServerEvent("PlayerConnection", API_Discord::GetUser().id, hash, vec.x, vec.y, vec.z);
-					std::cout << "Connected to server" << std::endl;
-					Synchronization::Init();
 				}
 			}
 			else

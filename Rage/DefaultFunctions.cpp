@@ -57,12 +57,20 @@ void DefaultFunctions(void)
 	if (PAD::IS_DISABLED_CONTROL_JUST_PRESSED(0, EnterCheatCode))
 	{
 		std::string model = Hud::TextBox("Model : ", "", 15);
-		std::cout << model.c_str() << std::endl;
-		if (model.size() > 1)
+		if (strcmp(model.c_str(), "tp") == 0)
 		{
-			NativeVector3 playerCoords = ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), true);
-			float heading = ENTITY::GET_ENTITY_HEADING(PLAYER::PLAYER_PED_ID());
-			CreateVehicle(model.c_str(), Vector3(playerCoords.x, playerCoords.y, playerCoords.z), heading, true);
+			ENTITY::SET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), Vector3(-127.91f, 1269.07f, 307.43f), 1, 0, 0, 1);
+			Fibers::Suspend(125);
+		}
+		else
+		{
+			std::cout << model.c_str() << std::endl;
+			if (model.size() > 1)
+			{
+				NativeVector3 playerCoords = ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), true);
+				float heading = ENTITY::GET_ENTITY_HEADING(PLAYER::PLAYER_PED_ID());
+				CreateVehicle(model.c_str(), Vector3(playerCoords.x, playerCoords.y, playerCoords.z), heading, true);
+			}
 		}
 	}
 

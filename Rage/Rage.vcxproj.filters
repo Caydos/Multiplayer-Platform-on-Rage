@@ -63,6 +63,9 @@
     <Filter Include="Client\Scripting\Scripts\Hud">
       <UniqueIdentifier>{9afd4a26-e53a-40a3-8e98-9bf06d662c5c}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Common\Encryption">
+      <UniqueIdentifier>{a474d354-fa4f-4865-916d-e81f6d3ed974}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -131,6 +134,12 @@
     <ClInclude Include="Sync.h">
       <Filter>Client\Scripting\SyncTree\Sync</Filter>
     </ClInclude>
+    <ClInclude Include="..\Shared\Encryption.h">
+      <Filter>Common\Encryption</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Libs\nlohmann\json.hpp">
+      <Filter>Common</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -184,6 +193,9 @@
     </ClCompile>
     <ClCompile Include="Entity.cpp">
       <Filter>Client\Scripting\SyncTree\Sync</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Shared\Encryption.cpp">
+      <Filter>Common\Encryption</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

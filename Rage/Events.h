@@ -75,7 +75,7 @@ void TriggerServerEvent(Name _name, Arg..._args)
 	((evtSv.SerializeArg(_args)), ...);
 	evtSv.buffer[evtSv.bufferSize - 2] = END_CHARACTER;
 	evtSv.buffer[evtSv.bufferSize - 1] = '\0';
-	//std::cout << evtSv.buffer << std::endl;
+	//std::cout << "Sending : " << evtSv.buffer << std::endl;
 	send(clientSocket, evtSv.buffer, strlen(evtSv.buffer) + 1, 0);
 	delete[] targetString;
 	delete[] evtSv.buffer;

@@ -74,8 +74,50 @@
   <ImportGroup Label="Shared" />
   <ImportGroup Label="PropertySheets" />
   <PropertyGroup Label="UserMacros" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
+    <ProjectPublicIncludePath>
+    </ProjectPublicIncludePath>
+    <IncludePath>D:\GBS\Project\Libs;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
+    <ProjectPublicIncludePath>
+    </ProjectPublicIncludePath>
+    <IncludePath>D:\GBS\Project\Libs;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
+    <ProjectPublicIncludePath>
+    </ProjectPublicIncludePath>
+    <IncludePath>D:\GBS\Project\Libs;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
+    <ProjectPublicIncludePath>
+    </ProjectPublicIncludePath>
+    <IncludePath>D:\GBS\Project\Libs;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ProjectPublicIncludePath>
+    </ProjectPublicIncludePath>
+    <IncludePath>D:\GBS\Project\Libs;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ProjectPublicIncludePath>
+    </ProjectPublicIncludePath>
+    <IncludePath>D:\GBS\Project\Libs;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+    <ProjectPublicIncludePath>
+    </ProjectPublicIncludePath>
+    <IncludePath>D:\GBS\Project\Libs;$(IncludePath)</IncludePath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
+    <ProjectPublicIncludePath>
+    </ProjectPublicIncludePath>
+    <IncludePath>D:\GBS\Project\Libs;$(IncludePath)</IncludePath>
+  </PropertyGroup>
   <ItemGroup>
+    <ClCompile Include="..\Shared\Encryption.cpp" />
     <ClCompile Include="..\Shared\Reading.cpp" />
+    <ClCompile Include="..\Shared\Vector.cpp" />
     <ClCompile Include="Connections.cpp" />
     <ClCompile Include="Events.cpp" />
     <ClCompile Include="List.cpp" />
@@ -83,11 +125,12 @@
     <ClCompile Include="Source.cpp" />
     <ClCompile Include="Entities.cpp" />
     <ClCompile Include="SyncPlayerCU.cpp" />
-    <ClCompile Include="Vector.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Libs\nlohmann\json.hpp" />
     <ClInclude Include="..\Shared\Encryption.h" />
     <ClInclude Include="..\Shared\Reading.h" />
+    <ClInclude Include="..\Shared\Vector.h" />
     <ClInclude Include="Connections.h" />
     <ClInclude Include="DataHolder.h" />
     <ClInclude Include="Events.h" />
@@ -95,7 +138,6 @@
     <ClInclude Include="List.h" />
     <ClInclude Include="Sync.h" />
     <ClInclude Include="SyncEvents.h" />
-    <ClInclude Include="Vector.h" />
   </ItemGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <Link>
@@ -103,7 +145,8 @@
     </Link>
     <ClCompile>
       <CppLanguageStandard>c++17</CppLanguageStandard>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\GBS\Project\Libs</AdditionalIncludeDirectories>
+      <CompileAs>Default</CompileAs>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -112,7 +155,38 @@
     </Link>
     <ClCompile>
       <CppLanguageStandard>c++17</CppLanguageStandard>
-      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>D:\GBS\Project\Libs</AdditionalIncludeDirectories>
+      <CompileAs>Default</CompileAs>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\GBS\Project\Libs</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\GBS\Project\Libs</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|ARM64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\GBS\Project\Libs</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|ARM64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\GBS\Project\Libs</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x86'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\GBS\Project\Libs</AdditionalIncludeDirectories>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x86'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\GBS\Project\Libs</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

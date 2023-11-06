@@ -121,6 +121,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>D:\GBS\Project\Libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -140,6 +141,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <AdditionalIncludeDirectories>D:\GBS\Project\Libs;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -151,6 +153,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\Libs\nlohmann\json.hpp" />
+    <ClInclude Include="..\Shared\Encryption.h" />
     <ClInclude Include="..\Shared\Vector.h" />
     <ClInclude Include="API_Discord.h" />
     <ClInclude Include="Controls.h" />
@@ -175,6 +179,7 @@
     <ClInclude Include="Types.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Shared\Encryption.cpp" />
     <ClCompile Include="..\Shared\Vector.cpp" />
     <ClCompile Include="API_Discord.cpp" />
     <ClCompile Include="Commands.cpp" />
