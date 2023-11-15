@@ -4,9 +4,9 @@
 #include <cstring>
 #include <string>
 
-void Hud::TextDisplay(int _red = 255, int _green = 255, int _blue = 255, int _alpha = 255, Vector2 _scale = { .0f,.0f }, int _font = 4, const char* _text = "Null")
+void Hud::TextDisplay(Vector4 _colors = {255,255,255,255}, Vector2 _scale = {.0f,.0f}, Vector2 _position = {.0f,.0f}, int _font = 4, const char* _text = "Null")
 {
-	HUD::SET_TEXT_COLOUR(_red, _green, _blue, _alpha);
+	HUD::SET_TEXT_COLOUR(_colors.x, _colors.y, _colors.z, _colors.w);
 	HUD::SET_TEXT_SCALE(_scale.x, _scale.y);
 	HUD::SET_TEXT_FONT(_font);
 	HUD::SET_TEXT_DROP_SHADOW();
@@ -14,7 +14,7 @@ void Hud::TextDisplay(int _red = 255, int _green = 255, int _blue = 255, int _al
 
 	HUD::BEGIN_TEXT_COMMAND_DISPLAY_TEXT("STRING");
 	HUD::ADD_TEXT_COMPONENT_SUBSTRING_PLAYER_NAME(_text);
-	HUD::END_TEXT_COMMAND_DISPLAY_TEXT({ 0.01f, 0.01f }, 1);
+	HUD::END_TEXT_COMMAND_DISPLAY_TEXT(_position, 1);
 }
 
 std::string Hud::TextBox(const char* _title, const char* _exampleText, unsigned int _maxLength)

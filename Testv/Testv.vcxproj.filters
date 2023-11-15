@@ -1,0 +1,57 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\V8">
+      <UniqueIdentifier>{8756d2c6-7526-40ae-96f2-e2e1369f2427}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Fibers">
+      <UniqueIdentifier>{68dcaab4-c658-4d4e-b61f-e79d27162e45}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\V8\Functions">
+      <UniqueIdentifier>{8315ab45-b44a-4dcc-89f3-b1730b601fec}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\V8\Scripts">
+      <UniqueIdentifier>{496716fb-a394-4123-ada6-5d765a3f451d}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Source.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="JavaScriptEngine.cpp">
+      <Filter>Source Files\V8</Filter>
+    </ClCompile>
+    <ClCompile Include="Fiber.cpp">
+      <Filter>Source Files\Fibers</Filter>
+    </ClCompile>
+    <ClCompile Include="JSScripts.cpp">
+      <Filter>Source Files\V8\Scripts</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="JavaScriptEngine.h">
+      <Filter>Source Files\V8</Filter>
+    </ClInclude>
+    <ClInclude Include="Fiber.h">
+      <Filter>Source Files\Fibers</Filter>
+    </ClInclude>
+    <ClInclude Include="V8DefaultFunctions.h">
+      <Filter>Source Files\V8\Functions</Filter>
+    </ClInclude>
+    <ClInclude Include="JSScripts.h">
+      <Filter>Source Files\V8\Scripts</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

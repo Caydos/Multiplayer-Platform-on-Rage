@@ -1,12 +1,13 @@
 #include "Scripts.h"
+#include <iostream>
 #include "Fiber.h"
 #include "Natives.h"
 #include "Controls.h"
 #include "Types.h"
-
 #include "Hud.h"
 #include "ScriptNames.h"
-#include <iostream>
+#include "PedFactory.h"
+#include "Pools.h"
 
 bool hasStoppedScripts = false;
 
@@ -39,6 +40,7 @@ Vehicle CreateVehicle(const char* _model, Vector3 _coords, float _heading, bool 
 
 void DefaultFunctions(void)
 {
+	Pools::Display();
 	if (!hasStoppedScripts)
 	{
 		hasStoppedScripts = true;
@@ -50,7 +52,7 @@ void DefaultFunctions(void)
 		}
 	}
 
-	Hud::TextDisplay(255, 255, 255, 255, Vector2(1.f, 1.f), 4, "Alpha 0.1");
+	//Hud::TextDisplay({ 255, 255, 255, 255 }, Vector2(1.f, 1.f), {.0f,.0f}, 4, "Alpha 0.1");
 	PAD::DISABLE_CONTROL_ACTION(0, VehicleRadioWheel, 1);/*Radio*/
 	PAD::DISABLE_CONTROL_ACTION(0, EnterCheatCode, 1);/*CheatInput*/
 
@@ -60,6 +62,11 @@ void DefaultFunctions(void)
 		if (strcmp(model.c_str(), "tp") == 0)
 		{
 			ENTITY::SET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), Vector3(-127.91f, 1269.07f, 307.43f), 1, 0, 0, 1);
+			Fibers::Suspend(125);
+		}
+		else if (strcmp(model.c_str(), "test01") == 0)
+		{
+			PedFactory::Tp();
 			Fibers::Suspend(125);
 		}
 		else

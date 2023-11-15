@@ -1,7 +1,6 @@
 #include "pch.h"
 #include "Hook.h"
-#include "Process.h"
-#include "Scripting.h"
+#include "Memory.h"
 #include "Fiber.h"
 
 GtaThreadVtbl* thread_vftable;
@@ -56,20 +55,18 @@ int hk_tick(GtaThread* that, uint32_t ops_to_execute)
 
 void Hook::Initialize()
 {
-	char* ptr;
+	Memory::handle ptr;
 	DWORD og_protect;
 
-
-	ptr = ScanPattern(scan_base, scan_length, "\x48\x89\x03\xE8\x00\x00\x00\x00\x48\x8B\xC3\x48\x83\xC4\x20\x5B\xC3\xCC\xED", "xxxx????xxxxxxxxxxx");
+	ptr = Memory::handle(Memory::ScanPattern(scan_base, scan_length, "\x48\x89\x03\xE8\x00\x00\x00\x00\x48\x8B\xC3\x48\x83\xC4\x20\x5B\xC3\xCC\xED", "xxxx????xxxxxxxxxxx"));
 
 	if (!ptr)
 	{
 		printf("Error finding Gta Thread VFTable");
 	}
 
-	ptr -= 7;
-	ptr += *(int32_t*)(ptr)+sizeof(int32_t);
-	thread_vftable = (GtaThreadVtbl*)ptr;
+	ptr = ptr.sub(7).rip();
+	thread_vftable = ptr.as<GtaThreadVtbl*>();
 
 	VirtualProtect(thread_vftable, sizeof(GtaThreadVtbl), PAGE_READWRITE, &og_protect);
 	{

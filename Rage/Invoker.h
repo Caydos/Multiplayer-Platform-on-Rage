@@ -1,6 +1,5 @@
 #ifndef INVOKER_H
 #define INVOKER_H
-#include "Process.h"
 #include <cstdint>
 
 typedef uint64_t nativeHash;
@@ -62,45 +61,6 @@ namespace Natives
 
 	void Initialize();
 }
-
-
-
-//class Natives
-//{
-//
-//private:
-//
-//	static nativeHash GetNewHash(nativeHash oldHash);
-//	template <typename t>
-//	static void PushArg(t _value)
-//	{
-//		uint64_t val;
-//		*(t*)(&val) = _value;
-//		g_context.argument_stack[g_context.base.arg_count++] = val;
-//	}
-//
-//	static void* NativeCall();
-//
-//public:
-//	static void DumpEntryPoints(char* _outputFileName);
-//
-//	template<typename ret, class...arg>
-//	static ret Invoke(nativeHash _oldHash, arg const&..._args)
-//	{
-//		g_hash = _oldHash;
-//		g_context.base.arg_count = 0;
-//		g_context.base.data_count = 0;
-//
-//		// Reset native data
-//		((PushArg(_args)), ...);
-//
-//		return *(ret*)(NativeCall());
-//	};
-//
-//
-//	static void Initialize();
-//};
-
 
 #endif // !INVOKER_H
 

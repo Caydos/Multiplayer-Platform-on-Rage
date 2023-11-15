@@ -1,5 +1,6 @@
 #include "pch.h"
 #include "Invoker.h"
+#include "Memory.h"
 #include "CrossMap.h"
 
 
@@ -66,11 +67,11 @@ void Natives::DumpEntryPoints(char* _outputFileName)
 
 void Natives::Initialize()
 {
-	char* ptr;
+	Memory::handle ptr;
 
-	ptr = ScanPattern(scan_base, scan_length,
+	ptr = Memory::handle(Memory::ScanPattern(scan_base, scan_length,
 		"\x76\x32\x48\x8B\x53\x40\x48\x8D\x0D",
-		"xxxxxxxxx");
+		"xxxxxxxxx"));
 
 	if (!ptr)
 	{
@@ -78,18 +79,25 @@ void Natives::Initialize()
 	}
 
 	/* Read as RIP-relative offset */
-	get_native_handler = (void (*(*)(scrNativeRegistrationTable * table, uint64_t hash))(scrNativeCallContext*)) (ptr + 18 + *(int32_t*)(ptr + 18) + sizeof(int32_t));
-	native_registration_table = (scrNativeRegistrationTable*)(ptr + 9 + *(int32_t*)(ptr + 9) + sizeof(int32_t));
+	//get_native_handler = (void (*(*)(scrNativeRegistrationTable * table, uint64_t hash))(scrNativeCallContext*)) (ptr + 18 + *(int32_t*)(ptr + 18) + sizeof(int32_t));
+	//native_registration_table = (scrNativeRegistrationTable*)(ptr + 9 + *(int32_t*)(ptr + 9) + sizeof(int32_t));
+	Memory::handle get_native_handler_ptr = ptr.add(18).rip();
+	get_native_handler = get_native_handler_ptr.as<void (*(*)(scrNativeRegistrationTable * table, uint64_t hash))(scrNativeCallContext*)>();
 
-	ptr = ScanPattern(scan_base, scan_length,
+	Memory::handle native_registration_table_ptr = ptr.add(9).rip();
+	native_registration_table = native_registration_table_ptr.as<scrNativeRegistrationTable*>();
+
+
+	ptr = Memory::handle(Memory::ScanPattern(scan_base, scan_length,
 		"\x83\x79\x18\x00\x48\x8B\xD1\x74\x4A\xFF\x4A\x18\x48\x63\x4A\x18\x48\x8D\x41\x04\x48\x8B\x4C\xCA",
-		"xxxxxxxxxxxxxxxxxxxxxxxx");
+		"xxxxxxxxxxxxxxxxxxxxxxxx"));
 	if (!ptr)
 	{
 		printf("Failed to find set data results pattern.");
 	}
 
-	set_data_results = (void (*)(scrNativeCallContext * callContext)) ptr;
+	//set_data_results = (void (*)(scrNativeCallContext * callContext)) ptr;
+	set_data_results = ptr.as<void (*)(scrNativeCallContext * callContext)>();
 
 	g_context.base.result = &g_context.result_stack[0];
 	g_context.base.arguments = &g_context.argument_stack[0];

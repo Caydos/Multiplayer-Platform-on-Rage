@@ -23,9 +23,6 @@
     <Filter Include="Common\Fiber">
       <UniqueIdentifier>{fc6bbf6d-b511-4d1b-a300-5d7d5d66c359}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Common\Process">
-      <UniqueIdentifier>{ea937e95-8b2f-4565-82c5-f01d83ffd7af}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Client\Hook">
       <UniqueIdentifier>{fd49d4a1-b21d-4b06-9e3c-9403874b857a}</UniqueIdentifier>
     </Filter>
@@ -66,6 +63,15 @@
     <Filter Include="Common\Encryption">
       <UniqueIdentifier>{a474d354-fa4f-4865-916d-e81f6d3ed974}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Common\Memory">
+      <UniqueIdentifier>{1949a671-05e8-4ed8-8f04-9db7c9fa00ab}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Client\Scripting\PedFactory">
+      <UniqueIdentifier>{6a8a935d-78af-4f43-8885-2772f0d65590}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Client\Scripting\Pools">
+      <UniqueIdentifier>{cc4c9e21-22d2-4983-8ff6-27ae536c9c3d}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -88,9 +94,6 @@
     </ClInclude>
     <ClInclude Include="Fiber.h">
       <Filter>Common\Fiber</Filter>
-    </ClInclude>
-    <ClInclude Include="Process.h">
-      <Filter>Common\Process</Filter>
     </ClInclude>
     <ClInclude Include="tasks.h">
       <Filter>Client\Scripting\Data</Filter>
@@ -140,6 +143,15 @@
     <ClInclude Include="..\Libs\nlohmann\json.hpp">
       <Filter>Common</Filter>
     </ClInclude>
+    <ClInclude Include="Memory.h">
+      <Filter>Common\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="PedFactory.h">
+      <Filter>Client\Scripting\PedFactory</Filter>
+    </ClInclude>
+    <ClInclude Include="Pools.h">
+      <Filter>Client\Scripting\Pools</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -153,9 +165,6 @@
     </ClCompile>
     <ClCompile Include="Fiber.cpp">
       <Filter>Common\Fiber</Filter>
-    </ClCompile>
-    <ClCompile Include="Process.cpp">
-      <Filter>Common\Process</Filter>
     </ClCompile>
     <ClCompile Include="Server.cpp">
       <Filter>Server</Filter>
@@ -196,6 +205,15 @@
     </ClCompile>
     <ClCompile Include="..\Shared\Encryption.cpp">
       <Filter>Common\Encryption</Filter>
+    </ClCompile>
+    <ClCompile Include="Memory.cpp">
+      <Filter>Common\Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="PedFactory.cpp">
+      <Filter>Client\Scripting\PedFactory</Filter>
+    </ClCompile>
+    <ClCompile Include="Pools.cpp">
+      <Filter>Client\Scripting\Pools</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

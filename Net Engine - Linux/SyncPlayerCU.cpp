@@ -17,16 +17,6 @@ void PlayerConnection(char** _args)
 
 	Connections::SetDiscordId(discordId);
 
-	/*              */
-	//Entity::Entity* testEnt = new Entity::Entity;
-	//testEnt->hash = 1885233650;
-	//testEnt->type = 1;
-	//testEnt->position = Vector3(-127.90, 1268.96, 307.33);
-	//testEnt->ownerServerId = 3;
-
-	//Entity::Add(testEnt);
-	/*              */
-
 	Entity::Entity* playerEnt = new Entity::Entity;
 	playerEnt->position = Vector3(x, y, z);
 	playerEnt->ownerServerId = serverId;

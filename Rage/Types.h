@@ -30,4 +30,6 @@ typedef int ColourIndex;
 typedef int Sphere;
 typedef int Blip;
 
+
+
 #endif // !TYPES_H

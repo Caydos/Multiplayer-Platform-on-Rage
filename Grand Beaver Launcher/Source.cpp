@@ -108,6 +108,7 @@ void RunGame(void)
 			runCommand[i] = '\\';
 		}
 	}
+	//std::cout << runCommand << std::endl;
 	system(runCommand);
 
 	// Initialisation

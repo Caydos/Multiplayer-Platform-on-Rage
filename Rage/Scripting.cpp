@@ -7,6 +7,8 @@
 #include "Events.h"
 #include "Sync.h"
 #include "API_Discord.h"
+#include "Pools.h"
+#include "PedFactory.h"
 
 int playerId = -1;
 bool IsConnected = false;
@@ -40,6 +42,11 @@ void Scripting::Main()
 				//}
 				// Disable save option
 				MISC::SET_MISSION_FLAG(true);
+			}
+			else
+			{
+				Pools::Hook();
+				PedFactory::Hook();
 			}
 		}
 		if (GetAsyncKeyState(VK_F8) & 0x8000)
