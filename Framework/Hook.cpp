@@ -1,7 +1,10 @@
-#include "pch.h"
+#include "Framework.h"
 #include "Hook.h"
 #include "Memory.h"
-#include "Fiber.h"
+#include "Fibers.h"
+#include "Hook.h"
+#include "Pools.h"
+#include "GameUtils.h"
 
 GtaThreadVtbl* thread_vftable;
 
@@ -62,11 +65,13 @@ void Hook::Initialize()
 
 	if (!ptr)
 	{
-		printf("Error finding Gta Thread VFTable");
+		Logger::Write("Error finding Gta Thread VFTable");
 	}
 
 	ptr = ptr.sub(7).rip();
 	thread_vftable = ptr.as<GtaThreadVtbl*>();
+	Pools::Hook();
+	GameUtils::Hook();
 
 	VirtualProtect(thread_vftable, sizeof(GtaThreadVtbl), PAGE_READWRITE, &og_protect);
 	{

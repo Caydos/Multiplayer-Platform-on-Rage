@@ -4,10 +4,8 @@
 #include "Events.h"
 #include "Scripting.h"
 #include "../Shared/Reading.h"
-#include <nlohmann/json.hpp>
 
 
-using json = nlohmann::json;
 
 void Synchronization::Init(void)
 {
@@ -21,11 +19,11 @@ void Synchronization::Loop(void)
 	{/*always send player data and each X time send entity data as encrypted tags*/
 		NativeVector3 pCoords = ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), false);
 
-		std::string callBString = Entity::GetAsJsonString();
-		if (callBString.size() > 3/*by default it will be "[]\0"*/)
-		{
-			TriggerServerEvent("Synchronization::MainEvent", pCoords.x, pCoords.y, pCoords.z, callBString.c_str());
-		}
+		//std::string callBString = Entity::GetAsJsonString();
+		//if (callBString.size() > 3/*by default it will be "[]\0"*/)
+		//{
+		//	TriggerServerEvent("Synchronization::MainEvent", pCoords.x, pCoords.y, pCoords.z, callBString.c_str());
+		//}
 		Fibers::Suspend(SYNC_TIME);
 	}
 }

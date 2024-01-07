@@ -30,7 +30,7 @@ public:
 	void SerializeArg(Arg _arg)
 	{
 		std::stringstream valueString;
-		valueString /*<< typeid(_arg).raw_name()*/ << _arg; // Potential issue 1
+		valueString /*<< typeid(_arg).raw_name()*/ << _arg;
 		std::string argStr = valueString.str();
 
 		int argLength = argStr.length();
@@ -46,7 +46,6 @@ public:
 		}
 
 		buffer = newBuffer;
-		//std::cout << argStr << ' ' << oldBufferSize << std::endl;
 
 		for (int i = 0; i < argLength; i++)
 		{
@@ -54,7 +53,6 @@ public:
 		}
 		buffer[bufferSize - 2] = SEPARATOR_CHARACTER; // Null-terminate the string
 		buffer[bufferSize - 1] = '\0'; // Null-terminate the string
-		//printf("%s\n", buffer);
 	}
 };
 extern SOCKET clientSocket;

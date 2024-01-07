@@ -27,10 +27,8 @@ namespace JSScripts
 		void Run(void);
 
 		v8::Persistent<v8::Function>* storedFunctions;
-		std::function<void()>* functions;
-		fiber* fibers;
 		unsigned int functionsCount;
-		v8::Persistent<v8::Function>* AllocateNewFunction();
+		unsigned int AllocateNewFunction();
 	};
 
 

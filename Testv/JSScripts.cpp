@@ -2,10 +2,11 @@
 #include "JavaScriptEngine.h"
 #include <shared_mutex>
 #include <json.hpp>
+#include <vector>
 #include "Fiber.h"
 
 using json = nlohmann::json;
-
+static std::vector<JSScripts::Resource> resources;
 static JSScripts::Resource* scripts = nullptr;
 static unsigned int scriptCount = 0;
 static std::shared_mutex mutex;
@@ -27,17 +28,61 @@ void CreateThread(const v8::FunctionCallbackInfo<v8::Value>& _args)
 	// Check if there's a function argument
 	if (_args.Length() > 0 && _args[0]->IsFunction())
 	{
-		v8::Local<v8::Function> jsFunction = v8::Local<v8::Function>::Cast(_args[0]);
-		std::shared_lock<std::shared_mutex> lock(mutex);
-		for (unsigned int scriptId = 0;  scriptId < scriptCount;  scriptId++)
+		v8::Local<v8::Function> jsFunction = _args[0].As<v8::Function>();
+		//std::shared_lock<std::shared_mutex> lock(mutex);
+		for (unsigned int scriptId = 0; scriptId < scriptCount; scriptId++)
 		{
 			if (scripts[scriptId].isolate == isolate)
 			{
-				scripts[scriptId].AllocateNewFunction()->Reset(isolate, jsFunction);
+				unsigned int scriptFunctionId = scripts[scriptId].AllocateNewFunction();
+				scripts[scriptId].storedFunctions[scriptFunctionId].Reset(isolate, jsFunction);
+
 				std::string fiberName = scripts[scriptId].name;
 				fiberName += ':#';
 				fiberName += std::to_string(scripts[scriptId].functionsCount - 1);
-				Fibers::Create(fiberName.c_str(), [] {});
+				void** array = new void* [3];
+				array[0] = scripts[scriptId].isolate;
+				array[1] = &scripts[scriptId].storedFunctions[scriptFunctionId];
+				array[2] = nullptr;
+				Fibers::Create(fiberName.c_str(), [] {
+					while (true)
+					{
+						std::cout << "Ticking" << std::endl;
+						void** fiberContent = Fibers::GetContent();
+						if (fiberContent != nullptr)
+						{
+							v8::Isolate* lcIsolate = (v8::Isolate*)fiberContent[0];
+							v8::Persistent<v8::Function>* storedFunction = (v8::Persistent<v8::Function>*)fiberContent[1];
+							if (fiberContent[2] != nullptr)
+							{
+								std::cout << "Stoping ma biche" << std::endl;
+								lcIsolate->TerminateExecution();
+								lcIsolate->Dispose();
+								break;
+							}
+
+							v8::Isolate::Scope isolate_scope(lcIsolate);
+							v8::HandleScope handle_scope(lcIsolate);
+							v8::Local<v8::Context> context = v8::Context::New(lcIsolate);
+							v8::Context::Scope context_scope(context);
+
+							v8::Local<v8::Function> function = v8::Local<v8::Function>::New(lcIsolate, *storedFunction);
+
+							//// Prepare for function call
+							const int argc = 0;
+							v8::Local<v8::Value>* argv = nullptr;  // Even if argc is 0, this needs to be defined
+
+							//// Call the function
+							v8::MaybeLocal<v8::Value> result = function->Call(context, context->Global(), argc, argv);
+
+							// Handle the result (if necessary)
+							if (result.IsEmpty())
+							{
+								std::cout << "V8 - Result handle is empty" << std::endl;
+							}
+							Fibers::Suspend(0);
+						}
+					}}, array);
 			}
 		}
 	}
@@ -45,7 +90,7 @@ void CreateThread(const v8::FunctionCallbackInfo<v8::Value>& _args)
 
 void Suspend(const v8::FunctionCallbackInfo<v8::Value>& _args)
 {
-	if (_args.Length() < 1) 
+	if (_args.Length() < 1)
 	{
 		Fibers::Suspend(0);
 		return;
@@ -85,6 +130,7 @@ void JSScripts::Resource::Run(void)
 
 		this->AddFunctionToGbsObj("log", ConsoleLog);
 		this->AddFunctionToGbsObj("createThread", CreateThread);
+		this->AddFunctionToGbsObj("suspend", Suspend);
 
 
 		context->Global()->Set(context,
@@ -97,7 +143,7 @@ void JSScripts::Resource::Run(void)
 	}
 }
 
-v8::Persistent<v8::Function>* JSScripts::Resource::AllocateNewFunction()
+unsigned int JSScripts::Resource::AllocateNewFunction()
 {
 	if (this->functionsCount)
 	{
@@ -112,7 +158,7 @@ v8::Persistent<v8::Function>* JSScripts::Resource::AllocateNewFunction()
 	}
 
 	this->functionsCount++;
-	return &this->storedFunctions[this->functionsCount - 1];
+	return this->functionsCount - 1;
 }
 
 
@@ -132,13 +178,13 @@ static void AddToArray(JSScripts::Resource _resource)
 	}
 	scripts[scriptCount] = _resource;
 	//Create isolate etc....
-	scripts[scriptCount].params.array_buffer_allocator = v8::ArrayBuffer::Allocator::NewDefaultAllocator();
-	scripts[scriptCount].isolate = v8::Isolate::New(scripts[scriptCount].params);
-	scripts[scriptCount].Run();
-	scripts[scriptCount].functionsCount = 0;
-	scripts[scriptCount].fibers = nullptr;
-	scripts[scriptCount].storedFunctions = nullptr;
 	scriptCount++;
+	unsigned int scriptId = scriptCount - 1;
+	scripts[scriptId].params.array_buffer_allocator = v8::ArrayBuffer::Allocator::NewDefaultAllocator();
+	scripts[scriptId].isolate = v8::Isolate::New(scripts[scriptId].params);
+	scripts[scriptId].functionsCount = 0;
+	scripts[scriptId].storedFunctions = nullptr;
+	scripts[scriptId].Run();
 }
 
 static void RemoveFromArray(const char* _name)
@@ -148,26 +194,46 @@ static void RemoveFromArray(const char* _name)
 	{
 		if (strcmp(scripts[scriptId].name.c_str(), _name) == 0)
 		{
-			scripts[scriptId].isolate->Dispose();
+			if (scripts[scriptId].storedFunctions != nullptr)
+			{
+				for (unsigned int functionId = 0; functionId < scripts[scriptId].functionsCount; functionId++)
+				{
+					std::string fiberName = scripts[scriptId].name;
+					fiberName += "#";
+					fiberName += std::to_string(functionId);
+					int val;
+					Fibers::SetContentValue(fiberName.c_str(), 2, &val);//Internal Kill
+
+					Fibers::DeleteFromName(fiberName.c_str());
+					scripts[scriptId].storedFunctions[functionId].Clear();
+				}
+				delete[] scripts[scriptId].storedFunctions;
+			}
+			scripts[scriptId].gbsObj.Clear();
+
+			std::cout << "Gotcha" << std::endl;
 			delete scripts[scriptId].params.array_buffer_allocator;
 
-			for (unsigned int flSciptId = scriptId; flSciptId < scriptCount - 1; flSciptId++)
+			scriptCount--;
+			for (unsigned int flsciptid = scriptId; flsciptid < scriptCount; flsciptid++)
 			{
-				scripts[flSciptId] = scripts[flSciptId + 1];
+				scripts[flsciptid] = scripts[flsciptid + 1];
 			}
-			if (scriptCount - 1 > 0)
-			{
-				JSScripts::Resource* tempScripts = new JSScripts::Resource[scriptCount - 1];
-				std::memcpy(tempScripts, scripts, (scriptCount - 1) * sizeof(JSScripts::Resource));
-				delete[] scripts;
-				scripts = tempScripts;
-			}
-			else
+			if (scriptCount <= 0)
 			{
 				delete[] scripts;
 				scripts = nullptr;
 			}
-			scriptCount--;
+			else
+			{
+				//if (scripts != nullptr)
+				{
+					JSScripts::Resource* tempResources = new JSScripts::Resource[scriptCount];
+					std::memcpy(tempResources, scripts, scriptCount * sizeof(JSScripts::Resource));
+					delete[] scripts;// error there fucking script deletion
+					scripts = tempResources;
+				}
+			}
 			return;
 		}
 	}

@@ -1,0 +1,186 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Source Files\Utils">
+      <UniqueIdentifier>{e973bc8b-4686-4fea-92d7-5fed8369a2c5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utils\Fibers">
+      <UniqueIdentifier>{4d1c72f8-b368-4289-9610-ed506f34dc60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utils\Logger">
+      <UniqueIdentifier>{a6852a76-2d42-450e-9bcc-986cd2830ceb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utils\Network">
+      <UniqueIdentifier>{35b83679-3dbb-46b5-8f71-021b7cff164a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scripting">
+      <UniqueIdentifier>{7cc9c103-9aa0-4aa5-a791-8b47e14f34c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Game">
+      <UniqueIdentifier>{eda64f31-dd54-431e-8a7d-64d4ee9b18b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Game\Natives">
+      <UniqueIdentifier>{50745223-9780-4322-bde7-a23faf4aeb6e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Game\Natives\Invoker">
+      <UniqueIdentifier>{08eff3b4-7da4-4758-8a3a-61a300b5ea87}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utils\Memory">
+      <UniqueIdentifier>{6730f417-1a9b-4b9e-9ce1-93538d64725b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Game\Hook">
+      <UniqueIdentifier>{0168d0b9-1803-43f5-af79-67a9ba4dba09}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scripting\GameComponents">
+      <UniqueIdentifier>{af20b9a8-99f3-4038-aca6-d07cd58cf8fd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scripting\Usefull">
+      <UniqueIdentifier>{83d64954-e772-4e75-a29a-45663bfade75}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scripting\Modules">
+      <UniqueIdentifier>{5a06b401-35ae-41b1-9e86-5a4f1d4fda9c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scripting\Modules\Sync">
+      <UniqueIdentifier>{729771a2-6c61-44ea-aeff-c309150be247}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scripting\Modules\Hud">
+      <UniqueIdentifier>{2c03bc40-47e2-4bd4-8b04-d28b80609df2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utils\Shared">
+      <UniqueIdentifier>{34fd34e5-a5ce-4ec1-a316-01f46a401225}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Utils\Shared\Vector">
+      <UniqueIdentifier>{9fd13995-8b04-4267-85da-b5cd5608142c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scripting\Modules\Pool">
+      <UniqueIdentifier>{e43c832c-46fd-4206-92eb-40a8f27292ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Game\Utils">
+      <UniqueIdentifier>{82b4f677-6ab0-4914-98ba-b8bc0cf72197}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Scripting\Modules\Manager">
+      <UniqueIdentifier>{29489c24-6ae5-4240-bdab-d75c5138f89f}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Framework.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Fibers.h">
+      <Filter>Source Files\Utils\Fibers</Filter>
+    </ClInclude>
+    <ClInclude Include="Logger.h">
+      <Filter>Source Files\Utils\Logger</Filter>
+    </ClInclude>
+    <ClInclude Include="Network.h">
+      <Filter>Source Files\Utils\Network</Filter>
+    </ClInclude>
+    <ClInclude Include="EventListing.h">
+      <Filter>Source Files\Scripting</Filter>
+    </ClInclude>
+    <ClInclude Include="Sync.h">
+      <Filter>Source Files\Scripting\Modules\Sync</Filter>
+    </ClInclude>
+    <ClInclude Include="Invoker.h">
+      <Filter>Source Files\Game\Natives\Invoker</Filter>
+    </ClInclude>
+    <ClInclude Include="CrossMap.h">
+      <Filter>Source Files\Game\Natives</Filter>
+    </ClInclude>
+    <ClInclude Include="Natives.h">
+      <Filter>Source Files\Game\Natives</Filter>
+    </ClInclude>
+    <ClInclude Include="Types.h">
+      <Filter>Source Files\Game\Natives</Filter>
+    </ClInclude>
+    <ClInclude Include="Memory.h">
+      <Filter>Source Files\Utils\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="Hook.h">
+      <Filter>Source Files\Game\Hook</Filter>
+    </ClInclude>
+    <ClInclude Include="GameComponents.h">
+      <Filter>Source Files\Scripting\GameComponents</Filter>
+    </ClInclude>
+    <ClInclude Include="ScriptsList.h">
+      <Filter>Source Files\Scripting\Usefull</Filter>
+    </ClInclude>
+    <ClInclude Include="Controls.h">
+      <Filter>Source Files\Scripting\Usefull</Filter>
+    </ClInclude>
+    <ClInclude Include="Hud.h">
+      <Filter>Source Files\Scripting\Modules\Hud</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Shared\Vector.h">
+      <Filter>Source Files\Utils\Shared\Vector</Filter>
+    </ClInclude>
+    <ClInclude Include="Pools.h">
+      <Filter>Source Files\Scripting\Modules\Pool</Filter>
+    </ClInclude>
+    <ClInclude Include="PoolsClasses.h">
+      <Filter>Source Files\Scripting\Modules\Pool</Filter>
+    </ClInclude>
+    <ClInclude Include="Scenarios.h">
+      <Filter>Source Files\Scripting\Usefull</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUtils.h">
+      <Filter>Source Files\Game\Utils</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="dllmain.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Fibers.cpp">
+      <Filter>Source Files\Utils\Fibers</Filter>
+    </ClCompile>
+    <ClCompile Include="Logger.cpp">
+      <Filter>Source Files\Utils\Logger</Filter>
+    </ClCompile>
+    <ClCompile Include="Connection.cpp">
+      <Filter>Source Files\Utils\Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Events.cpp">
+      <Filter>Source Files\Utils\Network</Filter>
+    </ClCompile>
+    <ClCompile Include="Sync.cpp">
+      <Filter>Source Files\Scripting\Modules\Sync</Filter>
+    </ClCompile>
+    <ClCompile Include="Invoker.cpp">
+      <Filter>Source Files\Game\Natives\Invoker</Filter>
+    </ClCompile>
+    <ClCompile Include="Memory.cpp">
+      <Filter>Source Files\Utils\Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="Hook.cpp">
+      <Filter>Source Files\Game\Hook</Filter>
+    </ClCompile>
+    <ClCompile Include="GameComponents.cpp">
+      <Filter>Source Files\Scripting\GameComponents</Filter>
+    </ClCompile>
+    <ClCompile Include="Hud.cpp">
+      <Filter>Source Files\Scripting\Modules\Hud</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Shared\Vector.cpp">
+      <Filter>Source Files\Utils\Shared\Vector</Filter>
+    </ClCompile>
+    <ClCompile Include="Pools.cpp">
+      <Filter>Source Files\Scripting\Modules\Pool</Filter>
+    </ClCompile>
+    <ClCompile Include="GameUtils.cpp">
+      <Filter>Source Files\Game\Utils</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

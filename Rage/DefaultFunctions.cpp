@@ -64,6 +64,15 @@ void DefaultFunctions(void)
 			ENTITY::SET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), Vector3(-127.91f, 1269.07f, 307.43f), 1, 0, 0, 1);
 			Fibers::Suspend(125);
 		}
+		else if (strcmp(model.c_str(), "test") == 0)
+		{
+			PedFactory::TestThing();
+		}
+		else if (strcmp(model.c_str(), "coords") == 0)
+		{
+			NativeVector3 vec = ENTITY::GET_ENTITY_COORDS(PLAYER::PLAYER_PED_ID(), true);
+			std::cout << vec.x << " " << vec.y << " " << vec.z << std::endl;
+		}
 		else if (strcmp(model.c_str(), "test01") == 0)
 		{
 			PedFactory::Tp();

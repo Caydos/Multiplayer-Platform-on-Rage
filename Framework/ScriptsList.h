@@ -1,8 +1,9 @@
 #ifndef SCRIPTS_NAMES_H
 #define SCRIPTS_NAMES_H
 
+#define SCRIPTS_COUNT 804
 
-const char* scriptNames[804] = {
+const char* scriptNames[SCRIPTS_COUNT] = {
 	"abigail1",
 	"abigail2",
 	"achievement_controller",

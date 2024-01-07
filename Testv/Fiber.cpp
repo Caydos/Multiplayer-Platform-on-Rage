@@ -3,13 +3,18 @@
 #include <cstring>
 #include "Fiber.h"
 #include <shared_mutex>
+#include <functional> // Required for std::function
+#include "v8.h"
+#include <iostream>
 
 fiber* fibers = new fiber[1];
 unsigned int fiberCount = 0;
 static std::shared_mutex mutex;
+bool requestLock = false;
 
-void Fibers::Create(const char* _name, void(*function)())
+void Fibers::Create(const char* _name, void(*function)(), void** _content)
 {
+	std::cout << "Creating fiber with name" << std::endl;
 	std::unique_lock<std::shared_mutex> lock(mutex);
 	fiberCount++;
 	fiber* temp = new fiber[fiberCount];
@@ -17,6 +22,7 @@ void Fibers::Create(const char* _name, void(*function)())
 	delete[] fibers;
 	fibers = temp;
 	fibers[fiberCount - 1].name = _name;
+	fibers[fiberCount - 1].content = _content;
 	fibers[fiberCount - 1].script_fiber = CreateFiber(0, (LPFIBER_START_ROUTINE)function, &fibers[fiberCount - 1]);
 	fibers[fiberCount - 1].function = function;
 	fibers[fiberCount - 1].wake_at = GetTickCount();
@@ -27,7 +33,7 @@ void Fibers::Init(const char* _name, void(*function)())
 	std::unique_lock<std::shared_mutex> lock(mutex);
 	for (unsigned int i = 0; i < fiberCount; i++)
 	{
-		if (strcmp(_name, fibers[i].name) == 0)
+		if (strcmp(_name, fibers[i].name.c_str()) == 0)
 		{
 			fibers[i].script_fiber = CreateFiber(0, (LPFIBER_START_ROUTINE)function, &fibers[i]);
 			fibers[i].function = function;
@@ -48,6 +54,28 @@ void Fibers::Delete()
 			if (actualFiber == fibers[i].script_fiber)
 			{
 				foundId = true;
+				DeleteFiber(fibers[i].script_fiber);
+			}
+		}
+		else if (i < fiberCount + 1)
+		{
+			fibers[i] = fibers[i + 1];
+		}
+	}
+	fiberCount--;
+}
+
+void Fibers::DeleteFromName(const char* _name)
+{
+	bool foundId = false;
+	for (unsigned int i = 0; i < fiberCount; i++)
+	{
+		if (!foundId)
+		{
+			if (strcmp(fibers[i].name.c_str(), _name) == 0)
+			{
+				foundId = true;
+				std::cout << "Deleting" << std::endl;
 				DeleteFiber(fibers[i].script_fiber);
 			}
 		}
@@ -102,6 +130,33 @@ void Fibers::Suspend(uint32_t time)
 			fibers[i].wake_at = GetTickCount() + time;
 
 			SwitchToFiber(fibers[i].main_fiber);
+		}
+	}
+}
+
+void** Fibers::GetContent(void)
+{
+	std::shared_lock<std::shared_mutex> lock(mutex);
+	void* actualFiber = GetCurrentFiber();
+	for (unsigned int i = 0; i < fiberCount; i++)
+	{
+		if (actualFiber == fibers[i].script_fiber)
+		{
+			return fibers[i].content;
+		}
+	}
+	return nullptr;
+}
+
+void Fibers::SetContentValue(const char* _name, int _valueId, void* _value)
+{
+	std::shared_lock<std::shared_mutex> lock(mutex);
+	for (unsigned int i = 0; i < fiberCount; i++)
+	{
+		if (strcmp(fibers[i].name.c_str(), _name) == 0)
+		{
+			std::cout << "Value changed" << std::endl;
+			fibers[i].content[_valueId] = _value;
 		}
 	}
 }

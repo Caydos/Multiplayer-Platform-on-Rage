@@ -72,6 +72,9 @@
     <Filter Include="Client\Scripting\Pools">
       <UniqueIdentifier>{cc4c9e21-22d2-4983-8ff6-27ae536c9c3d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Common\Files">
+      <UniqueIdentifier>{c028b58e-18f8-4957-973d-db735d48ff87}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -152,6 +155,9 @@
     <ClInclude Include="Pools.h">
       <Filter>Client\Scripting\Pools</Filter>
     </ClInclude>
+    <ClInclude Include="Files.h">
+      <Filter>Common\Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -200,9 +206,6 @@
     <ClCompile Include="Hud.cpp">
       <Filter>Client\Scripting\Scripts\Hud</Filter>
     </ClCompile>
-    <ClCompile Include="Entity.cpp">
-      <Filter>Client\Scripting\SyncTree\Sync</Filter>
-    </ClCompile>
     <ClCompile Include="..\Shared\Encryption.cpp">
       <Filter>Common\Encryption</Filter>
     </ClCompile>
@@ -214,6 +217,9 @@
     </ClCompile>
     <ClCompile Include="Pools.cpp">
       <Filter>Client\Scripting\Pools</Filter>
+    </ClCompile>
+    <ClCompile Include="Files.cpp">
+      <Filter>Common\Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
